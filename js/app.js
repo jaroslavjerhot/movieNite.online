@@ -3,15 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function fLoadServices() {
-
-    const response = await fetch('data/services.csv');
+    // const sServicesUrl = 'https://jaroslavjerhot.github.io/movieNite.online/data/services.csv';
+    const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
+    const response = await fetch(sServicesUrl);
     const text = await response.text();
 
     const rows = text.trim().split('\n');
-    const headers = rows.shift().split(',');
+    const headers = rows.shift().split(';');
 
     const services = rows.map(row => {
-        const values = row.split(',');
+        const values = row.split(';');
         let obj = {};
         headers.forEach((h, i) => obj[h] = values[i]);
         return obj;
