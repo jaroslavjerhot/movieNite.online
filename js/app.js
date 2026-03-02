@@ -7,6 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const input = document.getElementById('searchInput');
+const dummy = document.getElementById('dummyFocus');
+
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        dummy.focus();   // move focus away
+    }
+});
+
+input.addEventListener('input', function() {
+    setTimeout(() => {
+        if (document.activeElement === input) {
+            dummy.focus();
+        }
+    }, 1000);
+});
+
 async function fLoadServices() {
     // alert('here')
     // const sServicesUrl = 'https://jaroslavjerhot.github.io/movieNite.online/data/services.csv';
