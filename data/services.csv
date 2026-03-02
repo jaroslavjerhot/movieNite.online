@@ -1,14 +1,14 @@
 ﻿sId;sName;sSearchUrl
-ct;iVysílání;https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=#w+w
+ct;iVysílání;https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=#w
 yt;YouTube;https://www.youtube.com/results?search_query=#w
-nf;Netflix;https://www.netflix.com/search?q=#s
-op;OnePlay;https://www.oneplay.cz/vyhledat?query=#w+w
-ip;iPrima;https://www.iprima.cz/vyhledavani?q=#w+w
-fs;FastShare;https://fastshare.cloud/#w-w/s
+nf;Netflix;https://www.netflix.com/search?q=#w
+op;OnePlay;https://www.oneplay.cz/vyhledat?query=#w
+ip;iPrima;https://www.iprima.cz/vyhledavani?q=#w
+fs;FastShare;https://fastshare.cloud/#m/s
 pt;Přehraj.to;https://prehraj.to/hledej/#w
 ws;WebShare;https://webshare.cz/#/search?what=#w
 gm;gMail;https://mail.google.com/mail/u/0/#inbox
-wk;Wikipedia;https://cs.wikipedia.org/w/index.php?search=#w+w
-cf;ČSFD;https://www.csfd.cz/hledat/?q=#w+w
-fm;Filmová místa;https://www.filmovamista.cz/vyhledavani?q=#w+w&submint=Hledat
-rs;ReelStreets;https://www.reelstreets.com/?s=#w+w
+wk;Wikipedia;https://cs.wikipedia.org/w/index.php?search=#w
+cf;ČSFD;https://www.csfd.cz/hledat/?q=#w
+fm;Filmová místa;https://www.filmovamista.cz/vyhledavani?q=#w&submint=Hledat
+rs;ReelStreets;https://www.reelstreets.com/?s=#w

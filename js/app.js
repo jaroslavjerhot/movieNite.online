@@ -75,8 +75,15 @@ function fOpenSearch(urlTemplate) {
     const query = document.getElementById('searchInput').value.trim();
     if (!query) return;
 
-    const encoded = encodeURIComponent(query);
-    const finalUrl = urlTemplate.replace('#w', encoded);
+    const encodedPlus = encodeURIComponent(query.replace(/ /g, '+'));
+    const encodedMinus = encodeURIComponent(query.replace(/ /g, '-'));
+    let finalUrl = '';
+    if (urlTemplate.includes('#m')) {
+        finalUrl = urlTemplate.replace('#m', encodedMinus);
+    } else {
+        finalUrl = urlTemplate.replace('#w', encodedPlus);
+    }
 
-    window.open(finalUrl, '_blank');
+    // window.open(finalUrl, '_blank');
+    location.href = finalUrl;
 }
