@@ -32,7 +32,7 @@ body {
 }
 
 .services {
-    margin-top: 50px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -50,16 +50,16 @@ body {
 }
 
 .service img {
-    width: 80px;
-    height: 80px;
-    border-radius: 20px;
-    background: white;
-    padding: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    background: silwhite;
+    padding: 6px;
 }
 
 .service span {
     display: block;
-    margin-top: 10px;
+    margin-top: 8px;
     font-size: 1.2rem;
 }
 /* =========================
