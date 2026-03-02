@@ -1,14 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fLoadServices();
+    fLoadServices();const form = document.getElementById('searchForm');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        fOpenDefaultService();
+    });
 });
 
 async function fLoadServices() {
+    // alert('here')
     // const sServicesUrl = 'https://jaroslavjerhot.github.io/movieNite.online/data/services.csv';
-    // const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
-    const sServicesUrl = '/data/services.csv'
+    const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
+    // const sServicesUrl = '/data/services.csv'
     const response = await fetch(sServicesUrl);
     const text = await response.text();
-
+    // alert('loaded')
     const rows = text.trim().split('\n');
     const headers = rows.shift().split(';');
 
