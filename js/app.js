@@ -1,28 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fLoadServices();const form = document.getElementById('searchForm');
+    fLoadServices();
+    
+    // const form = document.getElementById('searchForm');
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        fOpenDefaultService();
-    });
+    // form.addEventListener('submit', function(e) {
+    //     e.preventDefault();
+    //     fOpenDefaultService();
+    // });
 });
 
-const input = document.getElementById('searchInput');
-const dummy = document.getElementById('dummyFocus');
+// const input = document.getElementById('searchInput');
+// const dummy = document.getElementById('dummyFocus');
 
-input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        dummy.focus();   // move focus away
-    }
-});
+// input.addEventListener('keydown', function(e) {
+//     if (e.key === 'Enter') {
+//         dummy.focus();   // move focus away
+//     }
+// });
 
-input.addEventListener('input', function() {
-    setTimeout(() => {
-        if (document.activeElement === input) {
-            dummy.focus();
-        }
-    }, 1000);
-});
+// input.addEventListener('input', function() {
+//     setTimeout(() => {
+//         if (document.activeElement === input) {
+//             dummy.focus();
+//         }
+//     }, 1000);
+// });
 
 async function fLoadServices() {
     // alert('here')
@@ -72,18 +74,21 @@ function fRenderServices(services) {
 
 function fOpenSearch(urlTemplate) {
 
-    const query = document.getElementById('searchInput').value.trim();
+    let query = document.getElementById('searchInput').value.trim();
     if (!query) return;
-
-    const encodedPlus = encodeURIComponent(query.replace(/ /g, '+'));
-    const encodedMinus = encodeURIComponent(query.replace(/ /g, '-'));
+    query = query
+        .normalize('NFD')                // separate accent from letter
+        .replace(/[\u0300-\u036f]/g, ''); // remove accents
+    
+    const encodedPlus = query.replace(/ /g, '+');
+    const encodedMinus = query.replace(/ /g, '-');
     let finalUrl = '';
     if (urlTemplate.includes('#m')) {
         finalUrl = urlTemplate.replace('#m', encodedMinus);
     } else {
         finalUrl = urlTemplate.replace('#w', encodedPlus);
     }
-
+    // finalUrl = finalUrl.replace('%20', '+');
     // window.open(finalUrl, '_blank');
     location.href = finalUrl;
 }
