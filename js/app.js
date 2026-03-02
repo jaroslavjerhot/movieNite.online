@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fLoadServices() {
     // const sServicesUrl = 'https://jaroslavjerhot.github.io/movieNite.online/data/services.csv';
-    const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
+    // const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
+    const sServicesUrl = '/data/services.csv'
     const response = await fetch(sServicesUrl);
     const text = await response.text();
 
