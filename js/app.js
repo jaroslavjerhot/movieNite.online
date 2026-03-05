@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fLoadServices();
+    const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
+    fLoadServices(sServicesUrl);
     
     // const form = document.getElementById('searchForm');
 
@@ -26,10 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
 //     }, 1000);
 // });
 
-async function fLoadServices() {
+    
+
+async function fLoadServices(sServicesUrl) {
     // alert('here')
     // const sServicesUrl = 'https://jaroslavjerhot.github.io/movieNite.online/data/services.csv';
-    const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
     // const sServicesUrl = '/data/services.csv'
     const response = await fetch(sServicesUrl);
     const text = await response.text();
@@ -40,11 +42,12 @@ async function fLoadServices() {
     const services = rows.map(row => {
         const values = row.split(';');
         let obj = {};
-        headers.forEach((h, i) => obj[h] = values[i]);
+        if (obj.bUse=true) {
+            headers.forEach((h, i) => obj[h] = values[i]);}
         return obj;
     });
-
-    fRenderServices(services);
+    return services;
+    //fRenderServices(services);
 }
 
 function fRenderServices(services) {

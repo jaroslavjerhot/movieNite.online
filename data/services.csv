@@ -1,14 +1,14 @@
-﻿sId;sName;sSearchUrl
-ct;iVysílání;https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=#w
-yt;YouTube;https://www.youtube.com/results?search_query=#w
-nf;Netflix;https://www.netflix.com/search?q=#w
-op;OnePlay;https://www.oneplay.cz/vyhledat?query=#w
-ip;iPrima;https://www.iprima.cz/vyhledavani?q=#w
-fs;FastShare;https://fastshare.cloud/#m/s
-pt;Přehraj.to;https://prehraj.to/hledej/#w
-ws;WebShare;https://webshare.cz/#/search?what=#w
-gm;gMail;https://mail.google.com/mail/u/0/#inbox
-wk;Wikipedia;https://cs.wikipedia.org/w/index.php?search=#w
-cf;ČSFD;https://www.csfd.cz/hledat/?q=#w
-fm;Filmová místa;https://www.filmovamista.cz/vyhledavani?q=#w&submint=Hledat
-rs;ReelStreets;https://www.reelstreets.com/?s=#w
+﻿sId;sName;sSearchUrl;bUse
+ct;iVysílání;https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=#w;1
+yt;YouTube;https://www.youtube.com/results?search_query=#w;1
+nf;Netflix;https://www.netflix.com/search?q=#w;1
+op;OnePlay;https://www.oneplay.cz/vyhledat?query=#w;1
+ip;iPrima;https://www.iprima.cz/vyhledavani?q=#w;1
+fs;FastShare;https://fastshare.cloud/#m/s;1
+pt;Přehraj.to;https://prehraj.to/hledej/#w;1
+ws;WebShare;https://webshare.cz/#/search?what=#w;1
+gm;gMail;https://mail.google.com/mail/u/0/#inbox;1
+wk;Wikipedia;https://cs.wikipedia.org/w/index.php?search=#w;1
+cf;ČSFD;https://www.csfd.cz/hledat/?q=#w;1
+fm;Filmová místa;https://www.filmovamista.cz/vyhledavani?q=#w&submint=Hledat;1
+rs;ReelStreets;https://www.reelstreets.com/?s=#w;1
