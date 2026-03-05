@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    alert('dom loaded');
     //const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
     const sServicesUrl = '/data/services.csv'
     fLoadServices(sServicesUrl);
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
 async function fLoadServices(sServicesUrl) {
-    alert('before fetch')
+    
 
     const response = await fetch(sServicesUrl);
     alert('loaded')
