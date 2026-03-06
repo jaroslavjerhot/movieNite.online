@@ -1,117 +1,135 @@
-body {
-    margin: 0;
-    background: #0f0f0f;
-    color: white;
-    font-family: Arial, sans-serif;
+body
+{
+    margin:0;
+    background:#0f0f0f;
+    font-family:Arial, Helvetica, sans-serif;
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.app
+{
+    width:90%;
+    max-width:900px;
+}
+
+#searchBox
+{
+    width:100%;
+    padding:18px;
+
+    border-radius:30px;
+    border:none;
+
+    font-size:20px;
+
+    background:#1e1e1e;
+    color:white;
+    outline:none;
+}
+
+#services
+{
+    margin-top:25px;
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+}
+
+/* service button */
+
+.serviceBtn
+{
+    width:80px;
+    height:80px;
+
+    background:#1a1a1a;
+    border:none;
+    border-radius:16px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+}
+
+.serviceBtn img
+{
+    width:32px;
+    height:32px;
+}
+
+.serviceName
+{
+    margin-top:6px;
+    font-size:12px;
+}
+
+/* focus for TV remote */
+
+.serviceBtn:focus
+{
+    outline:3px solid #00aaff;
+}
+
+
+/* mobile */
+
+@media (max-width:600px)
+{
+
+.serviceBtn
+{
+    width:60px;
+    height:60px;
+}
+
+.serviceBtn img
+{
+    width:24px;
+    height:24px;
+}
+
+.serviceName
+{
+    font-size:10px;
+    color:aliceblue
+}
+
+}
+
+.search-row {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* align-items: flex-start; vertical centering */
+    gap: 12px;      /* space between input and buttons */
+    flex-wrap: wrap; /* optional: wrap to next line on mobile */
+    width: 90vw;          /* optional: limit row width */
+    
 }
 
-.container {
-    text-align: center;
-    width: 80%;
-}
-
-.logo {
-    font-size: 3rem;
-    margin-bottom: 40px;
-}
-
-#searchInput {
-    width: 60%;
-    padding: 20px;
-    font-size: 1.5rem;
-    border-radius: 50px;
+#searchBox {
+    /* width: 50vw;           50% of screen width */
+    flex:1;              /* take remaining space */
+    min-width: 200px;      /* optional: prevent too small on mobile */
+    padding: 16px;
+    border-radius: 32px;
     border: none;
-    outline: none;
-    text-align: center;
+    font-size: 18px;
     background: #1e1e1e;
     color: white;
+    outline: none;
 }
 
-.services {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.service {
-    cursor: pointer;
-    text-align: center;
-    transition: transform 0.2s ease;
-}
-
-.service:hover {
-    transform: scale(1.2);
-}
-
-.service img {
-    width: 60px;
-    height: 60px;
-    border-radius: 15px;
-    background: silwhite;
-    padding: 6px;
-}
-
-.service span {
-    display: block;
-    margin-top: 8px;
-    font-size: 1.2rem;
-}
-/* =========================
-   MOBILE RESPONSIVE MODE
-   ========================= */
-
-@media (max-width: 768px) {
-
-    body {
-        align-items: flex-start;
-        padding-top: 40px;
-    }
-
-    .container {
-        width: 95%;
-    }
-
-    .logo {
-        font-size: 2rem;
-        margin-bottom: 25px;
-    }
-
-    #searchInput {
-        width: 100%;
-        padding: 16px;
-        font-size: 1.2rem;
-        border-radius: 30px;
-    }
-
-    .services {
-        margin-top: 35px;
-        gap: 25px;
-
-        /* Switch from centered flex to grid */
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        justify-items: center;
-    }
-
-    .service img {
-        width: 45px;
-        height: 45px;
-        padding: 8px;
-        border-radius: 12px;
-    }
-
-    .service span {
-        font-size: 0.9rem;
-        margin-top: 6px;
-    }
-
-    .service:hover {
-        transform: none; /* disable zoom on mobile */
-    }
+#services {
+    display: flex;   /* buttons in one row */
+    gap: 8px;
+    color:aliceblue
 }
