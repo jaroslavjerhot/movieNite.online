@@ -129,7 +129,73 @@ body
 }
 
 #services {
-    display: flex;   /* buttons in one row */
+    /* display: flex;   buttons in one row */
     gap: 8px;
     color:aliceblue
+}
+
+.movies-section {
+    width: 90vw;
+    max-width: 1200px;
+    margin: 20px auto;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.movies-section h2 {
+    margin-bottom: 12px;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.filter-btn {
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: none;
+    background: #1a1a1a;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-btn:focus {
+    outline: 2px solid #00aaff;
+    transform: scale(1.05);
+}
+
+.movie-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid #333;
+}
+
+.movie-row div {
+    min-width: 80px;
+}
+
+.movie-row button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 12px;
+    background: #1e1e1e;
+    cursor: pointer;
+}
+
+.movie-row button img {
+    width: 32px;
+    height: 32px;
+}
+
+@media (max-width:600px) {
+    .filter-btn { font-size:12px; padding:6px 10px; }
+    .movie-row div { min-width:60px; font-size:12px; }
+    .movie-row button img { width:24px; height:24px; }
 }

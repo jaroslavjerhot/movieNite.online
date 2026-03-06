@@ -1,3 +1,11 @@
+let lxdServices = [];
+let lxdCountries = [];
+let lxdGenres = [];
+let lxdMovies = [];
+let allMovies = [];
+let filteredMovies = [];
+let filterHistory = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
     //alert('dom loaded');
     const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
@@ -5,10 +13,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sGenresUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/genres.csv'
     const sMoviesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/movies.csv'
     // const sServicesUrl = '/data/services.csv'
-    const lxdServices = await fLoadServices(sServicesUrl);
-    const lxdCountries = await fLoadServices(sCountriesUrl);
-    const lxdGenres = await fLoadServices(sGenresUrl);
-    let  lxdMovies = await fLoadServices(sMoviesUrl);
+    lxdServices = await fLoadServices(sServicesUrl);
+    lxdCountries = await fLoadServices(sCountriesUrl);
+    lxdGenres = await fLoadServices(sGenresUrl);
+    lxdMovies = await fLoadServices(sMoviesUrl);
 
     const dctCountryRegion = {};
     lxdCountries.forEach(r => {
@@ -28,7 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         sYearGroup: fGroupingYears(movie.iYear),        
     }
     });
+    // Store original movies
+    allMovies = [...lxdMovies];
+    filteredMovies = [...allMovies];
+    filterHistory = [];
+
     const cntServices = renderButtons(lxdServices,64);
+    initMoviesSection();
     x = 1;
 });
 
@@ -63,7 +77,7 @@ function fGrouping(sValue, dctGrouping) {
     return [...new Set(
         sValue.split("/")
             .map(c => c.trim())
-            .map(c => (c in dctGrouping ? dctGrouping[c] : c))
+            .map(c => (c in dctGrouping ? dctGrouping[c].replace(', ','|') : c))
             .filter(Boolean)
     )].join(" / ");
 }
@@ -72,7 +86,7 @@ function fGroupingYears(sYear, sBottomLevel='1949') {
     if (sYear>sBottomLevel) {
         return sYear.slice(0, 3) + "0s";
     } else {
-        return "<" + sBottomLevel.slice(0, 3) + "0's";
+        return sBottomLevel.slice(0, 3) + "0's s dříve";
     }
 }
 
@@ -172,3 +186,116 @@ function fOpenSearch(urlTemplate, sSearchedValue='') {
     // window.open(finalUrl, '_blank');
     location.href = finalUrl;
 }
+
+
+
+// --- Get unique values for filters ---
+function getUnique(array, field) {
+    return [...new Set(array.map(x => x[field]))].sort().filter(Boolean).unshift("All");
+}
+
+// --- Render filter buttons ---
+function renderFilterButtons() {
+    const regionFilters = document.getElementById("regionFilters");
+    const genreFilters = document.getElementById("genreFilters");
+    const yearFilters = document.getElementById("yearFilters");
+
+    const regions = getUnique(lxdCountries, "sRegion");
+    const genres = getUnique(lxdGenres, "sGenreGroup");
+    const years = getUnique(lxdMovies, "sYearGroup");
+
+    regionFilters.innerHTML = "";
+    genres.forEach(g => genreFilters.innerHTML = "");
+    years.forEach(y => yearFilters.innerHTML = "");
+
+    regions.forEach(r => {
+        let btn = document.createElement("button");
+        btn.className = "filter-btn";
+        btn.innerText = r;
+        btn.tabIndex = 0;
+        btn.onclick = () => applyFilter("sRegion", r);
+        regionFilters.appendChild(btn);
+    });
+
+    genres.forEach(g => {
+        let btn = document.createElement("button");
+        btn.className = "filter-btn";
+        btn.innerText = g;
+        btn.tabIndex = 0;
+        btn.onclick = () => applyFilter("sGenreGroup", g);
+        genreFilters.appendChild(btn);
+    });
+
+    years.forEach(y => {
+        let btn = document.createElement("button");
+        btn.className = "filter-btn";
+        btn.innerText = y;
+        btn.tabIndex = 0;
+        btn.onclick = () => applyFilter("sYearGroup", y);
+        yearFilters.appendChild(btn);
+    });
+}
+
+// --- Apply a filter ---
+function applyFilter(field, value) {
+    filterHistory.push([...filteredMovies]); // save previous state
+    filteredMovies = filteredMovies.filter(m => m[field] === value);
+    renderMovies();
+}
+
+// --- Go back to previous filter ---
+function returnPreviousFilter() {
+    if (filterHistory.length > 0) {
+        filteredMovies = filterHistory.pop();
+        renderMovies();
+    }
+}
+
+// --- Render movie list ---
+function renderMovies() {
+    const container = document.getElementById("movieList");
+    container.innerHTML = "";
+
+    filteredMovies.slice(0,25).forEach(movie => {
+        const row = document.createElement("div");
+        row.className = "movie-row";
+
+        // Movie details
+        ["sMovie","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
+            const div = document.createElement("div");
+            div.innerText = movie[field];
+            row.appendChild(div);
+        });
+
+        // Search buttons (like in your previous section)
+        // lxdServices.forEach(service=>{
+        //     const domain = new URL(service.sSearchUrl).hostname;
+        //     const iconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+        //     const btn = document.createElement("button");
+        //     btn.tabIndex = 0;
+        //     btn.innerHTML = `<img src="${iconUrl}" alt="${service.sName}">`;
+        //     btn.onclick = ()=>{
+        //         const query = encodeURIComponent(movie.sMovie);
+        //         const url = service.sSearchUrl.replace("#w", query);
+        //         window.open(url, "_blank");
+        //     };
+        //     row.appendChild(btn);
+        // });
+
+        container.appendChild(row);
+    });
+}
+
+// --- Keyboard navigation: return previous filter ---
+document.addEventListener("keydown", e=>{
+    if (e.key === "Backspace" || e.key === "Escape") {
+        returnPreviousFilter();
+    }
+});
+
+// --- Initialize ---
+function initMoviesSection() {
+    renderFilterButtons();
+    //renderMovies();
+}
+
