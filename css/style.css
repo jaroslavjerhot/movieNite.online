@@ -5,7 +5,7 @@ body
     font-family:Arial, Helvetica, sans-serif;
     color:white;
 
-    display:flex;
+    /* display:flex; */
     justify-content:center;
     align-items:center;
     height:100vh;
@@ -17,29 +17,7 @@ body
     max-width:900px;
 }
 
-#searchBox
-{
-    width:100%;
-    padding:18px;
 
-    border-radius:30px;
-    border:none;
-
-    font-size:20px;
-
-    background:#1e1e1e;
-    color:white;
-    outline:none;
-}
-
-#services
-{
-    margin-top:25px;
-
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px;
-}
 
 /* service button */
 
@@ -116,30 +94,37 @@ body
 }
 
 #searchBox {
-    /* width: 50vw;           50% of screen width */
-    flex:1;              /* take remaining space */
+    width: 60vw;           /*50% of screen width */
+    /* flex:1;              take remaining space */
     min-width: 200px;      /* optional: prevent too small on mobile */
+    margin: 20px 20px 10px 20px; /* vertical spacing */  
     padding: 16px;
     border-radius: 32px;
     border: none;
-    font-size: 18px;
     background: #1e1e1e;
     color: white;
     outline: none;
+    
+    font-size:20px;
 }
 
-#services {
+#services
+{
+    margin: 10px 20px 10px 20px ; /* vertical spacing */  
     /* display: flex;   buttons in one row */
     gap: 8px;
-    color:aliceblue
+    color:aliceblue;
+    display:flex;
+    flex-wrap:wrap;
 }
 
+
 .movies-section {
-    width: 90vw;
-    max-width: 1200px;
-    margin: 20px auto;
+    /* width: 90vw;
+    max-width: 1200px; */
+    margin: 10px 20px 10px 20px ; /* vertical spacing */  
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif, sans-serif;
 }
 
 .movies-section h2 {

@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.addEventListener("keydown", e =>
 {
+    return
     const buttons = [...document.querySelectorAll(".serviceBtn")]
 
     if (buttons.length === 0) return
@@ -202,8 +203,14 @@ function renderFilterButtons() {
     const yearFilters = document.getElementById("yearFilters");
 
     const regions = getUnique(lxdCountries, "sRegion");
+    regions[0] = "Všech.země"; // Ensure "All" is first
     const genres = getUnique(lxdGenres, "sGenreGroup");
+    genres[0] = "Všech.žánry"; // Ensure "All" is first
     const years = getUnique(lxdMovies, "sYearGroup");
+    years[0] = "Všech.roky"; // Ensure "All" is first
+
+    const btnMax = Math.max(regions.length, genres.length, years.length);
+    const btnWidth = 90 / btnMax; // -2 for margin
 
     regionFilters.innerHTML = "";
     genres.forEach(g => genreFilters.innerHTML = "");
@@ -213,6 +220,7 @@ function renderFilterButtons() {
         let btn = document.createElement("button");
         btn.className = "filter-btn";
         btn.innerText = r;
+        btn.style.width = btnWidth + "%";
         btn.tabIndex = 0;
         btn.onclick = () => applyFilter("sRegion", r);
         regionFilters.appendChild(btn);
@@ -223,6 +231,7 @@ function renderFilterButtons() {
         btn.className = "filter-btn";
         btn.innerText = g;
         btn.tabIndex = 0;
+        btn.style.width = btnWidth + "%";
         btn.onclick = () => applyFilter("sGenreGroup", g);
         genreFilters.appendChild(btn);
     });
@@ -232,6 +241,7 @@ function renderFilterButtons() {
         btn.className = "filter-btn";
         btn.innerText = y;
         btn.tabIndex = 0;
+        btn.style.width = btnWidth + "%";
         btn.onclick = () => applyFilter("sYearGroup", y);
         yearFilters.appendChild(btn);
     });
@@ -297,6 +307,6 @@ document.addEventListener("keydown", e=>{
 // --- Initialize ---
 function initMoviesSection() {
     renderFilterButtons();
-    //renderMovies();
+    renderMovies();
 }
 
