@@ -1,10 +1,10 @@
 ﻿iId;sCountry;sRegion
-1;Alžírsko;Aus, Afr, JAm
-2;Argentina;Aus, Afr, JAm
-3;Austrálie;Aus, Afr, JAm
+1;Alžírsko;Aus|Afr|JAm
+2;Argentina;Aus|Afr|JAm
+3;Austrálie;Aus|Afr|JAm
 4;Belgie;Evropa
 5;Bosna a Hercegovina;Evropa
-6;Brazílie;Aus, Afr, JAm
+6;Brazílie;Aus|Afr|JAm
 7;Bulharsko;Evropa
 8;Česko;Cz/Sk
 9;Československo;Cz/Sk
@@ -16,39 +16,48 @@
 15;Finsko;Evropa
 16;Francie;FR
 17;Gruzie;Asie
-18;Hongkong;JP, KR, HK
-19;Indie;Asie
-20;Írán;Asie
-21;Irsko;Evropa
-22;Itálie;IT
-23;Japonsko;JP, KR, HK
-24;Jihoafrická republika;Aus, Afr, JAm
-25;Jižní Korea;JP, KR, HK
-26;Jugoslávie;Evropa
-27;Kanada;US, Kan
-28;Libanon;Asie
-29;Maďarsko;Evropa
-30;Mexiko;Aus, Afr, JAm
-31;Německá říše;Evropa
-32;Německo;Evropa
-33;Nizozemsko;Evropa
-34;Norsko;Evropa
-35;Nový Zéland;Aus, Afr, JAm
-36;Polsko;Evropa
-37;Protektorát Čechy a Morava;Cz/Sk
-38;Rakousko;Evropa
-39;Rumunsko;Evropa
-40;Rusko;Evropa
-41;Řecko;Evropa
-42;Slovensko;Cz/Sk
-43;Slovinsko;Evropa
-44;Sovětský svaz;Evropa
-45;Srbsko;Evropa
-46;Španělsko;Evropa
-47;Švédsko;Evropa
-48;Švýcarsko;Evropa
-49;Turecko;Asie
-50;USA;US, Kan
-51;Velká Británie;UK
-52;Východní Německo;Evropa
-53;Západní Německo;Evropa
+18;Hongkong;JP|KR|HK
+19;Chorvatsko;Evropa
+20;Indie;Asie
+21;Írán;Asie
+22;Irsko;Evropa
+23;Island;Evropa
+24;Itálie;IT
+25;Izrael;Evropa
+26;Japonsko;JP|KR|HK
+27;Jihoafrická republika;Aus|Afr|JAm
+28;Jižní Korea;JP|KR|HK
+29;Jugoslávie;Evropa
+30;Kanada;US|Kan
+31;Libanon;Asie
+32;Lucembursko;Evropa
+33;Maďarsko;Evropa
+34;Makedonie;Evropa
+35;Mexiko;Aus|Afr|JAm
+36;Německá říše;Evropa
+37;Německo;Evropa
+38;Nizozemsko;Evropa
+39;Norsko;Evropa
+40;Nový Zéland;Aus|Afr|JAm
+41;Polsko;Evropa
+42;Protektorát Čechy a Morava;Cz/Sk
+43;Rakousko;Evropa
+44;Rumunsko;Evropa
+45;Rusko;Evropa
+46;Řecko;Evropa
+47;Severní Makedonie;Evropa
+48;Slovensko;Cz/Sk
+49;Slovinsko;Evropa
+50;Sovětský svaz;Evropa
+51;Spojené arabské emiráty;Asie
+52;Spojené království;UK
+53;Srbsko;Evropa
+54;Španělsko;Evropa
+55;Švédsko;Evropa
+56;Švýcarsko;Evropa
+57;Thajsko;Asie
+58;Turecko;Asie
+59;USA;US|Kan
+60;Velká Británie;UK
+61;Východní Německo;Evropa
+62;Západní Německo;Evropa

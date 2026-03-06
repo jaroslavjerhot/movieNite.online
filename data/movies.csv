@@ -39,7 +39,7 @@
 91,50%;38;m;Jste slabší, máte padáka;2002;Česko;Krátkometrážní / Komedie;Oldřich Kaiser, Jiří Lábus;;
 91,40%;39;s;Ginga eijú densecu;1988;Japonsko;Animovaný / Drama;Noboru Išiguro, Masatoši Tahara;Júsaku Jara, Kaneto Šiozawa;
 91,40%;40;s;Romanzo criminale - La serie;2008;Itálie;Krimi / Drama;Stefano Sollima;Riccardo De Filippis, Vinicio Marchioni;
-91,30%;41;m;Nedotknutelní;2011;Francie;Komedie / Drama;Eric Toledano, Olivier Nakache;François Cluzet, Omar Sy;
+85,70%;522;m;Hurikán;2024;Česko / Francie;Krátkometrážní / Animovaný;Jan Saska;Johana Matoušková, Patrik Velek;
 91,30%;42;s;Byl jednou jeden... život;1987;Francie;Animovaný / Rodinný;Albert Barillé;Roger Carel, Marie-Laure Beneston;
 91,30%;43;s;Nabídka;2022;USA;Drama / Životopisný;Dexter Fletcher, Colin Bucksey;Miles Teller, Matthew Goode;
 91,30%;44;s;Dexter: Vzkříšení;2025;USA;Krimi / Drama;Marcos Siega, Monica Raymund;Michael C. Hall, Jack Alcott;
@@ -474,7 +474,7 @@
 85,80%;501;m;Krtek ve snu;1984;Československo;Animovaný / Krátkometrážní;Zdeněk Miler;;
 85,70%;502;m;Králova řeč;2010;Velká Británie / USA;Drama / Životopisný;Tom Hooper;Colin Firth, Helena Bonham Carter;Oscar
 85,70%;503;m;Slavnosti sněženek;1983;Československo;Komedie;Jiří Menzel;Rudolf Hrušínský, Jaromír Hanzlík;
-85,70%;504;m;Četník ze Saint Tropez;1964;Francie / Itálie;Komedie / Krimi;Jean Girault;Louis de Funès, Geneviève Grad;
+77,30%;2060;m;Electra;2023;Česko / Francie;Krátkometrážní / Animovaný;Daria Kashcheeva;Zuzana Částková, Marie Verner;
 85,70%;505;m;Svět podle Prota;2001;USA / Německo;Drama / Sci-Fi;Iain Softley;Kevin Spacey, Jeff Bridges;
 85,70%;506;m;Poslušně hlásím;1957;Československo;Komedie / Válečný;Karel Steklý;Rudolf Hrušínský, Jaroslav Marvan;
 85,70%;507;m;Česká soda;1998;Česko;Komedie;Milan Šteindler, Václav Křístek;Petr Čtvrtníček, Milan Šteindler;
@@ -492,7 +492,7 @@
 85,70%;519;s;The Twilight Zone;1959;USA;Mysteriózní / Sci-Fi;John Brahm, Douglas Heyes;Rod Serling, Robert McCord;
 85,70%;520;s;Běžné vedlejší účinky;2024;USA;Animovaný / Komedie;Joe Bennett, Sean Buckelew;Dave King, Emily Pendergast;
 85,70%;521;s;This Is England '88;2011;Velká Británie;Drama;Shane Meadows;Joe Gilgun, Stephen Graham;
-85,70%;522;m;Hurikán;2024;Česko / Francie;Krátkometrážní / Animovaný;Jan Saska;Johana Matoušková, Patrik Velek;
+77,20%;2065;m;Figurant;2019;Česko / Francie;Krátkometrážní / Drama;Jan Vejnar;Denis Lavant, Michal Kern;
 85,70%;523;m;Hříchy lásky;1929;Československo / Německá říše;Drama;Karel Lamač;Josef Rovenský, Marcella Albani;
 85,70%;527;m;Krtek a myška;1997;Česko;Animovaný / Krátkometrážní;Zdeněk Miler;;
 85,60%;528;m;Obchodník se smrtí;2005;USA / Francie;Krimi / Drama;Andrew Niccol;Nicolas Cage, Bridget Moynahan;
@@ -523,9 +523,9 @@
 85,40%;555;m;Jáchyme, hoď ho do stroje!;1974;Československo;Komedie;Oldřich Lipský;Luděk Sobota, Marta Vančurová;
 85,40%;556;m;Hačikó - příběh psa;2009;USA / Velká Británie;Drama / Rodinný;Lasse Hallström;Richard Gere, Joan Allen;
 85,40%;557;m;Těžká váha;2005;USA;Drama / Sportovní;Ron Howard;Russell Crowe, Renée Zellweger;
-85,40%;558;m;Stvoření světa;1957;Francie / Československo;Animovaný / Komedie;Eduard Hofman;Jan Werich, Antonín Jedlička;
+73,00%;2260;m;Sh_t Happens;2019;Slovensko / Francie;Krátkometrážní / Animovaný;Michaela Mihalyiová, Dávid Štumpf;;
 85,40%;559;m;Ip Man;2008;Hongkong / Čína;Akční / Drama;Wilson Yip;Donnie Yen, Simon Yam;
-85,40%;560;m;Zvíře;1977;Francie;Komedie / Akční;Claude Zidi;Jean-Paul Belmondo, Raquel Welch;
+84,70%;801;st;Best Friend;2018;Francie;Krátkometrážní / Animovaný;Nicholas Olivieri, Juliana de Lucca;;
 85,40%;561;m;Příběh z Bronxu;1993;USA;Krimi / Drama;Robert De Niro;Robert De Niro, Chazz Palminteri;
 85,40%;562;m;Tichá bolest;1990;Československo;Drama;Martin Hollý ml.;Rudolf Hrušínský, Ivan Jiřík;
 85,40%;563;m;Sunset Boulevard;1950;USA;Drama / Film-Noir;Billy Wilder;William Holden, Gloria Swanson;
@@ -570,10 +570,10 @@
 85,20%;607;m;Útěk do divočiny;2007;USA;Dobrodružný / Drama;Sean Penn;Emile Hirsch, Marcia Gay Harden;
 85,20%;608;m;Návrat do budoucnosti III;1990;USA;Dobrodružný / Komedie;Robert Zemeckis;Michael J. Fox, Christopher Lloyd;
 85,20%;609;m;Neúplatní;1987;USA;Krimi / Drama;Brian De Palma;Kevin Costner, Charles Martin Smith;
-85,20%;610;m;Muž z Acapulca;1973;Francie / Itálie;Komedie / Akční;Philippe de Broca;Jean-Paul Belmondo, Jacqueline Bisset;
+81,60%;1776;st;Wild Love;2018;Francie;Krátkometrážní / Animovaný;Paul Autric, Quentin Camus;;
 85,20%;611;m;Absolvent;1967;USA;Drama / Komedie;Mike Nichols;Anne Bancroft, Dustin Hoffman;
 85,20%;612;m;Vlny;2024;Česko / Slovensko;Drama / Thriller;Jiří Mádl;Vojtěch Vodochodský, Ondřej Stupka;Český lev
-85,20%;613;m;Velký flám;1966;Francie / Velká Británie;Komedie / Válečný;Gérard Oury;Bourvil, Louis de Funès;
+78,30%;1992;st;Hybridi;2017;Francie;Krátkometrážní / Animovaný;Florian Brauch, Matthieu Pujol;;
 85,20%;614;m;My Fair Lady;1964;USA;Komedie / Drama;George Cukor;Audrey Hepburn, Rex Harrison;Oscar
 85,20%;615;m;Zlo mezi námi;2003;Švédsko;Drama;Mikael Håfström;Andreas Wilson, Henrik Lundström;
 85,20%;616;m;JFK;1991;USA / Francie;Drama / Historický;Oliver Stone;Kevin Costner, Kevin Bacon;
@@ -670,7 +670,7 @@
 84,90%;718;st;Dcera;2019;Česko;Krátkometrážní / Loutkový;Daria Kashcheeva;;
 84,80%;719;m;X-Men: První třída;2011;USA;Akční / Dobrodružný;Matthew Vaughn;James McAvoy, Michael Fassbender;
 84,80%;720;m;Zootropolis: Město zvířat;2016;USA;Animovaný / Mysteriózní;Byron Howard, Rich Moore;Ginnifer Goodwin, Jason Bateman;
-84,80%;721;m;Fantomas;1964;Francie / Itálie;Komedie / Krimi;André Hunebelle;Jean Marais, Louis de Funès;
+75,10%;2183;st;V krabici;2017;Francie;Krátkometrážní / Animovaný;Eliott Belrose, Carole Favier;;
 84,80%;722;m;Poslední Mohykán;1992;USA;Akční / Dobrodružný;Michael Mann;Daniel Day-Lewis, Madeleine Stowe;
 84,80%;723;m;Co žere Gilberta Grapea;1993;USA;Drama;Lasse Hallström;Johnny Depp, Leonardo DiCaprio;
 84,80%;724;m;O myších a lidech;1992;USA;Drama;Gary Sinise;John Malkovich, Gary Sinise;
@@ -746,14 +746,14 @@
 84,70%;797;m;Špatně namalovaná slepice;1963;Československo;Animovaný / Krátkometrážní;Jiří Brdečka;Jaroslav Mareš, Antonín Jedlička;
 84,70%;798;m;Pat a Mat: Karty;1998;Česko;Animovaný / Krátkometrážní;František Váša;;
 84,70%;800;st;Obchodní dům;2017;Česko;Krátkometrážní;Tereza Rozálie Koldová, Petr Januschka;;
-84,70%;801;st;Best Friend;2018;Francie;Krátkometrážní / Animovaný;Nicholas Olivieri, Juliana de Lucca;;
-84,60%;802;m;Amélie z Montmartru;2001;Francie / Německo;Komedie / Drama;Jean-Pierre Jeunet;Audrey Tautou, Mathieu Kassovitz;
+75,00%;2187;st;Chlupáči;2017;Francie;Animovaný / Krátkometrážní;Guillaume Auberval, Léa Dozoul;;
+71,60%;2299;st;Zahradní party;2017;Francie;Krátkometrážní / Animovaný;Florian Babikian, Vincent Bayoux;;
 84,60%;803;m;Žhavé výstřely 2;1993;USA;Akční / Komedie;Jim Abrahams;Charlie Sheen, Lloyd Bridges;
 84,60%;804;m;Toy Story 2: Příběh hraček;1999;USA;Animovaný / Dobrodružný;Ash Brannon, John Lasseter;Tom Hanks, Tim Allen;
 84,60%;805;m;Apollo 13;1995;USA;Dobrodružný / Drama;Ron Howard;Tom Hanks, Bill Paxton;
 84,60%;806;m;Na Hromnice o den více;1993;USA;Fantasy / Komedie;Harold Ramis;Bill Murray, Andie MacDowell;
 84,60%;807;m;Let číslo 93;2006;Velká Británie / USA;Historický / Drama;Paul Greengrass;Cheyenne Jackson, Khalid Abdalla;
-84,60%;808;m;Billy Elliot;2000;Velká Británie / Francie;Drama / Komedie;Stephen Daldry;Jamie Bell, Julie Walters;
+83,80%;1102;s;Mladý papež;2016;Itálie / Francie;Drama / Komedie;Paolo Sorrentino;Jude Law, Diane Keaton;
 84,60%;809;m;Baron Prášil;1961;Československo;Dobrodružný / Fantasy;Karel Zeman;Miloš Kopecký, Jana Brejchová;
 84,60%;810;m;Můj soused Totoro;1988;Japonsko;Animovaný / Dobrodružný;Hajao Mijazaki;Šigeru Čiba, Ikue Ótani;
 84,60%;811;m;Asterix a překvapení pro Cézara;1985;Francie;Animovaný / Dobrodružný;Paul Brizzi, Gaëtan Brizzi;Roger Carel, Pierre Tornade;
@@ -795,12 +795,12 @@
 84,50%;848;m;Vlasy;1979;USA / Západní Německo;Muzikál / Komedie;Miloš Forman;John Savage, Treat Williams;
 84,50%;849;m;„Čtyři vraždy stačí, drahoušku“;1970;Československo;Komedie / Krimi;Oldřich Lipský;Lubomír Lipský st., Jiřina Bohdalová;
 84,50%;850;m;Zuřící býk;1980;USA;Drama / Sportovní;Martin Scorsese;Robert De Niro, Cathy Moriarty;
-84,50%;851;m;Podivné dědictví;1972;Itálie / Francie;Western / Komedie;Enzo Barboni;Terence Hill, Gregory Walcott;
+91,30%;41;m;Nedotknutelní;2011;Francie;Komedie / Drama;Eric Toledano, Olivier Nakache;François Cluzet, Omar Sy;
 84,50%;852;m;Údolí včel;1967;Československo;Drama / Historický;František Vláčil;Petr Čepek, Jan Kačer;
 84,50%;853;m;Jaro, léto, podzim, zima... a jaro;2003;Jižní Korea / Německo;Drama / Poetický;Ki-duk Kim;Yeong-su Oh, Ki-duk Kim;
 84,50%;854;m;Čekej do tmy;1967;USA;Horor / Thriller;Terence Young;Audrey Hepburn, Alan Arkin;
 84,50%;855;m;Ukradená vzducholoď;1966;Československo;Dobrodružný / Fantasy;Karel Zeman;Michal Pospíšil, Hanuš Bor;
-84,50%;856;m;Knoflíková válka;1962;Francie;Komedie / Rodinný;Yves Robert;Jacques Dufilho, Yvette Etiévant;
+70,10%;2329;st;Mortys;2011;Francie;Krátkometrážní / Animovaný;Nicolas Villeneuve;;
 84,50%;857;m;Hádej, kdo přijde na večeři;1967;USA;Komedie / Drama;Stanley Kramer;Spencer Tracy, Sidney Poitier;
 84,50%;858;m;Nejdelší den;1962;USA;Válečný / Akční;Ken Annakin, Andrew Marton;Eddie Albert, Paul Anka;
 84,50%;859;m;Tři barvy: Červená;1994;Francie / Polsko;Drama / Psychologický;Krzysztof Kieślowski;Irène Jacob, Jean-Louis Trintignant;
@@ -899,7 +899,7 @@
 84,20%;959;m;Závrať;1958;USA;Mysteriózní / Romantický;Alfred Hitchcock;James Stewart, Kim Novak;
 84,20%;960;m;Legenda o Mulan;1998;USA;Animovaný / Rodinný;Barry Cook, Tony Bancroft;Ming-Na Wen, BD Wong;
 84,20%;961;m;Popelka;1950;USA;Animovaný / Rodinný;Hamilton Luske, Wilfred Jackson;Eleanor Audley, June Foray;
-84,20%;962;m;Noc na Zemi;1991;USA / Francie;Komedie / Drama;Jim Jarmusch;Gena Rowlands, Winona Ryder;
+83,90%;1053;m;Drž hubu!;2003;Francie / Itálie;Komedie / Krimi;Francis Veber;Jean Reno, Gérard Depardieu;
 84,20%;963;m;Jak ukrást Venuši;1966;USA;Komedie / Krimi;William Wyler;Audrey Hepburn, Peter O'Toole;
 84,20%;964;m;Harold a Maude;1971;USA;Komedie / Romantický;Hal Ashby;Ruth Gordon, Bud Cort;
 84,20%;965;m;Krvavá neděle;2002;Velká Británie / Irsko;Drama / Válečný;Paul Greengrass;James Nesbitt, Allan Gildea;
@@ -931,14 +931,14 @@
 84,10%;993;m;3-iron;2004;Jižní Korea / Japonsko;Drama / Krimi;Ki-duk Kim;Seung-yeon Lee, Hee Jae;
 84,10%;994;m;Unaveni sluncem;1994;Rusko / Francie;Drama / Historický;Nikita Michalkov;Oleg Meňšikov, Nikita Michalkov;
 84,10%;995;m;Pouta války;2004;Jižní Korea;Akční / Drama;Je-gyu Kang;Dong-gun Jang, Bin Won;
-84,10%;996;m;Prohnilí;1984;Francie;Komedie / Krimi;Claude Zidi;Philippe Noiret, Thierry Lhermitte;
+84,60%;802;m;Amélie z Montmartru;2001;Francie / Německo;Komedie / Drama;Jean-Pierre Jeunet;Audrey Tautou, Mathieu Kassovitz;
 84,10%;997;m;Kdo se bojí Virginie Woolfové?;1966;USA;Drama / Psychologický;Mike Nichols;Elizabeth Taylor, Richard Burton;
 84,10%;998;m;Vražda na objednávku;1954;USA;Krimi / Mysteriózní;Alfred Hitchcock;Ray Milland, Grace Kelly;
 84,10%;999;m;Plynové lampy;1944;USA;Mysteriózní / Thriller;George Cukor;Charles Boyer, Ingrid Bergman;
 84,10%;1000;m;Staré pověsti české;1952;Československo;Animovaný / Loutkový;Jiří Trnka;Růžena Nasková, Zdeněk Štěpánek;
 84,10%;1001;m;Jagna;2023;Polsko / Srbsko;Drama / Historický;DK Welchman, Hugh Welchman;Kamila Urzędowska, Robert Gulaczyk;
 84,10%;1002;m;Člověk z mramoru;1977;Polsko;Drama;Andrzej Wajda;Jerzy Radziwiłowicz, Krystyna Janda;
-84,10%;1003;m;Malý svět dona Camilla;1952;Francie / Itálie;Komedie;Julien Duvivier;Fernandel, Gino Cervi;
+83,00%;1336;m;Země nikoho;2001;Bosna a Hercegovina / Francie;Drama / Komedie;Danis Tanović;Branko Djurič, René Bitorajac;
 84,10%;1004;s;MOST!;2019;Česko;Komedie / Drama;Jan Prušinovský;Martin Hofmann, Erika Stárková;
 84,10%;1005;s;Sexuální výchova;2019;Velká Británie;Komedie / Drama;Ben Taylor, Kate Herron;Asa Butterfield, Emma Mackey;
 84,10%;1006;s;Podivuhodná dobrodružství Vladimíra Smolíka;1972;Maďarsko;Animovaný / Sci-Fi;József Nepp, József Gémes;Attila Némethy, Ottó Szabó;
@@ -963,7 +963,7 @@
 84,00%;1026;m;Tři billboardy kousek za Ebbingem;2017;Velká Británie / USA;Drama / Krimi;Martin McDonagh;Frances McDormand, Caleb Landry Jones;
 84,00%;1027;m;Tajemství hradu v Karpatech;1981;Československo;Komedie / Sci-Fi;Oldřich Lipský;Michal Dočolomanský, Jan Hartl;
 84,00%;1028;m;Parazit;2019;Jižní Korea;Drama / Komedie;Džun-ho Pong;Kang-ho Song, Seon-gyoon Lee;Oscar / Cannes
-84,00%;1029;m;Blbec k večeři;1998;Francie;Komedie;Francis Veber;Thierry Lhermitte, Jacques Villeret;
+84,60%;808;m;Billy Elliot;2000;Velká Británie / Francie;Drama / Komedie;Stephen Daldry;Jamie Bell, Julie Walters;
 84,00%;1030;m;Ray;2004;USA;Hudební / Drama;Taylor Hackford;Jamie Foxx, Kerry Washington;
 84,00%;1031;m;Serpico;1973;USA / Itálie;Životopisný / Krimi;Sidney Lumet;Al Pacino, John Randolph;
 84,00%;1032;m;Prolomit vlny;1996;Dánsko / Švédsko;Drama / Romantický;Lars von Trier;Emily Watson, Stellan Skarsgård;
@@ -983,7 +983,7 @@
 84,00%;1047;s;Manhunt;2017;USA;Krimi / Drama;Greg Yaitanes, Michael Dinner;Gethin Anthony, Arliss Howard;
 84,00%;1048;s;"Steins;Gate";2011;Japonsko;Animovaný / Drama;Takuja Sató, Hiroši Hamasaki;Tomokazu Seki, Asami Imai;
 84,00%;1049;s;Pomsta - s.r.n.;1998;USA;Krimi / Drama;James Frawley, Lou Antonio;Michael Madsen, Kathleen York;
-83,90%;1053;m;Drž hubu!;2003;Francie / Itálie;Komedie / Krimi;Francis Veber;Jean Reno, Gérard Depardieu;
+84,00%;1029;m;Blbec k večeři;1998;Francie;Komedie;Francis Veber;Thierry Lhermitte, Jacques Villeret;
 83,90%;1054;m;Samotáři;2000;Česko / Slovinsko;Komedie / Drama;David Ondříček;Labina Mitevska, Jitka Schneiderová;
 83,90%;1055;m;Avengers: Endgame;2019;USA;Akční / Dobrodružný;Anthony Russo, Joe Russo;Robert Downey Jr., Chris Evans;
 83,90%;1056;m;Fargo;1996;USA / Velká Británie;Drama / Krimi;Joel Coen, Ethan Coen;Frances McDormand, William H. Macy;
@@ -1028,7 +1028,7 @@
 83,80%;1099;m;Maraton;2005;Jižní Korea;Drama / Sportovní;Yoon-cheol Jeong;Seung-woo Jo, Mi-sook Kim;
 83,80%;1100;m;Pan Verdoux;1947;USA;Komedie / Drama;Charlie Chaplin;Charlie Chaplin, Martha Raye;
 83,80%;1101;m;Frigo, oběť krevní msty;1923;USA;Komedie / Rodinný;Buster Keaton, John G. Blystone;Buster Keaton, Tom London;
-83,80%;1102;s;Mladý papež;2016;Itálie / Francie;Drama / Komedie;Paolo Sorrentino;Jude Law, Diane Keaton;
+83,50%;1175;m;Černá kočka, bílý kocour;1998;Fed. rep. Jugoslávie / Francie;Komedie / Romantický;Emir Kusturica;Bajram Severdžan, Zabit Memedov;
 83,80%;1103;s;Brickleberry;2012;USA;Animovaný / Komedie;Zac Moncrief, Susie Dietter;Daniel Tosh, Kaitlin Olson;
 83,80%;1104;s;Pohádky o mašinkách;1985;Československo;Animovaný / Pohádka;Eduard Hofman;Vladimír Ráž;
 83,80%;1105;s;Father Ted;1995;Velká Británie / Irsko;Komedie;Andy De Emmony, Declan Lowney;Dermot Morgan, Ardal O'Hanlon;
@@ -1054,7 +1054,7 @@
 83,70%;1125;m;Pramen panny;1960;Švédsko;Drama;Ingmar Bergman;Max von Sydow, Birgitta Valberg;
 83,70%;1126;m;Mefisto;1981;Západní Německo / Maďarsko;Drama;István Szabó;Klaus Maria Brandauer, Krystyna Janda;
 83,70%;1127;m;Ubožáci;1982;Francie;Drama;Robert Hossein;Lino Ventura, Jean Carmet;
-83,70%;1128;m;Maminčin zámek;1990;Francie;Komedie / Drama;Yves Robert;Philippe Caubère, Nathalie Roussel;
+79,80%;1888;m;Lazebník sibiřský;1998;Rusko / Francie;Romantický / Komedie;Nikita Michalkov;Julia Ormond, Richard Harris;
 83,70%;1129;m;Zakázané hry;1952;Francie;Drama / Válečný;René Clément;Georges Poujouly, Brigitte Fossey;
 83,70%;1130;m;Sbohem, má konkubíno;1993;Čína / Hongkong;Drama / Romantický;Kaige Chen;Leslie Cheung, Fengyi Zhang;Cannes
 83,70%;1131;m;Sbohem, pane profesore!;1969;USA;Drama / Muzikál;Herbert Ross;Peter O'Toole, Petula Clark;
@@ -1099,7 +1099,7 @@
 83,50%;1172;m;Amores perros - Láska je kurva;2000;Mexiko;Thriller / Drama;Alejandro G. Iñárritu;Emilio Echevarría, Gael García Bernal;
 83,50%;1173;m;Misery nechce zemřít;1990;USA;Drama / Krimi;Rob Reiner;James Caan, Kathy Bates;
 83,50%;1174;m;Vlk z Wall Street;2013;USA;Životopisný / Komedie;Martin Scorsese;Leonardo DiCaprio, Jonah Hill;
-83,50%;1175;m;Černá kočka, bílý kocour;1998;Fed. rep. Jugoslávie / Francie;Komedie / Romantický;Emir Kusturica;Bajram Severdžan, Zabit Memedov;
+83,10%;1306;m;Underground;1995;Fed. rep. Jugoslávie / Francie;Drama / Komedie;Emir Kusturica;Predrag 'Miki' Manojlovič, Lazar Ristovski;Cannes
 83,50%;1176;m;Pro hrst dolarů;1964;Itálie / Španělsko;Western / Akční;Sergio Leone;Clint Eastwood, Marianne Koch;
 83,50%;1177;m;Ghost in the Shell;1995;Japonsko;Animovaný / Akční;Mamoru Ošii;Akio Ócuka, Acuko Tanaka;
 83,50%;1178;m;Petrolejové lampy;1971;Československo;Drama;Juraj Herz;Iva Janžurová, Petr Čepek;
@@ -1139,7 +1139,7 @@
 83,40%;1215;m;Jih proti Severu;1939;USA;Drama / Romantický;Victor Fleming, George Cukor;Clark Gable, Vivien Leigh;Oscar
 83,40%;1216;m;Adelheid;1969;Československo;Drama / Psychologický;František Vláčil;Petr Čepek, Emma Černá;
 83,40%;1217;m;Na východ od ráje;1955;USA;Drama;Elia Kazan;Julie Harris, James Dean;
-83,40%;1218;m;Americká noc;1973;Francie / Itálie;Drama / Komedie;François Truffaut;Jacqueline Bisset, Valentina Cortese;
+83,30%;1249;m;Bohémský život;1992;Francie / Německo;Drama / Komedie;Aki Kaurismäki;Matti Pellonpää, Evelyne Didi;
 83,40%;1219;m;Ďáblova past;1961;Československo;Drama;František Vláčil;Miroslav Macháček, Vítězslav Vejražka;
 83,40%;1220;m;Evropa, Evropa;1990;Německo / Francie;Drama / Válečný;Agnieszka Holland;Marco Hofschneider, Julie Delpy;
 83,40%;1221;m;Pohraniční pásmo;2000;Jižní Korea;Drama / Thriller;Chan-wook Park;Byung-hun Lee, Kang-ho Song;
@@ -1168,7 +1168,7 @@
 83,30%;1246;m;Zahraj to znovu, Same;1972;USA;Komedie / Romantický;Herbert Ross;Woody Allen, Diane Keaton;
 83,30%;1247;m;Kabaret;1972;USA;Drama / Muzikál;Bob Fosse;Liza Minnelli, Michael York;
 83,30%;1248;m;Chi bi xia: Jue zhan tian xia;2009;Čína;Historický / Akční;John Woo;Tony Leung Chiu-wai, Takeši Kaneširo;
-83,30%;1249;m;Bohémský život;1992;Francie / Německo;Drama / Komedie;Aki Kaurismäki;Matti Pellonpää, Evelyne Didi;
+84,20%;962;m;Noc na Zemi;1991;USA / Francie;Komedie / Drama;Jim Jarmusch;Gena Rowlands, Winona Ryder;
 83,30%;1250;m;Pokání;1984;Gruzie / Sovětský svaz;Komedie / Drama;Tengiz Abuladze;Merab Ninidze, Avtandil Macharadze;
 83,30%;1251;m;Vlk samotář a mládě 2: Řeka smrti;1972;Japonsko;Akční / Dobrodružný;Kendži Misumi;Tomisaburó Wakajama, Kajo Macuo;
 83,30%;1252;m;Vlk samotář a mládě 3: Proti vichru smrti;1972;Japonsko;Akční / Drama;Kendži Misumi;Tomisaburó Wakajama, Isao Jamagata;
@@ -1220,10 +1220,10 @@
 83,10%;1302;m;Krakatit;1948;Československo;Drama / Sci-Fi;Otakar Vávra;Karel Höger, Florence Marly;
 83,10%;1303;m;Nebe nad Berlínem;1987;Západní Německo / Francie;Fantasy / Drama;Wim Wenders;Bruno Ganz, Solveig Dommartin;
 83,10%;1304;m;Hombre;1967;USA;Western / Drama;Martin Ritt;Paul Newman, Fredric March;
-83,10%;1305;m;Amarcord;1973;Itálie / Francie;Drama / Komedie;Federico Fellini;Pupella Maggio, Armando Brancia;
-83,10%;1306;m;Underground;1995;Fed. rep. Jugoslávie / Francie;Drama / Komedie;Emir Kusturica;Predrag 'Miki' Manojlovič, Lazar Ristovski;Cannes
+83,70%;1128;m;Maminčin zámek;1990;Francie;Komedie / Drama;Yves Robert;Philippe Caubère, Nathalie Roussel;
+82,10%;1634;m;Uprchlíci;1986;Francie;Komedie / Krimi;Francis Veber;Pierre Richard, Gérard Depardieu;
 83,10%;1307;m;Záře;1996;Austrálie;Drama / Životopisný;Scott Hicks;Geoffrey Rush, Sonia Todd;
-83,10%;1308;m;Šťastný Luke;1971;Belgie / Francie;Animovaný / Komedie;René Goscinny;Marcel Bozzuffi, Pierre Tornade;
+81,90%;1686;m;Bezva finta;1985;Francie / Kanada;Komedie / Krimi;Alexandre Arcady;Jean-Paul Belmondo, Kim Cattrall;
 83,10%;1309;m;Berserk: Ógon džidai hen III – Kórin;2013;Japonsko;Animovaný / Akční;Tošijuki Kubooka, Kóiči Hacumi;Akio Ócuka, Aki Tojosaki;
 83,10%;1310;m;Země;1996;Španělsko;Drama / Romantický;Julio Medem;Carmelo Gómez, Emma Suárez;
 83,10%;1311;m;Zvláštní den;1977;Itálie / Kanada;Drama;Ettore Scola;Sophia Loren, Marcello Mastroianni;
@@ -1246,11 +1246,11 @@
 83,00%;1329;m;Marťan;2015;USA / Velká Británie;Sci-Fi / Dobrodružný;Ridley Scott;Matt Damon, Jessica Chastain;
 83,00%;1330;m;Saw: Hra o přežití;2004;USA;Horor / Mysteriózní;James Wan;Leigh Whannell, Cary Elwes;
 83,00%;1331;m;E.T. - Mimozemšťan;1982;USA;Sci-Fi / Dobrodružný;Steven Spielberg;Henry Thomas, Dee Wallace;
-83,00%;1332;m;Fantomas se zlobí;1965;Francie / Itálie;Komedie / Dobrodružný;André Hunebelle, Haroun Tazieff;Jean Marais, Louis de Funès;
+84,10%;996;m;Prohnilí;1984;Francie;Komedie / Krimi;Claude Zidi;Philippe Noiret, Thierry Lhermitte;
 83,00%;1333;m;Naprostí cizinci;2016;Itálie;Komedie / Drama;Paolo Genovese;Giuseppe Battiston, Anna Foglietta;
 83,00%;1334;m;Lásky jedné plavovlásky;1965;Československo;Romantický / Komedie;Miloš Forman;Hana Brejchová, Vladimír Pucholt;
 83,00%;1335;m;Příběh Alvina Straighta;1999;USA / Velká Británie;Drama / Road movie;David Lynch;Richard Farnsworth, Sissy Spacek;
-83,00%;1336;m;Země nikoho;2001;Bosna a Hercegovina / Francie;Drama / Komedie;Danis Tanović;Branko Djurič, René Bitorajac;
+85,40%;560;m;Zvíře;1977;Francie;Komedie / Akční;Claude Zidi;Jean-Paul Belmondo, Raquel Welch;
 83,00%;1337;m;Poslední mohykán;1947;Československo;Komedie;Vladimír Slavínský;Jaroslav Marvan, Meda Valentová;
 83,00%;1338;m;Soumrak dne;1993;USA / Velká Británie;Drama / Romantický;James Ivory;Anthony Hopkins, Emma Thompson;
 83,00%;1339;m;Cena za něžnost;1983;USA;Romantický / Komedie;James L. Brooks;Shirley MacLaine, Debra Winger;Oscar
@@ -1409,7 +1409,7 @@
 82,50%;1501;m;Cesta do zatracení;2002;USA;Drama / Krimi;Sam Mendes;Tom Hanks, Tyler Hoechlin;
 82,50%;1502;m;Ostře sledované vlaky;1966;Československo;Komedie / Drama;Jiří Menzel;Václav Neckář, Josef Somr;Oscar
 82,50%;1503;m;Bláznivá střela 2 a 1/2: Vůně strachu;1991;USA;Komedie / Krimi;David Zucker;Leslie Nielsen, Priscilla Presley;
-82,50%;1504;m;Pošetilost mocných;1971;Francie / Španělsko;Komedie / Historický;Gérard Oury;Louis de Funès, Yves Montand;
+82,40%;1539;m;Svatý rok;1976;Francie / Itálie;Komedie / Krimi;Jean Girault;Jean Gabin, Jean-Claude Brialy;
 82,50%;1505;m;Monty Pythonův smysl života;1983;Velká Británie;Komedie / Muzikál;Terry Jones, Terry Gilliam;Graham Chapman, John Cleese;
 82,50%;1506;m;Rozum a cit;1995;USA / Velká Británie;Drama / Komedie;Ang Lee;Emma Thompson, Alan Rickman;
 82,50%;1507;m;F1;2025;USA;Akční / Sportovní;Joseph Kosinski;Brad Pitt, Damson Idris;
@@ -1440,7 +1440,7 @@
 82,40%;1536;m;Chaplin;1992;USA / Japonsko;Drama / Životopisný;Richard Attenborough;Robert Downey Jr., Geraldine Chaplin;
 82,40%;1537;m;Manhattan;1979;USA;Komedie / Drama;Woody Allen;Woody Allen, Diane Keaton;
 82,40%;1538;m;Balón;2018;Německo;Drama / Thriller;Michael Herbig;Friedrich Mücke, Karoline Schuch;
-82,40%;1539;m;Svatý rok;1976;Francie / Itálie;Komedie / Krimi;Jean Girault;Jean Gabin, Jean-Claude Brialy;
+85,20%;610;m;Muž z Acapulca;1973;Francie / Itálie;Komedie / Akční;Philippe de Broca;Jean-Paul Belmondo, Jacqueline Bisset;
 82,40%;1540;m;Berserk: Ógon džidai hen I – Haó no tamago;2012;Japonsko;Animovaný / Akční;Tošijuki Kubooka, Kóiči Hacumi;Aki Tojosaki, Nobujuki Kacube;
 82,40%;1541;m;Anděl zkázy;1962;Mexiko;Komedie / Drama;Luis Buñuel;Silvia Pinal, Jacqueline Andere;
 82,40%;1542;m;Rosencrantz a Guildenstern jsou mrtvi;1990;Velká Británie / USA;Komedie / Drama;Tom Stoppard;Gary Oldman, Tim Roth;
@@ -1497,7 +1497,7 @@
 82,20%;1596;m;Braindead - Živí mrtví;1992;Nový Zéland;Komedie / Horor;Peter Jackson;Timothy Balme, Diana Peñalver;
 82,20%;1597;m;Divoké historky;2014;Argentina / Španělsko;Povídkový / Komedie;Damián Szifron;Darío Grandinetti, María Marull;
 82,20%;1598;m;Spotlight;2015;USA;Drama / Historický;Tom McCarthy;Mark Ruffalo, Michael Keaton;Oscar
-82,20%;1599;m;Kam se poděla sedmá rota?;1973;Francie / Itálie;Komedie / Válečný;Robert Lamoureux;Jean Lefebvre, Pierre Mondy;
+83,40%;1218;m;Americká noc;1973;Francie / Itálie;Drama / Komedie;François Truffaut;Jacqueline Bisset, Valentina Cortese;
 82,20%;1600;m;Obávaný bojovník;2006;Hongkong / Čína;Akční / Drama;Ronny Yu;Jet Li, Šidó Nakamura;
 82,20%;1601;m;Muž, který nebyl;2001;USA / Velká Británie;Drama / Krimi;Joel Coen, Ethan Coen;Billy Bob Thornton, Frances McDormand;
 82,20%;1602;m;Před úsvitem;1995;USA / Rakousko;Romantický / Drama;Richard Linklater;Ethan Hawke, Julie Delpy;
@@ -1527,7 +1527,7 @@
 82,10%;1631;m;Propast;1989;USA;Akční / Dobrodružný;James Cameron;Ed Harris, Mary Elizabeth Mastrantonio;
 82,10%;1632;m;Animatrix;2003;USA;Animovaný / Sci-Fi;Andrew R. Jones, Šin'ičiró Watanabe;Akio Ócuka, Dwight Schultz;
 82,10%;1633;m;Anton Špelec, ostrostřelec;1932;Československo;Komedie;Martin Frič;Vlasta Burian, Růžena Šlemrová;
-82,10%;1634;m;Uprchlíci;1986;Francie;Komedie / Krimi;Francis Veber;Pierre Richard, Gérard Depardieu;
+83,10%;1305;m;Amarcord;1973;Itálie / Francie;Drama / Komedie;Federico Fellini;Pupella Maggio, Armando Brancia;
 82,10%;1635;m;Tři barvy: Modrá;1993;Francie / Polsko;Drama / Psychologický;Krzysztof Kieślowski;Juliette Binoche, Benoît Régent;
 82,10%;1636;m;4 měsíce, 3 týdny a 2 dny;2007;Rumunsko;Drama;Cristian Mungiu;Anamaria Marinca, Laura Vasiliu;Cannes
 82,10%;1637;m;El Dorado;1966;USA;Western;Howard Hawks;John Wayne, Robert Mitchum;
@@ -1576,7 +1576,7 @@
 81,90%;1683;m;Valkýra;2008;USA / Německo;Válečný / Historický;Bryan Singer;Tom Cruise, Kenneth Branagh;
 81,90%;1684;m;Duna;2021;USA / Kanada;Sci-Fi / Akční;Denis Villeneuve;Timothée Chalamet, Rebecca Ferguson;
 81,90%;1685;m;Old Boy;2003;Jižní Korea;Drama / Mysteriózní;Chan-wook Park;Min-sik Choi, Ji-tae Yoo;
-81,90%;1686;m;Bezva finta;1985;Francie / Kanada;Komedie / Krimi;Alexandre Arcady;Jean-Paul Belmondo, Kim Cattrall;
+82,20%;1599;m;Kam se poděla sedmá rota?;1973;Francie / Itálie;Komedie / Válečný;Robert Lamoureux;Jean Lefebvre, Pierre Mondy;
 81,90%;1687;m;Život Davida Galea;2003;USA / Německo;Drama / Krimi;Alan Parker;Kevin Spacey, Kate Winslet;
 81,90%;1688;m;Pýcha a předsudek;2005;Velká Británie / Francie;Romantický / Drama;Joe Wright;Keira Knightley, Rosamund Pike;
 81,90%;1689;m;Pyšná princezna;1952;Československo;Pohádka / Komedie;Bořivoj Zeman;Alena Vránová, Vladimír Ráž;
@@ -1658,7 +1658,7 @@
 81,60%;1771;m;Akira;1988;Japonsko;Animovaný / Sci-Fi;Kacuhiro Ótomo;Mami Kojama, Micuo Iwata;
 81,60%;1773;m;Cvrček a housličky;1978;Československo;Animovaný / Krátkometrážní;Zdeněk Miler;;
 81,60%;1775;st;Amerika;2015;Polsko;Krátkometrážní / Drama;Aleksandra Terpińska;Marta Mazurek, Aleksandra Adamska;
-81,60%;1776;st;Wild Love;2018;Francie;Krátkometrážní / Animovaný;Paul Autric, Quentin Camus;;
+84,50%;851;m;Podivné dědictví;1972;Itálie / Francie;Western / Komedie;Enzo Barboni;Terence Hill, Gregory Walcott;
 81,50%;1777;m;Ready Player One: Hra začíná;2018;USA / Indie;Akční / Sci-Fi;Steven Spielberg;Tye Sheridan, Olivia Cooke;
 81,50%;1778;m;Muž na Měsíci;1999;USA / Velká Británie;Komedie / Drama;Miloš Forman;Jim Carrey, Danny DeVito;
 81,50%;1779;m;Lid versus Larry Flynt;1996;USA;Drama / Životopisný;Miloš Forman;Woody Harrelson, Courtney Love;
@@ -1770,7 +1770,7 @@
 79,80%;1885;m;Malá čarodějnice;1984;Československo / Západní Německo;Animovaný / Pohádka;Zdeněk Smetana;Jiřina Bohdalová;
 79,80%;1886;m;Obžalovaný;1964;Československo;Drama / Psychologický;Ján Kadár, Elmar Klos;Vlado Müller, Zora Jiráková;
 79,80%;1887;m;To můj Láďa...;1981;Československo;Krátkometrážní;Tomáš Vorel;Eva Holubová, Slávek Sahula;
-79,80%;1888;m;Lazebník sibiřský;1998;Rusko / Francie;Romantický / Komedie;Nikita Michalkov;Julia Ormond, Richard Harris;
+83,10%;1308;m;Šťastný Luke;1971;Belgie / Francie;Animovaný / Komedie;René Goscinny;Marcel Bozzuffi, Pierre Tornade;
 79,70%;1889;m;Revizor;1933;Československo;Komedie;Martin Frič;Vlasta Burian, Václav Trégl;
 79,70%;1890;st;Nazdravíčko;2005;Slovensko;Krátkometrážní / Loutkový;Ivana Zajacová, Jozef Mitaľ;Predrag Bjelac, Stanislav Dančiak;
 79,60%;1891;m;Plevel;2024;Česko;Krátkometrážní / Animovaný;Pola Kazak;Zuzana Petráňová;
@@ -1848,7 +1848,7 @@
 78,60%;1963;m;Fimfárum 2;2006;Česko;Animovaný / Loutkový;Vlasta Pospíšilová, Břetislav Pojar;Jan Werich, Ota Jirák;
 78,60%;1964;m;Krtek a pramen;1999;Česko;Animovaný / Rodinný;Zdeněk Miler;;
 78,60%;1965;st;Trofej;2021;Česko;Krátkometrážní / Drama;Jaroslav Beran;Václav Vašák, Gabriela Heclová;
-78,50%;1966;m;Ještě něco;2013;2016;Krátkometrážní / Animovaný;Michal Opitz;;
+78,50%;1966;m;Ještě něco;2013;Česko;Krátkometrážní / Animovaný;Michal Opitz;;
 78,50%;1967;m;Majster kat;1966;Československo;Drama / Historický;Paľo Bielik;Vlado Müller, Štefan Kvietik;
 78,50%;1968;m;Jakub lhář;1974;Východní Německo / Československo;Komedie / Drama;Frank Beyer;Vlastimil Brodský, Erwin Geschonneck;
 78,50%;1969;m;Cvrček a stroj;1978;Československo;Animovaný / Krátkometrážní;Zdeněk Miler;;
@@ -1874,7 +1874,7 @@
 78,30%;1989;m;Lotrando a Zubejda;1997;Česko / Bulharsko;Pohádka / Komedie;Karel Smyczek;Jiří Strach, Pavel Zedníček;
 78,30%;1990;st;Až po uši;2012;Velká Británie;Krátkometrážní / Animovaný;Timothy Reckart;Nigel Anthony;
 78,30%;1991;st;Maškin zabil Koškina;1995;Česko;Animovaný / Loutkový;Aurel Klimt;;
-78,30%;1992;st;Hybridi;2017;Francie;Krátkometrážní / Animovaný;Florian Brauch, Matthieu Pujol;;
+82,50%;1504;m;Pošetilost mocných;1971;Francie / Španělsko;Komedie / Historický;Gérard Oury;Louis de Funès, Yves Montand;
 78,20%;1993;m;Invalida;2023;Slovensko;Komedie;Jonáš Karásek;Gregor Hološka, Zdeněk Godla;
 78,20%;1994;m;Zítra to roztočíme, drahoušku...!;1976;Československo;Komedie;Petr Schulhoff;Miloš Kopecký, Stella Zázvorková;
 78,20%;1995;m;Sběrné surovosti;1965;Československo;Krátkometrážní / Komedie;Juraj Herz;Václav Halama, František Ketzek;
@@ -1942,12 +1942,12 @@
 77,40%;2057;m;Byl jsem mladistvým intelektuálem;1999;Česko;Krátkometrážní / Komedie;Marek Dobeš, Štěpán Kopřiva;Vladimír Brabec, Vladimír Škultéty;
 77,40%;2058;m;BioBuddy;2016;Česko;Krátkometrážní;Jan Chramosta, Janek Cingroš;Petr Vaněk, Tereza Nekudová;
 77,40%;2059;st;malý film o znásilnění;2025;Česko;Krátkometrážní / Experimentální;Nebe Motýlová;;
-77,30%;2060;m;Electra;2023;Česko / Francie;Krátkometrážní / Animovaný;Daria Kashcheeva;Zuzana Částková, Marie Verner;
+85,20%;613;m;Velký flám;1966;Francie / Velká Británie;Komedie / Válečný;Gérard Oury;Bourvil, Louis de Funès;
 77,30%;2061;m;Homolka a tobolka;1972;Československo;Komedie;Jaroslav Papoušek;Josef Šebánek, Marie Motlová;
 77,30%;2062;m;Alena;1947;Československo;Komedie / Historický;Miroslav Cikán;Vladimír Řepa, Miluše Zoubková;
 77,30%;2063;m;Pieseň o sivom holubovi;1961;Československo;Drama / Válečný;Stanislav Barabáš;Karol Machata, Ladislav Chudík;
 77,30%;2064;m;Cvrček a slepice;1979;Československo;Animovaný / Krátkometrážní;Zdeněk Miler;;
-77,20%;2065;m;Figurant;2019;Česko / Francie;Krátkometrážní / Drama;Jan Vejnar;Denis Lavant, Michal Kern;
+83,00%;1332;m;Fantomas se zlobí;1965;Francie / Itálie;Komedie / Dobrodružný;André Hunebelle, Haroun Tazieff;Jean Marais, Louis de Funès;
 77,20%;2066;m;Dozvuky;2012;Polsko / Rusko;Drama / Thriller;Władysław Pasikowski;Ireneusz Czop, Maciej Stuhr;
 77,20%;2067;m;Fešák Hubert;1984;Československo;Komedie;Ivo Novák;Karel Heřmánek, Petr Kostka;
 77,20%;2068;m;Nezlobte dědečka;1934;Československo;Komedie;Karel Lamač;Vlasta Burian, Čeněk Šlégl;
@@ -2065,11 +2065,11 @@
 75,20%;2180;st;Ty se máš!;2013;Česko;Krátkometrážní / Animovaný;Zuzana Brachaczková;;
 75,20%;2181;st;Usnula jsem;2008;Česko;Animovaný / Krátkometrážní;Kristina Dufková;Berta Macháčková, Jiří Macháček;
 75,10%;2182;m;Aferim!;2015;Rumunsko / Bulharsko;Drama / Historický;Radu Jude;Teodor Corban, Mihai Comanoiu;
-75,10%;2183;st;V krabici;2017;Francie;Krátkometrážní / Animovaný;Eliott Belrose, Carole Favier;;
+85,70%;504;m;Četník ze Saint Tropez;1964;Francie / Itálie;Komedie / Krimi;Jean Girault;Louis de Funès, Geneviève Grad;
 75,10%;2184;st;Kašlete na předsudky;2014;Česko;Krátkometrážní / Komedie;Filip Oberfalcer;;
 75,00%;2185;m;Der Lebensborn - Pramen života;2000;Česko;Drama / Historický;Milan Cieslar;Monika Hilmerová, Michał Sieczkowski;
 75,00%;2186;m;Přes hranici;2021;Francie / Německo;Animovaný / Drama;Florence Miailhe;Taťjana Medvecká, Alžběta Volhejnová;
-75,00%;2187;st;Chlupáči;2017;Francie;Animovaný / Krátkometrážní;Guillaume Auberval, Léa Dozoul;;
+84,80%;721;m;Fantomas;1964;Francie / Itálie;Komedie / Krimi;André Hunebelle;Jean Marais, Louis de Funès;
 74,90%;2188;m;Pupendo;2003;Česko;Komedie / Drama;Jan Hřebejk;Bolek Polívka, Eva Holubová;
 74,90%;2189;st;Vlaštovka;2018;Česko;Krátkometrážní / Drama;Radim Grzybek;Daniel Vízek, Matouš Lovett;
 74,90%;2190;st;Mimo Dosah;2019;Česko;Drama / Krátkometrážní;Ondřej Řepík;David Tilšer, Veronika Kopřivová;
@@ -2142,7 +2142,7 @@
 73,20%;2257;st;Dva muži a skříň;1958;Polsko;Krátkometrážní / Fantasy;Roman Polański;Jakub Goldberg, Henryk Kluba;
 73,10%;2258;st;Mlýn;2011;Česko;Krátkometrážní / Drama;Robert Hloz;Dalimil Klapka, Norbert Lichý;
 73,10%;2259;st;Home Sleep Home;2018;Česko;Krátkometrážní / Komedie;Adam Koloman Rybanský;Stanislav Morávek, Bronislav Straka;
-73,00%;2260;m;Sh_t Happens;2019;Slovensko / Francie;Krátkometrážní / Animovaný;Michaela Mihalyiová, Dávid Štumpf;;
+84,50%;856;m;Knoflíková válka;1962;Francie;Komedie / Rodinný;Yves Robert;Jacques Dufilho, Yvette Etiévant;
 73,00%;2261;m;Třetí poločas;2012;Makedonie / Česko;Drama / Historický;Darko Mitrevski;Katarina Ivanovska, Sasko Kocev;
 73,00%;2262;m;Jen plasty a diamanty jsou věčné;2019;Slovensko;Krátkometrážní / Drama;Štefánia Lovasová;Lena Škoricová, Gregor Hraška;
 73,00%;2263;st;Nejlepší je pěnivá;2005;Česko;Krátkometrážní / Komedie;Jan Prušinovský;Josef Polášek, Johanna Tesařová;
@@ -2181,7 +2181,7 @@
 71,80%;2296;st;Sestry;2021;Česko;Krátkometrážní / Animovaný;Andrea Szelesová;;
 71,70%;2297;st;Skoč!;2009;Česko;Krátkometrážní / Sportovní;Marek Dvořák;;
 71,60%;2298;m;Muzika;2007;Slovensko / Německo;Komedie / Drama;Juraj Nvota;Ľuboš Kostelný, Táňa Pauhofová;
-71,60%;2299;st;Zahradní party;2017;Francie;Krátkometrážní / Animovaný;Florian Babikian, Vincent Bayoux;;
+85,40%;558;m;Stvoření světa;1957;Francie / Československo;Animovaný / Komedie;Eduard Hofman;Jan Werich, Antonín Jedlička;
 71,50%;2300;m;Kawasakiho růže;2009;Česko;Drama;Jan Hřebejk;Lenka Vlasáková, Milan Mikulčík;
 71,50%;2301;m;Princezna zakletá v čase;2020;Česko;Pohádka / Fantasy;Petr Kubík;Natalia Germani, Eliška Křenková;
 71,50%;2302;st;Bloody Merry Christmas;2007;Česko;Krátkometrážní / Animovaný;Jan Cechl;Vladimír Brabec, Pavel Tesař;
@@ -2211,7 +2211,7 @@
 70,30%;2326;st;Eastern - Krvavý Hugo;1997;Česko;Animovaný / Krátkometrážní;Aurel Klimt;Štefan Capko, Lucie Štěpánková;
 70,30%;2327;st;Atestace;2023;Česko;Krátkometrážní / Drama;Jan Hecht;Vladimír Pokorný, Jaroslav Dušek;
 70,10%;2328;m;Eva Nová;2015;Slovensko / Česko;Drama;Marko Škop;Emília Vášáryová, Milan Ondrík;
-70,10%;2329;st;Mortys;2011;Francie;Krátkometrážní / Animovaný;Nicolas Villeneuve;;
+84,10%;1003;m;Malý svět dona Camilla;1952;Francie / Itálie;Komedie;Julien Duvivier;Fernandel, Gino Cervi;
 70,00%;2330;m;MIKI;2024;Slovensko / Česko;Thriller / Drama;Jakub Kroner;Milan Ondrík, Dušan Cinkota;
 70,00%;2331;m;Léto, kdy jsem se naučila létat;2022;Srbsko / Chorvatsko;Rodinný;Radivoje Andrič;Klara Hrvanovic, Olga Odanović;
 70,00%;2332;m;Divoká karta;2016;Slovensko;Krátkometrážní / Poetický;Marek Káčer, Roman Ďuriš;Adam Jančina, Monika Potokárová;

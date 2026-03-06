@@ -77,7 +77,7 @@ function fGrouping(sValue, dctGrouping) {
     return [...new Set(
         sValue.split("/")
             .map(c => c.trim())
-            .map(c => (c in dctGrouping ? dctGrouping[c].replace(', ','|') : c))
+            .map(c => (c in dctGrouping ? dctGrouping[c] : c))
             .filter(Boolean)
     )].join(" / ");
 }
@@ -86,7 +86,7 @@ function fGroupingYears(sYear, sBottomLevel='1949') {
     if (sYear>sBottomLevel) {
         return sYear.slice(0, 3) + "0s";
     } else {
-        return sBottomLevel.slice(0, 3) + "0's s dříve";
+        return sBottomLevel.slice(0, 3) + "0s -";
     }
 }
 
@@ -191,7 +191,8 @@ function fOpenSearch(urlTemplate, sSearchedValue='') {
 
 // --- Get unique values for filters ---
 function getUnique(array, field) {
-    return [...new Set(array.map(x => x[field]))].sort().filter(Boolean).unshift("All");
+    const lst = [...new Set(array.map(x => x[field]))].sort().filter(Boolean)
+    return ['All', ...lst];
 }
 
 // --- Render filter buttons ---

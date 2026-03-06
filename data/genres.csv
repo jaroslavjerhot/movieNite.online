@@ -1,26 +1,26 @@
 ﻿iId;sGenre;sGenreGroup
-1;Akční;Akč, Krimi
-2;Animovaný;Anim, Pohád
-3;Dobrodružný;Dobr, West
+1;Akční;Akč|Krimi
+2;Animovaný;Anim|Pohád
+3;Dobrodružný;Dobr|West
 4;Drama;Drama
-5;Fantasy;Fant, Sci, Myst
-6;Film-Noir;Noir, Poet
-7;Historický;Žpis, Hist, Vál
-8;Horor;Hor, Thri
-9;Hudební;Muzik, Hudeb
+5;Fantasy;Fant|Sci|Myst
+6;Film-Noir;Noir|Poet
+7;Historický;Žpis|Hist|Vál
+8;Horor;Hor|Thri
+9;Hudební;Muzik|Hudeb
 10;Komedie;Komed
-11;Krimi;Akč, Krimi
-12;Muzikál;Muzik, Hudeb
-13;Mysteriózní;Fant, Sci, Myst
-14;Poetický;Noir, Poet
-15;Pohádka;Anim, Pohád
+11;Krimi;Akč|Krimi
+12;Muzikál;Muzik|Hudeb
+13;Mysteriózní;Fant|Sci|Myst
+14;Poetický;Noir|Poet
+15;Pohádka;Anim|Pohád
 16;Povídkový;
 17;Roadmovie;
-18;Rodinný;Romant, Rodin
-19;Romantický;Romant, Rodin
-20;Sci-Fi;Fant, Sci, Myst
+18;Rodinný;Romant|Rodin
+19;Romantický;Romant|Rodin
+20;Sci-Fi;Fant|Sci|Myst
 21;Sportovní;Sport
-22;Thriller;Hor, Thri
-23;Válečný;Žpis, Hist, Vál
-24;Western;Dobr, West
-25;Životopisný;Žpis, Hist, Vál
+22;Thriller;Hor|Thri
+23;Válečný;Žpis|Hist|Vál
+24;Western;Dobr|West
+25;Životopisný;Žpis|Hist|Vál
