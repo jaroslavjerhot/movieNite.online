@@ -391,6 +391,11 @@ function renderMovies() {
             if (field.includes('svc-')) {
                 // Search buttons (like in your previous section)
                 const service = lxdServices.find(x => x.sId === field.split('-')[1]);
+                const a = document.createElement("a");
+                a.href = service.sSearchUrl.replace('#m', movie.sMovie.replace(/ /g, '-')).replace('#p', movie.sMovie.replace(/ /g, '+'));
+                a.innerText = service.sName;
+                a.target = "_blank";
+                a.rel = "noopener";
 
                 const domain = new URL(service.sSearchUrl).hostname;
                 // const iconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
@@ -406,9 +411,10 @@ function renderMovies() {
                 let sQuery = movie.sMovie + ' ' + movie.iYear;
                 sQuery += movie.sRegion != "Cz|Sk" ? " dabing": ""
                 btn.onclick = () => fOpenSearch(service.sSearchUrl, sQuery);
-                    
-                    td.appendChild(btn);
                 
+
+                //td.appendChild(btn);
+                td.appendChild(a);
             } else {
                 td.innerText = movie[field];
             }
