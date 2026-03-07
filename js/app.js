@@ -11,29 +11,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
     const sCountriesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/countries.csv'
     const sGenresUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/genres.csv'
+    const sAwardsUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/awards.csv'
+    const sTypesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/types.csv'
     const sMoviesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/movies.csv'
     // const sServicesUrl = '/data/services.csv'
     lxdServices = await fLoadServices(sServicesUrl);
     lxdCountries = await fLoadServices(sCountriesUrl);
     lxdGenres = await fLoadServices(sGenresUrl);
+    lxdAwards = await fLoadServices(sAwardsUrl);
+    lxdTypes = await fLoadServices(sTypesUrl);
     lxdMovies = await fLoadServices(sMoviesUrl);
 
     const dctCountryRegion = {};
     lxdCountries.forEach(r => {
         dctCountryRegion[r.sCountry] = r.sRegion;
-    });
-    
+    });    
     const dctGenreGroup = {};
     lxdGenres.forEach(r => {
         dctGenreGroup[r.sGenre] = r.sGenreGroup;
     });
-
+    const dctAwardGroup = {};
+    lxdAwards.forEach(r => {
+        dctAwardGroup[r.sAward] = r.sAwardGroup;
+    });
+    const dctTypeGroup = {};
+    lxdTypes.forEach(r => {
+        dctTypeGroup[r.sType] = r.sTypeGroup;
+    });
+    
     lxdMovies = lxdMovies.map(movie => {
     return {
         ...movie,
+        sTypeGroup: fGrouping(movie.sType, dctTypeGroup),
         sRegions: fGrouping(movie.sCountry, dctCountryRegion),
         sGenreGroup: fGrouping(movie.sGenre, dctGenreGroup),
         sYearGroup: fGroupingYears(movie.iYear),        
+        sAwardGroup: fGrouping(movie.sAward, dctAwardGroup),        
     }
     });
     // Store original movies
