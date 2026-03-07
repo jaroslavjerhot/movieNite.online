@@ -231,13 +231,12 @@ function fOpenSearch(urlTemplate, sSearchedValue='') {
     // location.href = query;
 
     const a = document.createElement("a");
-    a.href = "https://www.google.com/search?q=" +
-            encodeURIComponent(query) +
-            "&btnI=I";
+    a.href = query;
     a.rel = "noopener";
     document.body.appendChild(a);
-    a.click();
     a.target = "_blank";
+    a.click();
+
     a.remove();
     }
 
