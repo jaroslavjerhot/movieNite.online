@@ -87,7 +87,9 @@ function fGroupingYears(sYear, sBottomLevel='1949') {
     if (sYear>sBottomLevel) {
         return sYear.slice(0, 3) + "0s";
     } else {
-        return sBottomLevel.slice(0, 3) + "0s -";
+        // return sBottomLevel.slice(0, 3) + "0s -";
+        return 'do ' + sBottomLevel;
+        
     }
 }
 
