@@ -6,15 +6,15 @@
 5;Bosna a Hercegovina;Evropa
 6;Brazílie;Aus|Afr|JAm
 7;Bulharsko;Evropa
-8;Česko;Cz/Sk
-9;Československo;Cz/Sk
+8;Česko;Cz|Sk
+9;Československo;Cz|Sk
 10;Čína;Asie
 11;Dánsko;Evropa
 12;Estonsko;Evropa
 13;Fed. rep. Jugoslávie;Evropa
 14;Filipíny;Asie
 15;Finsko;Evropa
-16;Francie;FR
+16;Francie;Francie
 17;Gruzie;Asie
 18;Hongkong;JP|KR|HK
 19;Chorvatsko;Evropa
@@ -22,7 +22,7 @@
 21;Írán;Asie
 22;Irsko;Evropa
 23;Island;Evropa
-24;Itálie;IT
+24;Itálie;Itálie
 25;Izrael;Evropa
 26;Japonsko;JP|KR|HK
 27;Jihoafrická republika;Aus|Afr|JAm
@@ -40,13 +40,13 @@
 39;Norsko;Evropa
 40;Nový Zéland;Aus|Afr|JAm
 41;Polsko;Evropa
-42;Protektorát Čechy a Morava;Cz/Sk
+42;Protektorát Čechy a Morava;Cz|Sk
 43;Rakousko;Evropa
 44;Rumunsko;Evropa
 45;Rusko;Evropa
 46;Řecko;Evropa
 47;Severní Makedonie;Evropa
-48;Slovensko;Cz/Sk
+48;Slovensko;Cz|Sk
 49;Slovinsko;Evropa
 50;Sovětský svaz;Evropa
 51;Spojené arabské emiráty;Asie

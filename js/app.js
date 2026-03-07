@@ -1,10 +1,23 @@
 let lxdServices = [];
+let lxdTypes = [];
 let lxdCountries = [];
 let lxdGenres = [];
+let lxdAwards = [];
+
 let lxdMovies = [];
 let allMovies = [];
+
 let filteredMovies = [];
 let filterHistory = [];
+
+let dctActiveFilters = {
+    sTypeGroup: null,
+    sRegion: null,
+    sGenreGroup: null,
+    sYearGroup: null,
+    sAwardGroup: null
+};
+dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
 
 document.addEventListener('DOMContentLoaded', async () => {
     //alert('dom loaded');
@@ -38,17 +51,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     lxdTypes.forEach(r => {
         dctTypeGroup[r.sType] = r.sTypeGroup;
     });
-    
-    lxdMovies = lxdMovies.map(movie => {
-    return {
-        ...movie,
-        sTypeGroup: fGrouping(movie.sType, dctTypeGroup),
-        sRegions: fGrouping(movie.sCountry, dctCountryRegion),
-        sGenreGroup: fGrouping(movie.sGenre, dctGenreGroup),
-        sYearGroup: fGroupingYears(movie.iYear),        
-        sAwardGroup: fGrouping(movie.sAward, dctAwardGroup),        
-    }
+    fGrouping("sType", "sTypeGroup", dctTypeGroup);
+    fGrouping("sCountry", "sRegion", dctCountryRegion);
+    fGrouping("sGenre", "sGenreGroup", dctGenreGroup);  
+    fGrouping("sAward", "sAwardGroup", dctAwardGroup);
+    lxdMovies.forEach(movie => {
+        movie.sYearGroup = fGroupingYears(movie.iYear);
     });
+
+    // lxdMovies = lxdMovies.map(movie => {
+    // return {
+    //     ...movie,
+    //     sTypeGroup: fGrouping(movie.sType, dctTypeGroup),
+    //     sRegions: fGrouping(movie.sCountry, dctCountryRegion),
+    //     sGenreGroup: fGrouping(movie.sGenre, dctGenreGroup),
+    //     sYearGroup: fGroupingYears(movie.iYear),        
+    //     sAwardGroup: fGrouping(movie.sAward, dctAwardGroup),        
+    // }
+    // });
     // Store original movies
     allMovies = [...lxdMovies];
     filteredMovies = [...allMovies];
@@ -87,7 +107,7 @@ document.addEventListener("keydown", e =>
 
 })
 
-function fGrouping(sValue, dctGrouping) {
+function fGrouping2(sColumn, sValue, dctGrouping) {
     return [...new Set(
         sValue.split("/")
             .map(c => c.trim())
@@ -96,13 +116,19 @@ function fGrouping(sValue, dctGrouping) {
     )].join(" / ");
 }
 
+function fGrouping(sSrcCol, sTrgCol, dctGrouping) {
+    lxdMovies.forEach(movie => {
+        lst = movie[sSrcCol].split("/").map(c => c.trim()).map(c => (c in dctGrouping ? dctGrouping[c] : c)).filter(Boolean);
+        movie[sTrgCol] = [...new Set(lst)].join(" / ");
+        x = 1;
+    });
+}
+
 function fGroupingYears(sYear, sBottomLevel='1949') {
     if (sYear>sBottomLevel) {
         return sYear.slice(0, 3) + "0s";
     } else {
-        // return sBottomLevel.slice(0, 3) + "0s -";
-        return 'do ' + sBottomLevel;
-        
+        return sBottomLevel;
     }
 }
 
@@ -199,73 +225,122 @@ function fOpenSearch(urlTemplate, sSearchedValue='') {
         query = urlTemplate.replace('#p', query.replace(/ /g, '+'));
     }
     // finalUrl = finalUrl.replace('%20', '+');
-    // window.open(finalUrl, '_blank');
-    location.href = finalUrl;
+    window.open(query, '_blank');
+    // location.href = query;
 }
 
 
 
 // --- Get unique values for filters ---
-function getUnique(array, field) {
+function fGetUnique(array, field, sFirstValue='All') {
     const lst = [...new Set(array.map(x => x[field]))].sort().filter(Boolean)
-    return ['All', ...lst];
+    return [sFirstValue, ...lst];
+}
+function fCreateBtn(text, sFilterCol, btnWidth, btnType) {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.innerHTML = text.replaceAll(' ','&nbsp;');
+    btn.tabIndex = 0;
+    btn.name = sFilterCol;
+    btn.style.width = btnWidth + "%";
+    btn.onclick = () => applyFilter(btn, sFilterCol, btnType);
+    return btn;
 }
 
 // --- Render filter buttons ---
 function renderFilterButtons() {
+    const typeFilters = document.getElementById("typeFilters");
     const regionFilters = document.getElementById("regionFilters");
     const genreFilters = document.getElementById("genreFilters");
     const yearFilters = document.getElementById("yearFilters");
+    const awardFilters = document.getElementById("awardFilters");
 
-    const regions = getUnique(lxdCountries, "sRegion");
-    regions[0] = "Všech.země"; // Ensure "All" is first
-    const genres = getUnique(lxdGenres, "sGenreGroup");
-    genres[0] = "Všech.žánry"; // Ensure "All" is first
-    const years = getUnique(lxdMovies, "sYearGroup");
-    years[0] = "Všech.roky"; // Ensure "All" is first
+    const types = fGetUnique(lxdTypes, "sTypeGroup", "Všechno");
+    const regions = fGetUnique(lxdCountries, "sRegion", "Všech.země");
+    const genres = fGetUnique(lxdGenres, "sGenreGroup", "Všech.žánry");
+    const years = fGetUnique(lxdMovies, "sYearGroup", "Všech.roky");
+    years[1] = 'do ' + years[1];
+    const awards = fGetUnique(lxdAwards, "sAwardGroup", "I bez cen");
 
-    const btnMax = Math.max(regions.length, genres.length, years.length);
+    const btnMax = Math.max(types.length, regions.length, genres.length, years.length, awards.length);
     const btnWidth = 90 / btnMax; // -2 for margin
 
+    typeFilters.innerHTML = "";
     regionFilters.innerHTML = "";
-    genres.forEach(g => genreFilters.innerHTML = "");
-    years.forEach(y => yearFilters.innerHTML = "");
+    genreFilters.innerHTML = "";
+    yearFilters.innerHTML = "";
+    awardFilters.innerHTML = "";
+    // genres.forEach(g => genreFilters.innerHTML = "");
+    // years.forEach(y => yearFilters.innerHTML = "");
 
+    types.forEach(r => {
+        let btn = fCreateBtn(r, "sTypeGroup", btnWidth, r);
+        typeFilters.appendChild(btn);
+    });
+    
     regions.forEach(r => {
-        let btn = document.createElement("button");
-        btn.className = "filter-btn";
-        btn.innerText = r;
-        btn.style.width = btnWidth + "%";
-        btn.tabIndex = 0;
-        btn.onclick = () => applyFilter("sRegion", r);
+        let btn = fCreateBtn(r, "sRegion", btnWidth, r);
         regionFilters.appendChild(btn);
     });
-
+    
     genres.forEach(g => {
-        let btn = document.createElement("button");
-        btn.className = "filter-btn";
-        btn.innerText = g;
-        btn.tabIndex = 0;
-        btn.style.width = btnWidth + "%";
-        btn.onclick = () => applyFilter("sGenreGroup", g);
+        let btn = fCreateBtn(g, "sGenreGroup", btnWidth, g);
         genreFilters.appendChild(btn);
     });
 
     years.forEach(y => {
-        let btn = document.createElement("button");
-        btn.className = "filter-btn";
-        btn.innerText = y;
-        btn.tabIndex = 0;
-        btn.style.width = btnWidth + "%";
-        btn.onclick = () => applyFilter("sYearGroup", y);
+        let btn = fCreateBtn(y, "sYearGroup", btnWidth, y);
         yearFilters.appendChild(btn);
+    });
+    
+    awards.forEach(a => {
+        let btn = fCreateBtn(a, "sAwardGroup", btnWidth, a);
+        awardFilters.appendChild(btn);
     });
 }
 
 // --- Apply a filter ---
-function applyFilter(field, value) {
+function applyFilter(btn, field, value) {
+    
+    bIsActive = btn.classList.contains("active");
+    document.getElementsByName(field).forEach(el => el.classList.remove("active"));
+    if (bIsActive) {
+        document.getElementsByName(field)[0].classList.add("active"); // set "All" active when toggling off
+        value = dctActiveFilters[field] = document.getElementsByName(field)[0].innerText; // set filter to "All" when toggling off
+    } else {
+        btn.classList.add("active");
+    }
+    dctActiveFilters[field] = value;
+
+    dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
     filterHistory.push([...filteredMovies]); // save previous state
-    filteredMovies = filteredMovies.filter(m => m[field] === value);
+    filteredMovies = allMovies;
+    for (const [field, value] of Object.entries(dctActiveFilters)) {
+        if (value && value !== "Všechno" && value !== "Všech.země" && value !== "Všech.žánry" && value !== "Všech.roky" && value !== "I bez cen") {
+            filteredMovies = filteredMovies.filter(m => 
+                m[field].includes(value));
+       }
+    }
+    localStorage.setItem('activeFilters', JSON.stringify(dctActiveFilters));
+    sDescr = 'Typ: ' + dctActiveFilters.sTypeGroup + '; Region: ' + dctActiveFilters.sRegion + '; Žánr: ' + dctActiveFilters.sGenreGroup + '; Rok: ' + dctActiveFilters.sYearGroup + '; Ocenění: ' + dctActiveFilters.sAwardGroup + '; Celkem: ' + filteredMovies.length;
+    sDescr = sDescr.replaceAll('null', 'cokoli')
+    document.getElementById('descr').innerText = sDescr;
+    renderMovies();
+    
+}
+
+function fInitialRender() {
+    dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
+    filteredMovies = allMovies;
+    for (const [field, value] of Object.entries(dctActiveFilters)) {
+        if (value && value !== "Všechno" && value !== "Všech.země" && value !== "Všech.žánry" && value !== "Všech.roky" && value !== "I bez cen") {
+            filteredMovies = filteredMovies.filter(m => 
+                m[field].includes(value));
+       }
+    }
+    sDescr = 'Typ: ' + dctActiveFilters.sTypeGroup + '; Region: ' + dctActiveFilters.sRegion + '; Žánr: ' + dctActiveFilters.sGenreGroup + '; Rok: ' + dctActiveFilters.sYearGroup + '; Ocenění: ' + dctActiveFilters.sAwardGroup + '; Celkem: ' + filteredMovies.length;
+    sDescr = sDescr.replaceAll('null', 'cokoli')
+    document.getElementById('descr').innerText = sDescr;
     renderMovies();
 }
 
@@ -279,35 +354,44 @@ function returnPreviousFilter() {
 
 // --- Render movie list ---
 function renderMovies() {
-    const container = document.getElementById("movieList");
+    const container = document.getElementById("moviesTableBody");
     container.innerHTML = "";
 
     filteredMovies.slice(0,25).forEach(movie => {
-        const row = document.createElement("div");
+        const row = document.createElement("tr");
         row.className = "movie-row";
 
         // Movie details
-        ["sMovie","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
-            const div = document.createElement("div");
-            div.innerText = movie[field];
-            row.appendChild(div);
-        });
+        ["sMovie","svc-st","svc-cf","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
+            const td = document.createElement("td");
+            if (field.includes('svc-')) {
+                // Search buttons (like in your previous section)
+                const service = lxdServices.find(x => x.sId === field.split('-')[1]);
 
-        // Search buttons (like in your previous section)
-        // lxdServices.forEach(service=>{
-        //     const domain = new URL(service.sSearchUrl).hostname;
-        //     const iconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
-        //     const btn = document.createElement("button");
-        //     btn.tabIndex = 0;
-        //     btn.innerHTML = `<img src="${iconUrl}" alt="${service.sName}">`;
-        //     btn.onclick = ()=>{
-        //         const query = encodeURIComponent(movie.sMovie);
-        //         const url = service.sSearchUrl.replace("#w", query);
-        //         window.open(url, "_blank");
-        //     };
-        //     row.appendChild(btn);
-        // });
+                const domain = new URL(service.sSearchUrl).hostname;
+                // const iconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+                const btn = document.createElement("button");
+                btn.tabIndex = 0;
+                btn.className = "filter-btn";
+                btn.style.backgroundColor = "#B90000";
+                // btn.style.width = "16px";
+                // btn.style.height = "16px";
+                // btn.innerHTML = `<img src="${iconUrl}" alt="${service.sName}">`;
+                btn.innerHTML = `${service.sName}`;
+                // btn.innerHTML = "▶";
+                let sQuery = movie.sMovie + ' ' + movie.iYear;
+                sQuery += movie.sRegion != "Cz|Sk" ? " dabing": ""
+                btn.onclick = () => fOpenSearch(service.sSearchUrl, sQuery);
+                    
+                    td.appendChild(btn);
+                
+            } else {
+                td.innerText = movie[field];
+            }
 
+            row.appendChild(td);});
+
+        
         container.appendChild(row);
     });
 }
@@ -322,6 +406,6 @@ document.addEventListener("keydown", e=>{
 // --- Initialize ---
 function initMoviesSection() {
     renderFilterButtons();
-    renderMovies();
+    fInitialRender();
 }
 
