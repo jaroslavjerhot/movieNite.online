@@ -1,6 +1,6 @@
 ﻿sId;sName;sSearchUrl;bUse
 ct;iVysílání;https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=#p;1
-yt;YouTube;https://www.youtube.com/results?search_query=#p;1
+yt;YouTube;https://www.youtube.com/results?search_query=#p;
 nf;Netflix;https://www.netflix.com/search?q=#p;1
 op;OnePlay;https://www.oneplay.cz/vyhledat?query=#p;1
 ip;iPrima;https://www.iprima.cz/vyhledavani?q=#p;1
@@ -14,3 +14,4 @@ fm;Filmová místa;https://www.filmovamista.cz/vyhledavani?q=#p&submint=Hledat;1
 rs;ReelStreets;https://www.reelstreets.com/?s=#p;1
 st;Sledujte.to;https://www.sledujteto.cz/vyhledat/?search=#p&page=1;1
 cf;ČSFD;https://www.google.com/search?q=site:csfd.cz+#p&btnI=I`;1
+yt;YouTube;vnd.youtube://results?search_query=#p;

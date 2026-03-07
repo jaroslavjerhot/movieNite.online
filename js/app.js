@@ -386,7 +386,7 @@ function renderMovies() {
         row.className = "movie-row";
 
         // Movie details
-        ["sMovie","svc-st","svc-cf","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
+        ["sMovie","sType","svc-st","svc-cf","svc-yt","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
             const td = document.createElement("td");
             if (field.includes('svc-')) {
                 // Search buttons (like in your previous section)
@@ -413,8 +413,8 @@ function renderMovies() {
                 btn.onclick = () => fOpenSearch(service.sSearchUrl, sQuery);
                 
 
-                //td.appendChild(btn);
-                td.appendChild(a);
+                td.appendChild(btn);
+                //td.appendChild(a);
             } else {
                 td.innerText = movie[field];
             }
