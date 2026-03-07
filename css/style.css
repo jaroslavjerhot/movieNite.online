@@ -171,7 +171,7 @@ body
 
 .movie-row {
     display:grid;
-    grid-template-columns: 1.5fr 0.2fr 0.4fr 0.4fr 0.4fr 0.4fr 1fr 1.5fr 2fr 2fr 1fr 20px;
+    grid-template-columns: 1.5fr 0.2fr 0.4fr 0.4fr 0.4fr 0.4fr 0.4fr 0.3fr 1fr 1.5fr 2fr 2fr 1fr 20px;
     align-items: center;
     gap: 12px;
     padding: 6px 0;

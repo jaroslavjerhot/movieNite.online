@@ -386,7 +386,7 @@ function renderMovies() {
         row.className = "movie-row";
 
         // Movie details
-        ["sMovie","sType","svc-st","svc-cf","svc-yt","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
+        ["sMovie","sType","svc-st","svc-ws","svc-fs","svc-pt","svc-cf","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
             const td = document.createElement("td");
             if (field.includes('svc-')) {
                 // Search buttons (like in your previous section)
