@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     lxdTypes.forEach(r => {
         dctTypeGroup[r.sType] = r.sTypeGroup;
     });
+
+
     fGrouping("sType", "sTypeGroup", dctTypeGroup);
     fGrouping("sCountry", "sRegion", dctCountryRegion);
     fGrouping("sGenre", "sGenreGroup", dctGenreGroup);  
@@ -310,9 +312,9 @@ function applyFilter(btn, field, value) {
     } else {
         btn.classList.add("active");
     }
-    dctActiveFilters[field] = value;
-
+    
     dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
+    dctActiveFilters[field] = value;
     filterHistory.push([...filteredMovies]); // save previous state
     filteredMovies = allMovies;
     for (const [field, value] of Object.entries(dctActiveFilters)) {
@@ -331,6 +333,19 @@ function applyFilter(btn, field, value) {
 
 function fInitialRender() {
     dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
+    
+    Object.entries(dctActiveFilters).forEach(([field, value]) =>  {
+        if (!value) {
+            document.getElementsByName(field)[0].classList.add("active")
+            dctActiveFilters[field] = document.getElementsByName(field)[0].innerText
+        } else {
+            value = value.replaceAll('&nbsp;', ' ');
+            document.getElementsByName(field).forEach(el => {
+                if (el.innerHTML === value) {
+                    el.classList.add("active");
+                }
+            });
+        }});
     filteredMovies = allMovies;
     for (const [field, value] of Object.entries(dctActiveFilters)) {
         if (value && value !== "Všechno" && value !== "Všech.země" && value !== "Všech.žánry" && value !== "Všech.roky" && value !== "I bez cen") {
