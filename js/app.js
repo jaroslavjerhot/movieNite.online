@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     filteredMovies = [...allMovies];
     filterHistory = [];
 
-    const cntServices = renderButtons(lxdServices,64);
+    // const cntServices = renderButtons(lxdServices,64);
     initMoviesSection();
     x = 1;
 });
@@ -227,9 +227,19 @@ function fOpenSearch(urlTemplate, sSearchedValue='') {
         query = urlTemplate.replace('#p', query.replace(/ /g, '+'));
     }
     // finalUrl = finalUrl.replace('%20', '+');
-    window.open(query, '_blank');
+    //window.open(query, '_blank');
     // location.href = query;
-}
+
+    const a = document.createElement("a");
+    a.href = "https://www.google.com/search?q=" +
+            encodeURIComponent(query) +
+            "&btnI=I";
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.target = "_blank";
+    a.remove();
+    }
 
 
 

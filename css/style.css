@@ -97,7 +97,7 @@ body
     width: 60vw;           /*50% of screen width */
     /* flex:1;              take remaining space */
     min-width: 200px;      /* optional: prevent too small on mobile */
-    margin: 20px 20px 10px 40px; /* vertical spacing */  
+    margin: 20px 20px 10px 0px; /* vertical spacing */  
     padding: 16px;
     border-radius: 32px;
     border: none;
