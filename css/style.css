@@ -24,7 +24,7 @@ body {
   width: 24px;
   margin-left: 5px;
 }
-.answer-box {
+.statusBox {
   min-height: 150px;
   padding: 10px;
   background-color: #2a2a2a;
@@ -62,5 +62,156 @@ body {
 #micBtn.listening {
   background: #ff3b30;
   box-shadow: 0 0 0 6px rgba(255, 59, 48, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #111;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page {
+  width: min(1400px, 96vw);
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+.page-title {
+  margin: 0 0 20px;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cards-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.movie-card {
+  display: grid;
+  grid-template-columns: 140px 320px 1fr 220px;
+  gap: 18px;
+  align-items: start;
+  background: #1b1b1b;
+  border: 1px solid #2b2b2b;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.poster-wrap {
+  width: 140px;
+}
+
+.poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  background: #222;
+}
+
+.col-meta,
+.col-story,
+.col-links {
+  min-width: 0;
+}
+
+.movie-title {
+  margin: 0 0 10px;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.meta-line {
+  margin: 0 0 7px;
+  color: #e8e8e8;
+  line-height: 1.35;
+}
+
+.meta-label {
+  color: #9f9f9f;
+  font-weight: 700;
+}
+
+.story-text {
+  margin: 0;
+  color: #e8e8e8;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.links-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 10px 12px;
+  background: #2a2a2a;
+  color: #fff;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.link-btn:hover,
+.link-btn:focus {
+  background: #3a3a3a;
+  outline: none;
+}
+
+@media (max-width: 1100px) {
+  .movie-card {
+    grid-template-columns: 120px 1fr;
+  }
+
+  .col-story,
+  .col-links {
+    grid-column: 2;
+  }
+
+  .poster-wrap {
+    width: 120px;
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    width: min(96vw, 700px);
+    padding-top: 16px;
+  }
+
+  .movie-card {
+    grid-template-columns: 1fr;
+  }
+
+  .poster-wrap {
+    width: 100%;
+    max-width: 180px;
+  }
+
+  .col-story,
+  .col-links {
+    grid-column: auto;
+  }
+
+  .movie-title {
+    font-size: 22px;
+  }
 }
 

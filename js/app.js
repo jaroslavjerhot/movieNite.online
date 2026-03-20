@@ -1,18 +1,12 @@
-const askBtn = document.getElementById('askBtn');
+const btnSearch = document.getElementById('btnSearch');
 const userInput = document.getElementById('userInput');
-const modelSelect = document.getElementById('modelSelect');
-const answerBox = document.getElementById('answerBox');
-const priceEl = document.getElementById('price');
-
-const sGooglePrefix = `Zpracuj následující dotaz jako expert na vyhledávání informací na internetu. 
-  Zjisti zda se dotaz týká vyhledávání článku, obrázku, obrázku k tisku, videa, podcastu, ppt nebo pdf. 
-  Zjisti, které země a jazyka se dotaz týká.
-  Zjisti, zda je hledání vhodné omezit pouze na určité webové stránky nebo jejich části.
-  Jazyk by měl odpovídat zemi.
-  Odpověz pouze ve formě JSON pole, kde jednotlivé klíče budou 
-  dotaz, země, jazyk, datum_od, datum_do, file_type, site, inurl.
-  Jazyk uveď ve ISO 639-1, zemi ve formátu ISO 3166-1 alpha-2, datum ve formátu YYYY-MM-DD.
-  \n\nDotaz: `
+const statusBox = document.getElementById('statusBox');
+const countrySelect = document.getElementById('countrySelect');
+const genreSelect = document.getElementById('genreSelect');
+const personSelect = document.getElementById('personSelect');
+const awardSelect = document.getElementById('awardSelect');
+const sModel = 'OpenAI|gpt-5.4.nano';
+  
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
@@ -29,16 +23,11 @@ if (navigator.userAgent.includes("MIBOX")) lstDevice.push("Mi-Box");
 if (navigator.userAgent.includes("Android")) lstDevice.push("Android");
 if (navigator.userAgent.includes("Windows")) lstDevice.push("Windows");
 
-
-
-
 document.addEventListener('DOMContentLoaded', async () => {
 
-  
-
-  askBtn.addEventListener('click', () => fAsk(sMoviePrefix));
-  userInput.textContent = localStorage.getItem('prompt') || "";
-  // document.getElementById('keyDebug').textContent = lstDevice.join(", ") + ": " + navigator.userAgent;
+  btnSearch.addEventListener('click', () => fSearch());
+  userInput.textContent = localStorage.getItem('sPrompt') || "";
+  main()
   
 
 });
@@ -47,10 +36,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // const prompt = document.getElementById("q").value;
   //alert(prompt);
-  localStorage.setItem('prompt', userInput.value.trim());
-  localStorage.setItem('model', modelSelect.value);
+  localStorage.setItem('sPrompt', userInput.value.trim());
+
   
-  answerBox.textContent = "Čekám na odpověď...";
+  statusBox.textContent = "Čekám na odpověď...";
 
   sPrefix = sPrefix.replaceAll(/[\u0000-\u001F]/g, "");
   sPrefix = sPrefix.replaceAll('   ',' ').replaceAll('  ',' ');
@@ -76,22 +65,159 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
   const data = await r.json();
-
-  
-  //alert(JSON.stringify(data));
-  if ("iPromptTokens" in data) {
-    dctModel = lxdOpenAI.find(dRow => dRow.sModel === modelSelect.value);
-    iPriceUSD = (data.iPromptTokens * dctModel.iInput + data.iCompletionTokens * dctModel.iOutput)/1000000;
-    data.iPriceHalsDPH = (iPriceUSD * 100 * 21 * 1.21).toFixed(3);
-  } else {
-    data.iPriceHalsDPH = '--';
-    data.iElapsedMs = '--';
-  }
-
-answerBox.textContent = data.sAnswer
-priceEl.textContent = data.iPriceHalsDPH + ' hal / ' + (data.iElapsedMs/1000).toFixed(3) + ' s';
-
+  //alert('after json');
 
 x=0
   
 }
+
+async function main() {
+  let lxdMovies = await fLoadMovies();
+  lxdMovies = lxdMovies.filter(fIsUsableMovie);
+
+  const lxdRandom10 = fGetRandomItems(lxdMovies, 10);
+
+  const cardsWrap = document.getElementById("cardsWrap");
+  cardsWrap.innerHTML = "";
+
+  lxdRandom10.forEach(dctMovie => {
+    cardsWrap.appendChild(fCreateMovieCard(dctMovie));
+  });
+}
+
+async function fLoadMovies() {
+  const response = await fetch("data/movies_series.json");
+  if (!response.ok) {
+    throw new Error("Cannot load data/movies_series.json");
+  }
+  return await response.json();
+}
+
+function fIsUsableMovie(dctMovie) {
+  return (dctMovie.sTitle || "").trim() !== "";
+}
+
+function fGetRandomItems(lst, count) {
+  const lstCopy = [...lst];
+
+  for (let i = lstCopy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [lstCopy[i], lstCopy[j]] = [lstCopy[j], lstCopy[i]];
+  }
+
+  return lstCopy.slice(0, count);
+}
+
+function fCreateMovieCard(dctMovie) {
+  const card = document.createElement("div");
+  card.className = "movie-card";
+
+  const sPoster = dctMovie.urlPoster || "";
+  const sTitle = dctMovie.sTitle || "";
+  const sCountry = dctMovie.sCountry || "";
+  const sGenre = dctMovie.sGenre || "";
+  const iYear = dctMovie.iYear || "";
+  const sDirector = dctMovie.sDirector || "";
+  const sAuthor = dctMovie.sAuthor || "";
+  const sActor = dctMovie.sActor || "";
+  const sAward = dctMovie.sAward || "";
+  const sStory = dctMovie.sStory || "";
+
+  const posterWrap = document.createElement("div");
+  posterWrap.className = "poster-wrap";
+
+  const img = document.createElement("img");
+  img.className = "poster";
+  img.src = sPoster || "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="450">
+      <rect width="100%" height="100%" fill="#222"/>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#777" font-size="24">No image</text>
+    </svg>
+  `);
+  img.alt = sTitle;
+
+  posterWrap.appendChild(img);
+
+  const colMeta = document.createElement("div");
+  colMeta.className = "col-meta";
+  colMeta.innerHTML = `
+    <h2 class="movie-title">${fEsc(sTitle)}</h2>
+    ${fMetaLine("Country", sCountry)}
+    ${fMetaLine("Genre", sGenre)}
+    ${fMetaLine("Year", iYear)}
+    ${fMetaLine("Director", sDirector)}
+    ${fMetaLine("Author", sAuthor)}
+    ${fMetaLine("Actor", sActor)}
+    ${fMetaLine("Award", sAward)}
+  `;
+
+  const colStory = document.createElement("div");
+  colStory.className = "col-story";
+  colStory.innerHTML = `<p class="story-text">${fEsc(sStory)}</p>`;
+
+  const colLinks = document.createElement("div");
+  colLinks.className = "col-links";
+
+  const linksBox = document.createElement("div");
+  linksBox.className = "links-box";
+
+  // placeholder links; later you can generate your own
+  const lstLinks = [
+    { sName: "CSFD", sUrl: "#" },
+    { sName: "IMDb", sUrl: "#" },
+    { sName: "YouTube", sUrl: "#" }
+  ];
+
+  lstLinks.forEach(dctLink => {
+    const a = document.createElement("a");
+    a.className = "link-btn";
+    a.href = dctLink.sUrl;
+    a.textContent = dctLink.sName;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    linksBox.appendChild(a);
+  });
+
+  colLinks.appendChild(linksBox);
+
+  card.appendChild(posterWrap);
+  card.appendChild(colMeta);
+  card.appendChild(colStory);
+  card.appendChild(colLinks);
+
+  return card;
+}
+
+function fMetaLine(sLabel, sValue) {
+  if (!String(sValue || "").trim()) {
+    return "";
+  }
+
+  return `
+    <p class="meta-line">
+      <span class="meta-label">${fEsc(sLabel)}:</span>
+      ${fEsc(String(sValue))}
+    </p>
+  `;
+}
+
+function fEsc(sValue) {
+  return String(sValue)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+main().catch(err => {
+  console.error(err);
+  document.getElementById("cardsWrap").innerHTML = `
+    <div class="movie-card">
+      <div class="col-meta">
+        <h2 class="movie-title">Data loading error</h2>
+        <p class="meta-line">${fEsc(err.message)}</p>
+      </div>
+    </div>
+  `;
+});
