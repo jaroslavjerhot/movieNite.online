@@ -84,33 +84,33 @@ function fLog(sType, event) {
   
 }
 
-[
-  "keydown",
-  "keyup",
-  "keypress",
-  "click",
-  "dblclick",
-  "mousedown",
-  "mouseup",
-  "pointerdown",
-  "pointerup",
-  "pointermove",
-  "mousemove",
-  "touchstart",
-  "touchend",
-  "focusin",
-  "focusout",
-  "contextmenu",
-  "wheel",
-  "scroll",
-  "change",
-  "input",
-].forEach(sEventType => {
-  document.addEventListener(sEventType, event => fLog(sEventType, event), true);
-});
+// [
+//   "keydown",
+//   "keyup",
+//   "keypress",
+//   "click",
+//   "dblclick",
+//   "mousedown",
+//   "mouseup",
+//   "pointerdown",
+//   "pointerup",
+//   "pointermove",
+//   "mousemove",
+//   "touchstart",
+//   "touchend",
+//   "focusin",
+//   "focusout",
+//   "contextmenu",
+//   "wheel",
+//   "scroll",
+//   "change",
+//   "input",
+// ].forEach(sEventType => {
+//   document.addEventListener(sEventType, event => fLog(sEventType, event), true);
+// });
 
-document.addEventListener("wheel", event => fLog("wheel", event), true);
-document.addEventListener("contextmenu", event => fLog("contextmenu", event), true);
+// document.addEventListener("wheel", event => fLog("wheel", event), true);
+// document.addEventListener("contextmenu", event => fLog("contextmenu", event), true);
 
 // if (lstDevice.includes("Mi-Box")){
 //     document.addEventListener("dblclick", function(event) {

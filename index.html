@@ -12,11 +12,11 @@
   </head>
 <body>
   <div class="container py-4">
-    <div id="keyDebug" style="position:fixed;left:10px;right:10px;bottom:10px;padding:12px;background:#111;color:#fff;border:1px solid #555;z-index:99999;font-family:monospace;white-space:pre-wrap;">
+    <!-- <div id="keyDebug" style="position:fixed;left:10px;right:10px;bottom:10px;padding:12px;background:#111;color:#fff;border:1px solid #555;z-index:99999;font-family:monospace;white-space:pre-wrap;">
       Press a remote button…
-    </div>
+    </div> -->
     <!-- Logo -->
-    <div class="logo mb-3 text-center"><img src="img/logo_mn_dsktop_60.png" alt="movieNite Logo"></div>
+    <div class="logo mb-3 text-center"><img src="img/logo_mn_mobile_60.png" alt="movieNite Logo"></div>
 
     <!-- Title and Favicons Row -->
     <div class="d-flex align-items-center mb-4">
@@ -39,19 +39,24 @@
         <textarea id="userInput" class="form-control" rows="1"></textarea>
       </div>
       </div>
-      <div class="mb-3">
-        <label for="modelSelect" class="form-label">Vyber AI:</label>
-        <select class="form-select" id="modelSelect">
+      <div class="d-flex align-items-start gap-2 mb-3" hidden>
+        <select class="form-select" id="countrySelect" hidden>
+        </select>
+        <select class="form-select" id="genreSelect" hidden>
+        </select>
+        <select class="form-select" id="personSelect" hidden>
+        </select>
+        <select class="form-select" id="yearSelect" hidden>
+        </select>
+        <select class="form-select" id="awardSelect" hidden>
         </select>
       </div>
-      <button class="btn btn-primary" id="askBtn">Zeptej se AI</button>
+      <button class="btn btn-primary" id="askBtn">Vyhledej filmy/seriály</button>
     </div>
 
-    <!-- Answer and Price -->
+    <!-- films -->
     <div class="card p-3">
-      <div class="mt-2"><strong>Odpověď, cena a doba: </strong><span id="price">0.00</span></div>
-      <div class="answer-box" id="answerBox"></div>
-
+      
     </div>
 
   </div>

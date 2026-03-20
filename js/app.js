@@ -34,23 +34,7 @@ if (navigator.userAgent.includes("Windows")) lstDevice.push("Windows");
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  const csv = await fLoadCsv(sOpenAIpricing)
-  lxdOpenAI = fCsvToLxd(csv);
-
-  lxdOpenAI = lxdOpenAI.filter(dRow => Number(dRow.iTotal) <= 2);
-  lxdOpenAI.forEach(dRow => {
-    sTotalCZK = (Number(dRow.iTotal) * 21 * 1.21).toFixed(0);
-    dRow.sModelName = "OpenAI | " + dRow.sModel + " (" + sTotalCZK + " Kč/1Mt)";
-    dRow.sModel = "OpenAI|" + dRow.sModel
-  });
-  lxdOpenAI.forEach(dRow => {
-        const oOption = document.createElement("option");
-        oOption.value = dRow.sModel;
-        if (dRow.sModel === localStorage.getItem('model')) oOption.selected = true;
-        oOption.textContent = dRow.sModelName;
-        modelSelect.appendChild(oOption);
-  });
-
+  
 
   askBtn.addEventListener('click', () => fAsk(sMoviePrefix));
   userInput.textContent = localStorage.getItem('prompt') || "";
