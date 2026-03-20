@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>movieNite</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+
+    
+
+<div id="services" hidden></div>
+<!-- Row 1: Headline -->
+    
+<div class="movies-section">
+    <h2>movieNiteOnline: 2500+ filmů i seriálů</h2>
+    
+    <input
+        id="searchBox"
+        type="text"
+        value = "Na samotě u lesa"
+        placeholder="Type movie name..."
+        autocomplete="off"
+    >
+    
+
+    <!-- Row 2: Type filter -->
+    <div class="filter-row" id="typeFilters">Type</div>
+    
+    <!-- Row 2: Region filter -->
+    <div class="filter-row" id="regionFilters">Region</div>
+
+    <!-- Row 3: Genre Group filter -->
+    <div class="filter-row" id="genreFilters">Genre</div>
+
+    <!-- Row 4: Year Group filter -->
+    <div class="filter-row" id="yearFilters">Year</div>
+
+    <!-- Row 4: Award Group filter -->
+    <div class="filter-row" id="awardFilters">Award</div>
+
+    <!-- Row 5+: Filtered movie list -->
+     <br>
+    <h3>Vyhledané filmy/seriály</h3>
+    <h5 id="descr"></h5>
+
+
+<table id="moviesTable" class="table table-dark table-striped">
+
+<!-- <thead>
+<tr>
+<th>Movie</th>
+<th>Year</th>
+<th>Country</th>
+<th>Genre</th>
+<th>Director</th>
+<th>Actors</th>
+<th>Awards</th>
+</tr>
+</thead> -->
+
+<tbody id="moviesTableBody"></tbody>
+
+</table>
+
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

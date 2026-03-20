@@ -1,76 +1,69 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>movieNite</title>
-
-<link rel="stylesheet" href="css/style.css">
-
-</head>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>movieNite</title>
+  <!-- Bootstrap 5 Dark Theme -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="icon" href="img/favicon_m.ico" type="image/x-icon">
+  </head>
 <body>
+  <div class="container py-4">
+    <div id="keyDebug" style="position:fixed;left:10px;right:10px;bottom:10px;padding:12px;background:#111;color:#fff;border:1px solid #555;z-index:99999;font-family:monospace;white-space:pre-wrap;">
+      Press a remote button…
+    </div>
+    <!-- Logo -->
+    <div class="logo mb-3 text-center"><img src="img/logo_mn_dsktop_60.png" alt="movieNite Logo"></div>
 
+    <!-- Title and Favicons Row -->
+    <div class="d-flex align-items-center mb-4">
+      <h2 class="me-3 mb-0"></h2>
+      
+    </div>
 
     
+    <!-- Textarea and Model Selection -->
+    <div class="card p-3 mb-3">
+      <div class="mb-3">
+        <!-- <label for="userInput" class="form-label">Otázka:</label> -->
+      <div class="d-flex align-items-start gap-2">
+        <button id="micBtn" type="button" class="btn btn-outline-light">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Zm5-3a1 1 0 1 1 2 0a7 7 0 0 1-6 6.93V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-3.07A7 7 0 0 1 5 11a1 1 0 1 1 2 0a5 5 0 0 0 10 0Z"/>
+            </svg>
+        </button>
+        &nbsp;
+        <textarea id="userInput" class="form-control" rows="1"></textarea>
+      </div>
+      </div>
+      <div class="mb-3">
+        <label for="modelSelect" class="form-label">Vyber AI:</label>
+        <select class="form-select" id="modelSelect">
+        </select>
+      </div>
+      <button class="btn btn-primary" id="askBtn">Zeptej se AI</button>
+    </div>
 
-<div id="services" hidden></div>
-<!-- Row 1: Headline -->
-    
-<div class="movies-section">
-    <h2>movieNiteOnline: 2500+ filmů i seriálů</h2>
-    
-    <input
-        id="searchBox"
-        type="text"
-        value = "Na samotě u lesa"
-        placeholder="Type movie name..."
-        autocomplete="off"
-    >
-    
+    <!-- Answer and Price -->
+    <div class="card p-3">
+      <div class="mt-2"><strong>Odpověď, cena a doba: </strong><span id="price">0.00</span></div>
+      <div class="answer-box" id="answerBox"></div>
 
-    <!-- Row 2: Type filter -->
-    <div class="filter-row" id="typeFilters">Type</div>
-    
-    <!-- Row 2: Region filter -->
-    <div class="filter-row" id="regionFilters">Region</div>
+    </div>
 
-    <!-- Row 3: Genre Group filter -->
-    <div class="filter-row" id="genreFilters">Genre</div>
+  </div>
 
-    <!-- Row 4: Year Group filter -->
-    <div class="filter-row" id="yearFilters">Year</div>
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- JS for Demo -->
 
-    <!-- Row 4: Award Group filter -->
-    <div class="filter-row" id="awardFilters">Award</div>
-
-    <!-- Row 5+: Filtered movie list -->
-     <br>
-    <h3>Vyhledané filmy/seriály</h3>
-    <h5 id="descr"></h5>
-
-
-<table id="moviesTable" class="table table-dark table-striped">
-
-<!-- <thead>
-<tr>
-<th>Movie</th>
-<th>Year</th>
-<th>Country</th>
-<th>Genre</th>
-<th>Director</th>
-<th>Actors</th>
-<th>Awards</th>
-</tr>
-</thead> -->
-
-<tbody id="moviesTableBody"></tbody>
-
-</table>
-
-</div>
-
-<script src="js/app.js"></script>
-
+    <script src="js/base.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/speech.js"></script>
+    <script src="js/arrows.js"></script>
 </body>
 </html>

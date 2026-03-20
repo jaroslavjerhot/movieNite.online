@@ -1,203 +1,66 @@
-body
-{
-    margin:0;
-    background:#0f0f0f;
-    font-family:Arial, Helvetica, sans-serif;
-    color:white;
-
-    /* display:flex; */
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+body {
+      background-color: #121212;
+      color: #f1f1f1;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.card {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  border: none;
+}
+.form-select, .form-control {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+.form-select option {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+}
+.favicons img {
+  width: 24px;
+  margin-left: 5px;
+}
+.answer-box {
+  min-height: 150px;
+  padding: 10px;
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #444;
+  border-radius: 5px;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+.form-control:focus {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border-color: #555;
+  box-shadow: none;
+}
+#userInput.listening {
+  /* border-width: 2px;
+  box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.2); */
+  border-color: #a5a5a5;
 }
 
-.app
-{
-    width:90%;
-    max-width:900px;
+#micBtn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2b2b2b;
+  color: #fff;
+  cursor: pointer;
 }
 
-
-
-/* service button */
-
-.serviceBtn
-{
-    width:80px;
-    height:80px;
-
-    background:#1a1a1a;
-    border:none;
-    border-radius:16px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    cursor:pointer;
+#micBtn.listening {
+  background: #ff3b30;
+  box-shadow: 0 0 0 6px rgba(255, 59, 48, 0.18);
 }
 
-.serviceBtn img
-{
-    width:32px;
-    height:32px;
-}
-
-.serviceName
-{
-    margin-top:6px;
-    font-size:12px;
-}
-
-/* focus for TV remote */
-
-.serviceBtn:hover, .row-service-btn:hover
-{
-    outline:3px solid #00aaff;
-}
-
-
-/* mobile */
-
-@media (max-width:600px)
-{
-
-.serviceBtn
-{
-    width:60px;
-    height:60px;
-}
-
-.serviceBtn img
-{
-    width:24px;
-    height:24px;
-}
-
-.serviceName
-{
-    font-size:10px;
-    color:aliceblue
-}
-
-}
-
-.search-row {
-    display: flex;
-    align-items: center;
-    /* align-items: flex-start; vertical centering */
-    gap: 12px;      /* space between input and buttons */
-    flex-wrap: wrap; /* optional: wrap to next line on mobile */
-    width: 90vw;          /* optional: limit row width */
-    
-}
-
-#searchBox {
-    width: 60vw;           /*50% of screen width */
-    /* flex:1;              take remaining space */
-    min-width: 200px;      /* optional: prevent too small on mobile */
-    margin: 20px 20px 10px 0px; /* vertical spacing */  
-    padding: 16px;
-    border-radius: 32px;
-    border: none;
-    background: #1e1e1e;
-    color: white;
-    outline: none;
-    
-    font-size:20px;
-}
-
-#services
-{
-    margin: 10px 20px 10px 20px ; /* vertical spacing */  
-    /* display: flex;   buttons in one row */
-    gap: 8px;
-    color:aliceblue;
-    display:flex;
-    flex-wrap:wrap;
-}
-
-
-.movies-section {
-    /* width: 90vw;
-    max-width: 1200px; */
-    margin: 10px 20px 10px 40px ; /* vertical spacing */  
-    color: white;
-    font-family: Arial, Helvetica, sans-serif, sans-serif;
-}
-
-.movies-section h2 {
-    margin-bottom: 12px;
-}
-
-.filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-.filter-btn {
-    padding: 8px 14px;
-    border-radius: 14px;
-    border: none;
-    background: #3d3d3d;
-    color: white;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.red-btn {
-  background: rgb(185, 0, 0);
-}
-
-.filter-btn:focus {
-    /* outline: 2px solid #00aaff; */
-    transform: scale(1.05);
-    background: #919191;
-}
-.filter-btn.active {
-    /* outline: 2px solid #00aaff; */
-    transform: scale(1.05);
-    background: #919191;
-}
-.filter-btn:hover {
-    /* outline: 2px solid #00aaff; */
-    transform: scale(1.05);
-    background: #767676;
-}
-
-
-.movie-row {
-    display:grid;
-    grid-template-columns: 1.5fr 0.2fr 0.4fr 0.4fr 0.4fr 0.4fr 0.4fr 0.3fr 1fr 1.5fr 2fr 2fr 1fr 20px;
-    align-items: center;
-    gap: 12px;
-    padding: 6px 0;
-    border-bottom: 1px solid #333;
-}
-
-.movie-row div {
-    min-width: 80px;
-}
-
-.movie-row button {
-    /* width: 50px;
-    height: 50px; */
-    border: none;
-    border-radius: 14px;
-    background: #1e1e1e;
-    cursor: pointer;
-}
-
-.movie-row button img {
-    width: 32px;
-    height: 32px;
-}
-
-@media (max-width:600px) {
-    .filter-btn { font-size:12px; padding:6px 10px; }
-    .movie-row div { min-width:60px; font-size:12px; }
-    .movie-row button img { width:24px; height:24px; }
-}

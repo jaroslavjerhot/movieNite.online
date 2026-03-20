@@ -1,441 +1,113 @@
-let lxdServices = [];
-let lxdTypes = [];
-let lxdCountries = [];
-let lxdGenres = [];
-let lxdAwards = [];
+const askBtn = document.getElementById('askBtn');
+const userInput = document.getElementById('userInput');
+const modelSelect = document.getElementById('modelSelect');
+const answerBox = document.getElementById('answerBox');
+const priceEl = document.getElementById('price');
 
-let lxdMovies = [];
-let allMovies = [];
+const sGooglePrefix = `Zpracuj následující dotaz jako expert na vyhledávání informací na internetu. 
+  Zjisti zda se dotaz týká vyhledávání článku, obrázku, obrázku k tisku, videa, podcastu, ppt nebo pdf. 
+  Zjisti, které země a jazyka se dotaz týká.
+  Zjisti, zda je hledání vhodné omezit pouze na určité webové stránky nebo jejich části.
+  Jazyk by měl odpovídat zemi.
+  Odpověz pouze ve formě JSON pole, kde jednotlivé klíče budou 
+  dotaz, země, jazyk, datum_od, datum_do, file_type, site, inurl.
+  Jazyk uveď ve ISO 639-1, zemi ve formátu ISO 3166-1 alpha-2, datum ve formátu YYYY-MM-DD.
+  \n\nDotaz: `
 
-let filteredMovies = [];
-let filterHistory = [];
+const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
+  Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
+  Země původu může být uvedena přídavným jménem. V tom případě odpověz názvem země.
+  Odpověz pouze ve formě JSON pole, kde 
+  jednotlivé klíče budou herec, režisér, hudebník, žánr, země_původu, charakteristika,
+  téma, rok_od, rok_do, ocenění. 
+  \n\nDotaz: `
+let lxdOpenAI = []
 
-let dctActiveFilters = {
-    sTypeGroup: null,
-    sRegion: null,
-    sGenreGroup: null,
-    sYearGroup: null,
-    sAwardGroup: null
-};
-dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
+let lstDevice = [];
+if (navigator.userAgent.includes("AppleTV")) lstDevice.push("Apple TV");
+if (navigator.userAgent.includes("MIBOX")) lstDevice.push("Mi-Box");
+if (navigator.userAgent.includes("Android")) lstDevice.push("Android");
+if (navigator.userAgent.includes("Windows")) lstDevice.push("Windows");
+
+
+
 
 document.addEventListener('DOMContentLoaded', async () => {
-    //alert('dom loaded');
-    const sServicesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/services.csv'
-    const sCountriesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/countries.csv'
-    const sGenresUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/genres.csv'
-    const sAwardsUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/awards.csv'
-    const sTypesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/types.csv'
-    const sMoviesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/movies.csv'
-    // const sServicesUrl = '/data/services.csv'
-    lxdServices = await fLoadServices(sServicesUrl);
-    lxdCountries = await fLoadServices(sCountriesUrl);
-    lxdGenres = await fLoadServices(sGenresUrl);
-    lxdAwards = await fLoadServices(sAwardsUrl);
-    lxdTypes = await fLoadServices(sTypesUrl);
-    lxdMovies = await fLoadServices(sMoviesUrl);
 
-    const dctCountryRegion = {};
-    lxdCountries.forEach(r => {
-        dctCountryRegion[r.sCountry] = r.sRegion;
-    });    
-    const dctGenreGroup = {};
-    lxdGenres.forEach(r => {
-        dctGenreGroup[r.sGenre] = r.sGenreGroup;
-    });
-    const dctAwardGroup = {};
-    lxdAwards.forEach(r => {
-        dctAwardGroup[r.sAward] = r.sAwardGroup;
-    });
-    const dctTypeGroup = {};
-    lxdTypes.forEach(r => {
-        dctTypeGroup[r.sType] = r.sTypeGroup;
-    });
+  const csv = await fLoadCsv(sOpenAIpricing)
+  lxdOpenAI = fCsvToLxd(csv);
+
+  lxdOpenAI = lxdOpenAI.filter(dRow => Number(dRow.iTotal) <= 2);
+  lxdOpenAI.forEach(dRow => {
+    sTotalCZK = (Number(dRow.iTotal) * 21 * 1.21).toFixed(0);
+    dRow.sModelName = "OpenAI | " + dRow.sModel + " (" + sTotalCZK + " Kč/1Mt)";
+    dRow.sModel = "OpenAI|" + dRow.sModel
+  });
+  lxdOpenAI.forEach(dRow => {
+        const oOption = document.createElement("option");
+        oOption.value = dRow.sModel;
+        if (dRow.sModel === localStorage.getItem('model')) oOption.selected = true;
+        oOption.textContent = dRow.sModelName;
+        modelSelect.appendChild(oOption);
+  });
 
 
-    fGrouping("sType", "sTypeGroup", dctTypeGroup);
-    fGrouping("sCountry", "sRegion", dctCountryRegion);
-    fGrouping("sGenre", "sGenreGroup", dctGenreGroup);  
-    fGrouping("sAward", "sAwardGroup", dctAwardGroup);
-    lxdMovies.forEach(movie => {
-        movie.sYearGroup = fGroupingYears(movie.iYear);
-    });
+  askBtn.addEventListener('click', () => fAsk(sMoviePrefix));
+  userInput.textContent = localStorage.getItem('prompt') || "";
+  // document.getElementById('keyDebug').textContent = lstDevice.join(", ") + ": " + navigator.userAgent;
+  
 
-    // lxdMovies = lxdMovies.map(movie => {
-    // return {
-    //     ...movie,
-    //     sTypeGroup: fGrouping(movie.sType, dctTypeGroup),
-    //     sRegions: fGrouping(movie.sCountry, dctCountryRegion),
-    //     sGenreGroup: fGrouping(movie.sGenre, dctGenreGroup),
-    //     sYearGroup: fGroupingYears(movie.iYear),        
-    //     sAwardGroup: fGrouping(movie.sAward, dctAwardGroup),        
-    // }
-    // });
-    // Store original movies
-    allMovies = [...lxdMovies];
-    filteredMovies = [...allMovies];
-    filterHistory = [];
-
-    // const cntServices = renderButtons(lxdServices,64);
-    initMoviesSection();
-    x = 1;
 });
 
-document.addEventListener("keydown", e =>
-{
-    return
-    const buttons = [...document.querySelectorAll(".serviceBtn")]
+  async function fAsk(sPrefix) {
 
-    if (buttons.length === 0) return
+  // const prompt = document.getElementById("q").value;
+  //alert(prompt);
+  localStorage.setItem('prompt', userInput.value.trim());
+  localStorage.setItem('model', modelSelect.value);
+  
+  answerBox.textContent = "Čekám na odpověď...";
 
-    const currentIndex = buttons.indexOf(document.activeElement)
+  sPrefix = sPrefix.replaceAll(/[\u0000-\u001F]/g, "");
+  sPrefix = sPrefix.replaceAll('   ',' ').replaceAll('  ',' ');
+  
+  dctBody = { prefix: sPrefix,
+              prompt: userInput.value.trim(),
+              service: modelSelect.value}  
+  jsonBody = JSON.stringify(dctBody);
 
-    if (e.key === "ArrowRight")
-    {
-        const next = buttons[currentIndex + 1] || buttons[0]
-        next.focus()
+  const r = await fetch(
+    "https://openonce.pythonanywhere.com/ask",
+    { method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: jsonBody,
     }
+  );
+  //alert('after fetch');
+  
+  // const data = await r.json();
+  if (!r.ok) {
+    answerBox.textContent = 'Error: ' + r.status + ' ' + r.statusText;
+    priceEl.textContent = '-- hal';
+    return;
+  }
+  const data = await r.json();
 
-    if (e.key === "ArrowLeft")
-    {
-        const prev = buttons[currentIndex - 1] || buttons[buttons.length - 1]
-        prev.focus()
-    }
+  
+  //alert(JSON.stringify(data));
+  if ("iPromptTokens" in data) {
+    dctModel = lxdOpenAI.find(dRow => dRow.sModel === modelSelect.value);
+    iPriceUSD = (data.iPromptTokens * dctModel.iInput + data.iCompletionTokens * dctModel.iOutput)/1000000;
+    data.iPriceHalsDPH = (iPriceUSD * 100 * 21 * 1.21).toFixed(3);
+  } else {
+    data.iPriceHalsDPH = '--';
+    data.iElapsedMs = '--';
+  }
 
-    if (e.key === "ArrowUp")
-    {
-        document.getElementById("searchBox").focus()
-    }
+answerBox.textContent = data.sAnswer
+priceEl.textContent = data.iPriceHalsDPH + ' hal / ' + (data.iElapsedMs/1000).toFixed(3) + ' s';
 
-})
 
-function fGrouping2(sColumn, sValue, dctGrouping) {
-    return [...new Set(
-        sValue.split("/")
-            .map(c => c.trim())
-            .map(c => (c in dctGrouping ? dctGrouping[c] : c))
-            .filter(Boolean)
-    )].join(" / ");
+x=0
+  
 }
-
-function fGrouping(sSrcCol, sTrgCol, dctGrouping) {
-    lxdMovies.forEach(movie => {
-        lst = movie[sSrcCol].split("/").map(c => c.trim()).map(c => (c in dctGrouping ? dctGrouping[c] : c)).filter(Boolean);
-        movie[sTrgCol] = [...new Set(lst)].join(" / ");
-        x = 1;
-    });
-}
-
-function fGroupingYears(sYear, sBottomLevel='1949') {
-    if (sYear>sBottomLevel) {
-        return sYear.slice(0, 3) + "0s";
-    } else {
-        return sBottomLevel;
-    }
-}
-
-async function fLoadServices(sServicesUrl) {
-    const response = await fetch(sServicesUrl);
-    //alert('loaded')
-    const text = await response.text();
-    const rows = text.trim().split('\n');
-    const headers = rows.shift().split(';');
-
-    const lxd = rows.map(row => {
-        const values = row.split(';');
-        let obj = {};
-        headers.forEach((h, i) => obj[h] = values[i]);
-        if (obj.bUse === '1' || !('bUse' in obj)) 
-            return obj;
-    }).filter(Boolean);
-    return lxd;
-    //fRenderServices(services);
-}
-
-
-function renderButtons(services, iSize=64)
-{
-    const container = document.getElementById("services")
-    container.innerHTML = ""
-    const iSizeRounded = fRoundToLst(iSize)
-    const queryRaw = document.getElementById("searchBox").value.trim()
-
-    // if (!queryRaw) return
-
-    //const query = removeAccents(queryRaw)
-
-    services.forEach(service =>
-    {
-        const btn = document.createElement("button")
-        btn.className = "serviceBtn"
-
-        const domain = new URL(service.sSearchUrl).hostname
-
-        // const iconUrl =
-        // `https://www.google.com/s2/favicons?sz=${iSizeRounded}&domain=${domain}`
-        const iconUrl =
-        `https://www.google.com/s2/favicons?sz=64&domain=${domain}`
-        
-
-        btn.innerHTML = `<div class="serviceName">${service.sName}</div>`
-        btn.innerHTML = `<img src="${iconUrl}">`
-        btn.innerHTML = `<img src="https://i.ibb.co/CW5Wvry/buttonpng.png"><div class="serviceName">${service.sName}</div>`
-        btn.innerHTML = `<img src="${iconUrl}" alt="${service.sName}">`
-
-        btn.style.width = iSize + "px"
-        btn.style.height = iSize + "px"
-        btn.style.fontSize = (iSize/5) + "px"
-        btn.style.padding = (iSize/10) + "px"
-        btn.style.backgroundSize = (iSize*0.8) + "px " + (iSize*0.8) + "px"
-        btn.style.borderRadius = (iSize/2) + "px"   
-     
-        
-        btn.onclick = () => fOpenSearch(service.sSearchUrl)
-
-        container.appendChild(btn)
-    })
-    return container
-}
-
-function fRoundToLst(iValue, lstValues=[16,32,64,128,256]) {
-    if (lstValues.includes(iValue)) return iValue;
-    let closest = lstValues[0];
-    let minDiff = Math.abs(iValue - closest);
-    lstValues.forEach(val => {
-        const diff = Math.abs(iValue - val);
-        if (diff < minDiff) {
-            closest = val;
-            minDiff = diff;
-        }
-    });
-    return closest;
-}
-
-function fOpenSearch(urlTemplate, sSearchedValue='') {
-
-    let query = sSearchedValue || document.getElementById('searchBox').value.trim();
-    if (!query) return;
-    query = query
-        .replaceAll('  ', ' ')
-        .trim()
-        .normalize('NFD')                // separate accent from letter
-        .replace(/[\u0300-\u036f]/g, ''); // remove accents
-    
-    if (urlTemplate.includes('#m')) {
-        query = urlTemplate.replace('#m', query.replace(/ /g, '-'));
-    } else if (urlTemplate.includes('#p')) {
-        query = urlTemplate.replace('#p', query.replace(/ /g, '+'));
-    }
-    // finalUrl = finalUrl.replace('%20', '+');
-    //window.open(query, '_blank');
-    // location.href = query;
-
-    const a = document.createElement("a");
-    a.href = query;
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.target = "_blank";
-    a.click();
-
-    a.remove();
-    }
-
-
-
-// --- Get unique values for filters ---
-function fGetUnique(array, field, sFirstValue='All') {
-    const lst = [...new Set(array.map(x => x[field]))].sort().filter(Boolean)
-    return [sFirstValue, ...lst];
-}
-function fCreateBtn(text, sFilterCol, btnWidth, btnType) {
-    const btn = document.createElement("button");
-    btn.className = "filter-btn";
-    btn.innerHTML = text.replaceAll(' ','&nbsp;');
-    btn.tabIndex = 0;
-    btn.name = sFilterCol;
-    btn.style.width = btnWidth + "%";
-    btn.onclick = () => applyFilter(btn, sFilterCol, btnType);
-    return btn;
-}
-
-// --- Render filter buttons ---
-function renderFilterButtons() {
-    const typeFilters = document.getElementById("typeFilters");
-    const regionFilters = document.getElementById("regionFilters");
-    const genreFilters = document.getElementById("genreFilters");
-    const yearFilters = document.getElementById("yearFilters");
-    const awardFilters = document.getElementById("awardFilters");
-
-    const types = fGetUnique(lxdTypes, "sTypeGroup", "Všechno");
-    const regions = fGetUnique(lxdCountries, "sRegion", "Všech.země");
-    const genres = fGetUnique(lxdGenres, "sGenreGroup", "Všech.žánry");
-    const years = fGetUnique(lxdMovies, "sYearGroup", "Všech.roky");
-    years[1] = 'do ' + years[1];
-    const awards = fGetUnique(lxdAwards, "sAwardGroup", "I bez cen");
-
-    const btnMax = Math.max(types.length, regions.length, genres.length, years.length, awards.length);
-    const btnWidth = 90 / btnMax; // -2 for margin
-
-    typeFilters.innerHTML = "";
-    regionFilters.innerHTML = "";
-    genreFilters.innerHTML = "";
-    yearFilters.innerHTML = "";
-    awardFilters.innerHTML = "";
-    // genres.forEach(g => genreFilters.innerHTML = "");
-    // years.forEach(y => yearFilters.innerHTML = "");
-
-    types.forEach(r => {
-        let btn = fCreateBtn(r, "sTypeGroup", btnWidth, r);
-        typeFilters.appendChild(btn);
-    });
-    
-    regions.forEach(r => {
-        let btn = fCreateBtn(r, "sRegion", btnWidth, r);
-        regionFilters.appendChild(btn);
-    });
-    
-    genres.forEach(g => {
-        let btn = fCreateBtn(g, "sGenreGroup", btnWidth, g);
-        genreFilters.appendChild(btn);
-    });
-
-    years.forEach(y => {
-        let btn = fCreateBtn(y, "sYearGroup", btnWidth, y);
-        yearFilters.appendChild(btn);
-    });
-    
-    awards.forEach(a => {
-        let btn = fCreateBtn(a, "sAwardGroup", btnWidth, a);
-        awardFilters.appendChild(btn);
-    });
-}
-
-// --- Apply a filter ---
-function applyFilter(btn, field, value) {
-    
-    bIsActive = btn.classList.contains("active");
-    document.getElementsByName(field).forEach(el => el.classList.remove("active"));
-    if (bIsActive) {
-        document.getElementsByName(field)[0].classList.add("active"); // set "All" active when toggling off
-        value = dctActiveFilters[field] = document.getElementsByName(field)[0].innerText; // set filter to "All" when toggling off
-    } else {
-        btn.classList.add("active");
-    }
-    
-    dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
-    dctActiveFilters[field] = value;
-    filterHistory.push([...filteredMovies]); // save previous state
-    filteredMovies = allMovies;
-    for (const [field, value] of Object.entries(dctActiveFilters)) {
-        if (value && value !== "Všechno" && value !== "Všech.země" && value !== "Všech.žánry" && value !== "Všech.roky" && value !== "I bez cen") {
-            filteredMovies = filteredMovies.filter(m => 
-                m[field].includes(value));
-       }
-    }
-    localStorage.setItem('activeFilters', JSON.stringify(dctActiveFilters));
-    sDescr = 'Typ: ' + dctActiveFilters.sTypeGroup + '; Region: ' + dctActiveFilters.sRegion + '; Žánr: ' + dctActiveFilters.sGenreGroup + '; Rok: ' + dctActiveFilters.sYearGroup + '; Ocenění: ' + dctActiveFilters.sAwardGroup + '; Celkem: ' + filteredMovies.length;
-    sDescr = sDescr.replaceAll('null', 'cokoli')
-    document.getElementById('descr').innerText = sDescr;
-    renderMovies();
-    
-}
-
-function fInitialRender() {
-    dctActiveFilters  = (JSON.parse(localStorage.getItem('activeFilters')) || dctActiveFilters);
-    
-    Object.entries(dctActiveFilters).forEach(([field, value]) =>  {
-        if (!value) {
-            document.getElementsByName(field)[0].classList.add("active")
-            dctActiveFilters[field] = document.getElementsByName(field)[0].innerText
-        } else {
-            value = value.replaceAll('&nbsp;', ' ');
-            document.getElementsByName(field).forEach(el => {
-                if (el.innerHTML === value) {
-                    el.classList.add("active");
-                }
-            });
-        }});
-    filteredMovies = allMovies;
-    for (const [field, value] of Object.entries(dctActiveFilters)) {
-        if (value && value !== "Všechno" && value !== "Všech.země" && value !== "Všech.žánry" && value !== "Všech.roky" && value !== "I bez cen") {
-            filteredMovies = filteredMovies.filter(m => 
-                m[field].includes(value));
-       }
-    }
-    sDescr = 'Typ: ' + dctActiveFilters.sTypeGroup + '; Region: ' + dctActiveFilters.sRegion + '; Žánr: ' + dctActiveFilters.sGenreGroup + '; Rok: ' + dctActiveFilters.sYearGroup + '; Ocenění: ' + dctActiveFilters.sAwardGroup + '; Celkem: ' + filteredMovies.length;
-    sDescr = sDescr.replaceAll('null', 'cokoli')
-    document.getElementById('descr').innerText = sDescr;
-    renderMovies();
-}
-
-// --- Go back to previous filter ---
-function returnPreviousFilter() {
-    if (filterHistory.length > 0) {
-        filteredMovies = filterHistory.pop();
-        renderMovies();
-    }
-}
-
-// --- Render movie list ---
-function renderMovies() {
-    const container = document.getElementById("moviesTableBody");
-    container.innerHTML = "";
-
-    filteredMovies.slice(0,25).forEach(movie => {
-        const row = document.createElement("tr");
-        row.className = "movie-row";
-
-        // Movie details
-        ["sMovie","sType","svc-st","svc-ws","svc-fs","svc-pt","svc-cf","iYear","sCountry","sGenre","sDirector","sActors","sAward"].forEach(field=>{
-            const td = document.createElement("td");
-            if (field.includes('svc-')) {
-                // Search buttons (like in your previous section)
-                const service = lxdServices.find(x => x.sId === field.split('-')[1]);
-                const a = document.createElement("a");
-                a.href = service.sSearchUrl.replace('#m', movie.sMovie.replace(/ /g, '-')).replace('#p', movie.sMovie.replace(/ /g, '+'));
-                a.innerText = service.sName;
-                a.target = "_blank";
-                a.rel = "noopener";
-
-                const domain = new URL(service.sSearchUrl).hostname;
-                // const iconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
-                const btn = document.createElement("button");
-                btn.tabIndex = 0;
-                btn.className = "filter-btn";
-                btn.style.backgroundColor = "#B90000";
-                // btn.style.width = "16px";
-                // btn.style.height = "16px";
-                // btn.innerHTML = `<img src="${iconUrl}" alt="${service.sName}">`;
-                btn.innerHTML = `${service.sName}`;
-                // btn.innerHTML = "▶";
-                let sQuery = movie.sMovie + ' ' + movie.iYear;
-                sQuery += movie.sRegion != "Cz|Sk" ? " dabing": ""
-                btn.onclick = () => fOpenSearch(service.sSearchUrl, sQuery);
-                
-
-                td.appendChild(btn);
-                //td.appendChild(a);
-            } else {
-                td.innerText = movie[field];
-            }
-
-            row.appendChild(td);});
-
-        
-        container.appendChild(row);
-    });
-}
-
-// --- Keyboard navigation: return previous filter ---
-document.addEventListener("keydown", e=>{
-    if (e.key === "Backspace" || e.key === "Escape") {
-        returnPreviousFilter();
-    }
-});
-
-// --- Initialize ---
-function initMoviesSection() {
-    renderFilterButtons();
-    fInitialRender();
-}
-
