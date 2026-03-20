@@ -6,6 +6,7 @@ const genreSelect = document.getElementById('genreSelect');
 const personSelect = document.getElementById('personSelect');
 const awardSelect = document.getElementById('awardSelect');
 const sModel = 'OpenAI|gpt-5.4.nano';
+let lxdMovies = [];
   
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
@@ -27,12 +28,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   btnSearch.addEventListener('click', () => fSearch());
   userInput.textContent = localStorage.getItem('sPrompt') || "";
-  main()
   
-
 });
 
-  async function fAsk(sPrefix) {
+function fNormalize(s) {
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replaceAll('y','i')
+    .replaceAll(' ','');
+}
+
+function fSearch() {
+  let sPrompt = userInput.value.trim();
+  if (!sPrompt) {
+    alert("Please enter a search query.");
+    return;
+  }
+  localStorage.setItem('sPrompt', sPrompt);
+  let sPromptUnaccent = fNormalize(sPrompt);
+
+  let lxdFound = lxdMovies.filter(dctMovie => {
+    return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)
+  });
+
+  lxdFound.forEach(dctMovie => {
+    cardsWrap.appendChild(fCreateMovieCard(dctMovie));
+  });
+}
+
+async function fAsk(sPrefix) {
 
   // const prompt = document.getElementById("q").value;
   //alert(prompt);
@@ -72,8 +98,8 @@ x=0
 }
 
 async function main() {
-  let lxdMovies = await fLoadMovies();
-  lxdMovies = lxdMovies.filter(fIsUsableMovie);
+  lxdMovies = await fLoadMovies();
+  // lxdMovies = lxdMovies.filter(fIsUsableMovie);
 
   const lxdRandom10 = fGetRandomItems(lxdMovies, 10);
 
