@@ -86,11 +86,15 @@ async function main() {
 }
 
 async function fLoadMovies() {
-  const response = await fetch("data/movies_series.json");
+  const sMoviesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/movies_series.json'
+
+  // sMoviesUrl = "data/movies_series.json"; 
+  const response = await fetch(sMoviesUrl);
   if (!response.ok) {
-    throw new Error("Cannot load data/movies_series.json");
+    throw new Error("Cannot load " + sMoviesUrl);
   }
   return await response.json();
+  
 }
 
 function fIsUsableMovie(dctMovie) {
@@ -162,10 +166,12 @@ function fCreateMovieCard(dctMovie) {
   linksBox.className = "links-box";
 
   // placeholder links; later you can generate your own
+  const sMovieQuery = encodeURIComponent(dctMovie.sTitle + " dabing " + iYear);
+  // const urlCSFD = dctMovie.urlCsfd || `https://www.csfd.cz/hledat/?q=${sMovieQuery}`;
   const lstLinks = [
-    { sName: "CSFD", sUrl: "#" },
-    { sName: "IMDb", sUrl: "#" },
-    { sName: "YouTube", sUrl: "#" }
+    { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
+    { sName: "Sledujte.to", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
+    { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery }
   ];
 
   lstLinks.forEach(dctLink => {
