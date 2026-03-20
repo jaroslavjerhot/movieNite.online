@@ -5,17 +5,17 @@ const countrySelect = document.getElementById('countrySelect');
 const genreSelect = document.getElementById('genreSelect');
 const personSelect = document.getElementById('personSelect');
 const awardSelect = document.getElementById('awardSelect');
-const sModel = 'OpenAI|gpt-5.4.nano';
+const sModel = 'OpenAI|gpt-5.4-nano';
+
 let lxdMovies = [];
   
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
   Země původu může být uvedena přídavným jménem. V tom případě odpověz názvem země.
-  Odpověz pouze ve formě JSON pole, kde 
-  jednotlivé klíče budou herec, režisér, hudebník, žánr, země_původu, charakteristika,
-  téma, rok_od, rok_do, ocenění. 
-  \n\nDotaz: `
+  Odpověz pouze ve formě JSON pole, kde jednotlivé klíče budou: 
+  herec, režisér, hudebník, žánr, země_původu, kontinent, charakteristika, téma, rok_od, rok_do, ocenění. 
+  Dotaz je: `
 let lxdOpenAI = []
 
 let lstDevice = [];
@@ -26,53 +26,183 @@ if (navigator.userAgent.includes("Windows")) lstDevice.push("Windows");
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  btnSearch.addEventListener('click', () => fSearch());
+  btnSearch.addEventListener('click', () => fSearchMovies());
+  btnRandom.addEventListener('click', () => fRandomMovies());
   userInput.textContent = localStorage.getItem('sPrompt') || "";
   
 });
 
-function fNormalize(s) {
-  return s
+function fNormalize(s, bRemoveSpaces = true) {
+  let result = s
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replaceAll('y','i')
-    .replaceAll(' ','');
+    .replaceAll('  ',' ');
+  if (bRemoveSpaces) {
+    result = result.replaceAll(' ','');
+  }
+  return result;
 }
 
-function fSearch() {
-  let sPrompt = userInput.value.trim();
+async function fSearchMovies(sPrompt = userInput.value.trim()) {
+  // let sPrompt = userInput.value.trim();
+  const iWords = sPrompt.split(" ").length;
+  localStorage.setItem('sPrompt', sPrompt);
+
   if (!sPrompt) {
     alert("Please enter a search query.");
     return;
   }
-  localStorage.setItem('sPrompt', sPrompt);
-  let sPromptUnaccent = fNormalize(sPrompt);
+  
+  let lxdFound = lxdMovies;
 
-  let lxdFound = lxdMovies.filter(dctMovie => {
-    return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)
-  });
+  // series/movies
+  if ((' ' + sPrompt.toLowerCase()).includes(" film")) {
+    sPrompt = sPrompt.toLowerCase().replace("film", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sType === 'm' 
+    })}
+  if ((' ' + sPrompt.toLowerCase()).includes(" seriál")) {
+    sPrompt = sPrompt.toLowerCase().replace("seriál", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sType === 's' 
+    })}
+  // hraný, animovaný, černobílý
+  if ((' ' + sPrompt.toLowerCase()).includes(" barevný")) {
+    sPrompt = sPrompt.toLowerCase().replace("barevný", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return !dctMovie.sTags.includes('černobílý') 
+    })}
+  if ((' ' + sPrompt.toLowerCase()).includes(" hraný")) {
+    sPrompt = sPrompt.toLowerCase().replace("hraný", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return !dctMovie.sGenres.includes('animovaný') && !dctMovie.sGenres.includes('loutkový') 
+    })}
+  // Slovensko - ne Československo
+  if ((' ' + sPrompt).toLowerCase().includes(" slovensk")) {
+    sPrompt = sPrompt.toLowerCase().replace("slovensko", "").replace("slovenský", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return !dctMovie.sCountry.includes('Česko') 
+    })}
+  
 
-  lxdFound.forEach(dctMovie => {
-    cardsWrap.appendChild(fCreateMovieCard(dctMovie));
-  });
+  // first try to find movies that include the at least two-word prompt anywhere in the title
+  if (iWords == 1) {
+    let sPromptUnaccent = fNormalize(sPrompt);
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sTitleUnaccent.includes(sPromptUnaccent) ||
+        fNormalize(
+          dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + dctMovie.sActor + 
+          dctMovie.sAuthor, false).includes(sPromptUnaccent)
+    })}
+  else if (iWords == 2) {
+    const sWord1 = fNormalize(sPrompt.split(" ")[0]);
+    const sWord2 = fNormalize(sPrompt.split(" ")[1]);
+    lxdFound = lxdFound.filter(dctMovie => {
+        const sNorm = fNormalize(
+          dctMovie.sTitle + dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + 
+          dctMovie.sActor + dctMovie.sAuthor, false);
+        return (sNorm.includes(sWord1 + ' ' + sWord2) || sNorm.includes(sWord2 + ' ' + sWord1))
+    })}  
+  else{
+    let sPromptUnaccent = fNormalize(sPrompt);
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)
+    })}
+  
+    // if nothing found or too many results, 
+  // if (lxdFound.length === 0 || lxdFound.length > 1) {
+  //   const jsonReturn = await fAsk(sMoviePrefix);
+  //   dctAnswer = JSON.parse(jsonReturn.sAnswer)[0];
+  //   return;
+  // }
+  
+  statusBox.textContent = "Nalezeno " + lxdFound.length + " filmů/seriálů.";
+
+  if (lxdFound.length === 0) {
+    alert("No movies found for: " + sPrompt);
+    return;
+  } else {
+    cardsWrap.innerHTML = "";
+    lxdFound.forEach(dctMovie => {
+      cardsWrap.appendChild(fCreateMovieCard(dctMovie));
+  });}
 }
 
-async function fAsk(sPrefix) {
+function fProcessAIresponse(lxdFound, sPrompt, jsonReturn) {
+  if (!jsonReturn || !jsonReturn.sAnswer) {
+    statusBox.textContent = "Odpověď od AI neobsahuje očekávaná data.";
+    return false;
+  }
+  dctAnswer = JSON.parse(jsonReturn.sAnswer)[0];
+  let lstPersons = [];
+  let lstGenres = [];
+  let lstCountries = [];
+  let lstContinents = [];
+  let lstAwards = [];
+  let lstNominations = [];
+  let iYearFrom = null;
+  let iYearTo = null;
+
+  for (const key in dctAnswer) {
+    if (dctAnswer.hasOwnProperty(key)) {   // optional safety
+      const value = dctAnswer[key];
+      if (['null', 'undefined', '-', ''].includes(value)) {
+        dctAnswer[key] = null;
+      } else {
+        if (['režisér', 'herec', 'hudebník'].includes(key)){
+          lstPersons.push(dctAnswer[key]);
+        }else if (key === 'žánr') {
+          lstGenres.push(dctAnswer[key]);
+        }else if (key === 'země_původu' && !sPrompt.toLowerCase().includes(dctAnswer[key].toLowerCase().slice(0,-3))){ 
+          lstCountries.push(dctAnswer[key]);
+        }else if (key === 'kontinent') {
+          lstContinents.push(dctAnswer[key]);
+        }else if (key === 'rok_od') {
+            iYearFrom = parseInt(dctAnswer[key], 10);
+        }else if (key === 'rok_do') {
+            iYearTo = parseInt(dctAnswer[key], 10);
+        }else if (key === 'ocenění' && sPrompt.toLowerCase().includes('nomin')){
+          lstNominations.push(dctAnswer[key]);
+        }else if (key === 'ocenění' && !sPrompt.toLowerCase().includes('nomin')){
+          lstAwards.push(dctAnswer[key]);
+        }
+      }
+    }
+  }
+  if (iYearFrom) lxdFound = lxdFound.filter(dctMovie => dctMovie.iYear >= iYearFrom);
+  if (iYearTo) lxdFound = lxdFound.filter(dctMovie => dctMovie.iYear <= iYearTo);
+  if (lstAwards.length > 0) lxdFound = lxdFound.filter(dctMovie => lstAwards.some(award => dctMovie.sAwarded.includes(award)));
+  if (lstNominations.length > 0) lxdFound = lxdFound.filter(dctMovie => lstNominations.some(nomination => dctMovie.sAwarded.includes(nomination)));
+  if (lstGenres.length > 0) lxdFound = lxdFound.filter(dctMovie => lstGenres.some(genre => dctMovie.sGenre.includes(genre)));
+  if (lstCountries.length > 0) lxdFound = lxdFound.filter(dctMovie => lstCountries.some(country => dctMovie.sCountry.includes(country)));
+  if (lstContinents.length > 0) lxdFound = lxdFound.filter(dctMovie => lstContinents.some(continent => dctMovie.sContinent.includes(continent)));
+  if (lstPersons.length > 0) lxdFound = lxdFound.filter(dctMovie => lstPersons.some(person => dctMovie.sDirector.includes(person) || dctMovie.sActor.includes(person) || dctMovie.sAuthor.includes(person)));
+  lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sTitleUnaccent.includes(sPromptUnaccent) ||
+        fNormalize(
+          dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + dctMovie.sActor + 
+          dctMovie.sAuthor, false).includes(sPromptUnaccent)
+    })}
+  
+
+
+async function fAsk(sPrefix, sPrompt = userInput.value.trim()) {
 
   // const prompt = document.getElementById("q").value;
   //alert(prompt);
-  localStorage.setItem('sPrompt', userInput.value.trim());
+  // localStorage.setItem('sPrompt', userInput.value.trim());
 
   
-  statusBox.textContent = "Čekám na odpověď...";
+  statusBox.textContent = "Čekám na odpověď od " + sModel.split('|')[0] + " ...";
 
   sPrefix = sPrefix.replaceAll(/[\u0000-\u001F]/g, "");
   sPrefix = sPrefix.replaceAll('   ',' ').replaceAll('  ',' ');
   
   dctBody = { prefix: sPrefix,
-              prompt: userInput.value.trim(),
-              service: modelSelect.value}  
+              prompt: sPrompt,
+              service: sModel}  
   jsonBody = JSON.stringify(dctBody);
 
   const r = await fetch(
@@ -86,29 +216,41 @@ async function fAsk(sPrefix) {
   
   // const data = await r.json();
   if (!r.ok) {
-    answerBox.textContent = 'Error: ' + r.status + ' ' + r.statusText;
-    priceEl.textContent = '-- hal';
-    return;
+    // answerBox.textContent = 'Error: ' + r.status + ' ' + r.statusText;
+    // priceEl.textContent = '-- hal';
+    return '[{"Error": "' + r.status + ' ' + r.statusText + '"}]';
   }
   const data = await r.json();
   //alert('after json');
+  return data;
 
 x=0
   
 }
 
+function fRandomMovies(iCount = 10) {
+  const lxdRandom10 = fGetRandomItems(lxdMovies, iCount);
+
+  const cardsWrap = document.getElementById("cardsWrap");
+  cardsWrap.innerHTML = "";
+  statusBox.textContent = "Náhodně vybráno " + lxdRandom10.length + " filmů/seriálů.";
+  userInput.value = "";
+  localStorage.removeItem('sPrompt');
+  lxdRandom10.forEach(dctMovie => {
+    cardsWrap.appendChild(fCreateMovieCard(dctMovie));
+  });}
+
+
 async function main() {
   lxdMovies = await fLoadMovies();
   // lxdMovies = lxdMovies.filter(fIsUsableMovie);
 
-  const lxdRandom10 = fGetRandomItems(lxdMovies, 10);
+  if (userInput.value.trim()) {
+    fSearchMovies();
+  } else {
+    fRandomMovies();
+  }
 
-  const cardsWrap = document.getElementById("cardsWrap");
-  cardsWrap.innerHTML = "";
-
-  lxdRandom10.forEach(dctMovie => {
-    cardsWrap.appendChild(fCreateMovieCard(dctMovie));
-  });
 }
 
 async function fLoadMovies() {
@@ -142,6 +284,15 @@ function fCreateMovieCard(dctMovie) {
   const card = document.createElement("div");
   card.className = "movie-card";
 
+  let sMovieSeries = ''
+  if (dctMovie.sType ==='m'){
+    sMovieSeries = 'Film';
+  } else if (dctMovie.sType ==='s' && dctMovie.sSeries>0) {
+    sMovieSeries = `Seriál (${dctMovie.sSeries} série/í, ${dctMovie.sEpisodes} epizod)`;
+  } else if (dctMovie.sType ==='s' && dctMovie.sSeries===0) {
+    sMovieSeries = `Seriál (${dctMovie.sEpisodes} epizod)`;  
+  };
+  sMovieSeries = sMovieSeries.replaceAll('.0','')
   const sPoster = dctMovie.urlPoster || "";
   const sTitle = dctMovie.sTitle || "";
   const sCountry = dctMovie.sCountry || "";
@@ -150,8 +301,9 @@ function fCreateMovieCard(dctMovie) {
   const sDirector = dctMovie.sDirector || "";
   const sAuthor = dctMovie.sAuthor || "";
   const sActor = dctMovie.sActor || "";
-  const sAward = dctMovie.sAward || "";
+  const sAwarded = dctMovie.sAwarded || "";
   const sStory = dctMovie.sStory || "";
+  const iRuntime = dctMovie.iRuntime || 0;
 
   const posterWrap = document.createElement("div");
   posterWrap.className = "poster-wrap";
@@ -171,14 +323,16 @@ function fCreateMovieCard(dctMovie) {
   const colMeta = document.createElement("div");
   colMeta.className = "col-meta";
   colMeta.innerHTML = `
+    ${fMetaLine("", sMovieSeries)}
     <h2 class="movie-title">${fEsc(sTitle)}</h2>
-    ${fMetaLine("Country", sCountry)}
-    ${fMetaLine("Genre", sGenre)}
-    ${fMetaLine("Year", iYear)}
-    ${fMetaLine("Director", sDirector)}
-    ${fMetaLine("Author", sAuthor)}
-    ${fMetaLine("Actor", sActor)}
-    ${fMetaLine("Award", sAward)}
+    ${fMetaLine("Země:", sCountry)}
+    ${fMetaLine("Žánr:", sGenre)}
+    ${fMetaLine("Rok:", iYear)}
+    ${fMetaLine("Konec:", fGetEndTime(iRuntime))}
+    ${fMetaLine("Režisér:", sDirector)}
+    ${fMetaLine("Autor:", sAuthor)}
+    ${fMetaLine("Herec:", sActor)}
+    ${fMetaLine("Ocenění:", sAwarded)}
   `;
 
   const colStory = document.createElement("div");
@@ -193,11 +347,19 @@ function fCreateMovieCard(dctMovie) {
 
   // placeholder links; later you can generate your own
   const sMovieQuery = encodeURIComponent(dctMovie.sTitle + " dabing " + iYear);
-  // const urlCSFD = dctMovie.urlCsfd || `https://www.csfd.cz/hledat/?q=${sMovieQuery}`;
+  const sTitleEnc = encodeURIComponent(dctMovie.sTitle);
+  const sTitleEnEnc = encodeURIComponent(dctMovie.sTitle_EN);
+  let ulrFilmLocations = 
+    dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
+      `https://www.filmovamista.cz/vyhledavani?q=${sTitleEnc}&submint=Hledat` : 
+      `https://www.reelstreets.com/?s=${sTitleEnEnc}`;
+  
   const lstLinks = [
+    { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
+    { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery },
     { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
-    { sName: "Sledujte.to", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
-    { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery }
+    { sName: "Film. místa", sUrl: ulrFilmLocations },
+  
   ];
 
   lstLinks.forEach(dctLink => {
@@ -227,7 +389,7 @@ function fMetaLine(sLabel, sValue) {
 
   return `
     <p class="meta-line">
-      <span class="meta-label">${fEsc(sLabel)}:</span>
+      <span class="meta-label">${fEsc(sLabel)}</span>
       ${fEsc(String(sValue))}
     </p>
   `;
@@ -253,3 +415,20 @@ main().catch(err => {
     </div>
   `;
 });
+
+function fGetEndTime(iRuntime) {
+  if (iRuntime === 0) {
+    return "--:--";
+  }
+  
+  const now = new Date();
+
+  // add minutes
+  now.setMinutes(now.getMinutes() + parseInt(iRuntime, 10));
+
+  // format HH:MM
+  const hh = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
+
+  return `${hh}:${mm}`;
+}

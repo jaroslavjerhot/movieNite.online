@@ -28,7 +28,7 @@ with open("./data/movies_series.csv", "r", encoding="utf-8-sig", newline="") as 
     lxdMovies = list(reader)
 
 sSep = ', '    
-for dctMovie in lxdMovies:
+for i, dctMovie in enumerate(lxdMovies):
     # remap country to group
     dctMovie["sCountry"] = dctMovie["sCountry"].replace(' / ', sSep)
     if 'Německ' in dctMovie["sCountry"] and 'Německo' not in dctMovie["sCountry"]:
@@ -52,7 +52,11 @@ for dctMovie in lxdMovies:
 
     # unaccent title
     dctMovie["sTitleUnaccent"] = fNormalize(dctMovie["sTitle"])
+    
+    lxdMovies[i] = dctMovie
 
 
 with open("./data/movies_series.json", "w", encoding="utf-8") as f:
     json.dump(lxdMovies, f, ensure_ascii=False)
+
+pass

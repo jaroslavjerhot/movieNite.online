@@ -33,6 +33,7 @@ body {
   border-radius: 5px;
   margin-top: 10px;
   white-space: pre-wrap;
+  text-align: center;
 }
 .form-control:focus {
   background-color: #2a2a2a;
@@ -212,6 +213,15 @@ body {
 
   .movie-title {
     font-size: 22px;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+  .movie-card {
+    max-width: 90%;   /* almost full width */
+    padding: 16px;    /* more padding for touch */
+    font-size: 16px;  /* slightly bigger text */
   }
 }
 
