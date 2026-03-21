@@ -85,31 +85,56 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return !dctMovie.sCountry.includes('Česko') 
     })}
-  
+    // nahradi zkratky a nazvy zemi
+    let lstPrompt = sPrompt.split(" ")
+    let bNominationOnly = false;
+    lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 1 &&
+      !['na', 'pod', 'nad', 'před', 'po', 'od', 've', 'ke', 'se'].includes(s.toLowerCase()));
+    lstPrompt.forEach((w, i) =>   {
+      if (w.includes('americk')) lstPrompt[i] = 'USA';
+      if (w.includes('britsk')) lstPrompt[i] = 'Velká Británie';
+      if (w.includes('anglick')) lstPrompt[i] = 'Velká Británie';
+      if (w.includes('francouz')) lstPrompt[i] = 'Francie';
+      if (w.slice(-3) === 'ící') lstPrompt[i] = '';
+      if (lstPrompt[i].length>4){
+        lstPrompt[i] = ' ' + fNormalize(lstPrompt[i].slice(0, -1));
+      } else {
+        lstPrompt[i] = ' ' + fNormalize(lstPrompt[i]);
+      }
+      if (w.includes('nomino')) bNominationOnly = true;
+      
+    })
+    lxdFound = lxdFound.filter(dctMovie => {
+      const sNorm = fNormalize(' ' + dctMovie.sCountry + ' ' + dctMovie.sGenre + ' ' + dctMovie.sContinent + ' ' + dctMovie.sNominated + 
+          ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
+          ' ' + dctMovie.sAuthor, false)
+      return lstPrompt.every((w => sNorm.includes(w.toLowerCase()))
 
+    )})
+    x= 0
   // first try to find movies that include the at least two-word prompt anywhere in the title
-  if (iWords == 1) {
-    let sPromptUnaccent = fNormalize(sPrompt);
-    lxdFound = lxdFound.filter(dctMovie => {
-      return dctMovie.sTitleUnaccent.includes(sPromptUnaccent) ||
-        fNormalize(
-          dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + dctMovie.sActor + 
-          dctMovie.sAuthor, false).includes(sPromptUnaccent)
-    })}
-  else if (iWords == 2) {
-    const sWord1 = fNormalize(sPrompt.split(" ")[0]);
-    const sWord2 = fNormalize(sPrompt.split(" ")[1]);
-    lxdFound = lxdFound.filter(dctMovie => {
-        const sNorm = fNormalize(
-          dctMovie.sTitle + dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + 
-          dctMovie.sActor + dctMovie.sAuthor, false);
-        return (sNorm.includes(sWord1 + ' ' + sWord2) || sNorm.includes(sWord2 + ' ' + sWord1))
-    })}  
-  else{
-    let sPromptUnaccent = fNormalize(sPrompt);
-    lxdFound = lxdFound.filter(dctMovie => {
-      return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)
-    })}
+  // if (iWords == 1) {
+  //   let sPromptUnaccent = fNormalize(sPrompt);
+  //   lxdFound = lxdFound.filter(dctMovie => {
+  //     return dctMovie.sTitleUnaccent.includes(sPromptUnaccent) ||
+  //       fNormalize(
+  //         dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + dctMovie.sActor + 
+  //         dctMovie.sAuthor, false).includes(sPromptUnaccent)
+  //   })}
+  // else if (iWords == 2) {
+  //   const sWord1 = fNormalize(sPrompt.split(" ")[0]);
+  //   const sWord2 = fNormalize(sPrompt.split(" ")[1]);
+  //   lxdFound = lxdFound.filter(dctMovie => {
+  //       const sNorm = fNormalize(
+  //         dctMovie.sTitle + dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + 
+  //         dctMovie.sActor + dctMovie.sAuthor, false);
+  //       return (sNorm.includes(sWord1 + ' ' + sWord2) || sNorm.includes(sWord2 + ' ' + sWord1))
+  //   })}  
+  // else{
+  //   let sPromptUnaccent = fNormalize(sPrompt);
+  //   lxdFound = lxdFound.filter(dctMovie => {
+  //     return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)
+  //   })}
   
     // if nothing found or too many results, 
   // if (lxdFound.length === 0 || lxdFound.length > 1) {
@@ -301,7 +326,7 @@ function fCreateMovieCard(dctMovie) {
   const sDirector = dctMovie.sDirector || "";
   const sAuthor = dctMovie.sAuthor || "";
   const sActor = dctMovie.sActor || "";
-  const sAwarded = dctMovie.sAwarded || "";
+  const sAwarded = dctMovie.sAwarded.replaceAll('<br>', '\n') || "";
   const sStory = dctMovie.sStory || "";
   const iRuntime = dctMovie.iRuntime || 0;
 
@@ -337,7 +362,7 @@ function fCreateMovieCard(dctMovie) {
 
   const colStory = document.createElement("div");
   colStory.className = "col-story";
-  colStory.innerHTML = `<p class="story-text">${fEsc(sStory)}</p>`;
+  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,1000))}</p>`;
 
   const colLinks = document.createElement("div");
   colLinks.className = "col-links";
