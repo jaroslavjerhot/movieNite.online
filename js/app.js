@@ -418,7 +418,10 @@ function fCreateMovieCard(dctMovie) {
   linksBox.className = "links-box";
 
   // placeholder links; later you can generate your own
-  const sMovieQuery = encodeURIComponent(dctMovie.sTitle + " dabing " + iYear);
+  let sMovieQuery = 
+    dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
+        encodeURIComponent(dctMovie.sTitle + " " + iYear) :
+        encodeURIComponent(dctMovie.sTitle + " dabing " + iYear);
   const sTitleEnc = encodeURIComponent(dctMovie.sTitle);
   const sTitleEnEnc = encodeURIComponent(dctMovie.sTitle_EN);
   let ulrFilmLocations = 
@@ -431,8 +434,33 @@ function fCreateMovieCard(dctMovie) {
     { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery },
     { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
     { sName: "Film. místa", sUrl: ulrFilmLocations },
-  
   ];
+
+  const dctPlatforms= {
+    "ceskatelevize.cz": "iVysilani",
+    "iprima.cz": "iPrima",
+    "voyo.cz": "Voyo",
+    "netflix.com": "Netflix",
+    "primevideo.com": "Amazon",
+    "hbomax.com": "HBO",
+    "tv.apple.com": "Apple",
+    "disneyplus.com": "Disney+",
+    "skyshowtime.com": "SkyShowtime",
+    "canalplus.com": "Canal+",
+    "lepší.tv": "lepší.tv",}
+
+  lstMoviePlatforms = dctMovie.sPlatforms.split("<br>")
+
+  Object.keys(dctPlatforms).forEach(domain => {
+    bFound = false
+    lstMoviePlatforms.forEach(p => { 
+      if (p.toLowerCase().includes(domain) && !bFound) {
+        lstLinks.push({ sName: dctPlatforms[domain], sUrl: p.trim() });
+        bFound = true;
+      }
+    });
+  });
+
 
   lstLinks.forEach(dctLink => {
     const a = document.createElement("a");

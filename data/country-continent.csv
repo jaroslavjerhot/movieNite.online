@@ -1,78 +1,79 @@
-﻿sCountry;sFormerCountry;sContinent
-Alžírsko;;Afrika
-Argentina;;Jižní Amerika
-Austrálie;;Austrálie
-Belgie;;Evropa
-Bělorusko;SSSR;Evropa
-Bosna a Hercegovina;Jugoslávie;Evropa
-Brazílie;;Jižní Amerika
-Bulharsko;;Evropa
-Česko;ČS;Evropa
-Československo;ČS;Evropa
-Čína;;Asie
-Dánsko;;Evropa
-Demokratická republika Kongo;;Afrika
-Egypt;;Afrika
-Estonsko;SSSR;Evropa
-Fed. rep. Jugoslávie;Jugoslávie;Evropa
-Filipíny;;Asie
-Finsko;;Evropa
-Francie;;Evropa
-Ghana;;Afrika
-Gruzie;SSSR;Asie
-Hongkong;;Asie
-Chile;;Jižní Amerika
-Indie;;Asie
-Indonésie;;Asie
-Írán;;Asie
-Irsko;;Evropa
-Island;;Evropa
-Itálie;;Evropa
-Izrael;;Evropa
-Japonsko;;Asie
-Jihoafrická republika;;Afrika
-Jižní Korea;;Asie
-Jordánsko;;Asie
-Jugoslávie;Jugoslávie;Evropa
-Kambodža;;Asie
-Kanada;;Severní Amerika
-Kolumbie;;Jižní Amerika
-Libanon;;Asie
-Litva;SSSR;Evropa
-Lotyšsko;SSSR;Evropa
-Lucembursko;;Evropa
-Maďarsko;;Evropa
-Malajsie;;Asie
-Mexiko;;Severní Amerika
-Mongolsko;;Asie
-Německá říše;Německo;Evropa
-Německo;Německo;Evropa
-Nizozemsko;;Evropa
-Norsko;;Evropa
-Nový Zéland;;Austrálie
-Panama;;Jižní Amerika
-Polsko;;Evropa
-Protektorát Čechy a Morava;ČS;Evropa
-Rakousko;;Evropa
-Rumunsko;;Evropa
-Rusko;SSSR;Evropa
-Řecko;;Evropa
-Saúdská Arábie;;Asie
-Singapur;;Asie
-Slovensko;ČS;Evropa
-Slovinsko;Jugoslávie;Evropa
-Sovětský svaz;SSSR;Evropa
-Spojené arabské emiráty;;Asie
-Srbsko;Jugoslávie;Evropa
-Španělsko;;Evropa
-Švédsko;;Evropa
-Švýcarsko;;Evropa
-Thajsko;;Asie
-Tchaj-wan;;Asie
-Turecko;;Asie
-Uganda;;Afrika
-Ukrajina;SSSR;Evropa
-USA;;Severní Amerika
-Velká Británie;;Evropa
-Východní Německo;Německo;Evropa
-Západní Německo;Německo;Evropa
+﻿sCountry;sFormerCountry;sContinent;
+Alžírsko;;Afrika;alžírs
+Argentina;;Jižní Amerika;argentinsk
+Austrálie;;Austrálie;australsk
+Belgie;;Evropa;belgick
+Bělorusko;SSSR;Evropa;bělorusk
+Bosna a Hercegovina;Jugoslávie;Evropa;
+Brazílie;;Jižní Amerika;brazilsk
+Bulharsko;;Evropa;bulharsk
+Česko;ČS;Evropa;česk
+Československo;ČS;Evropa;československ
+Čína;;Asie;čínsk
+Dánsko;;Evropa;dánsk
+Demokratická republika Kongo;;Afrika;konžsk
+Egypt;;Afrika;egyptsk
+Estonsko;SSSR;Evropa;estonsk
+Fed. rep. Jugoslávie;Jugoslávie;Evropa;
+Filipíny;;Asie;filipín
+Finsko;;Evropa;finsk
+Francie;;Evropa;francouzs
+Ghana;;Afrika;ghansk
+Gruzie;SSSR;Asie;gruzínsk
+Hongkong;;Asie;hongkon
+Chile;;Jižní Amerika;chilsk
+Indie;;Asie;indick
+Indonésie;;Asie;indonésk
+Írán;;Asie;íránsk
+Irsko;;Evropa;irsk
+Island;;Evropa;islandsk
+Itálie;;Evropa;italsk
+Izrael;;Evropa;izraelsk
+Japonsko;;Asie;japonsk
+Jihoafrická republika;;Afrika;jihoafrick
+Jižní Korea;;Asie;jihokorejsk
+Jordánsko;;Asie;jordánsk
+Jugoslávie;Jugoslávie;Evropa;jugoslávsk
+Kambodža;;Asie;kambodžsk
+Kanada;;Severní Amerika;kanadsk
+Kolumbie;;Jižní Amerika;kolumbijsk
+Libanon;;Asie;libanonsk
+Litva;SSSR;Evropa;litevsk
+Lotyšsko;SSSR;Evropa;lotyšsk
+Lucembursko;;Evropa;lucembursk
+Maďarsko;;Evropa;maďarsk
+Malajsie;;Asie;malajsijsky
+Mexiko;;Severní Amerika;mexick
+Mongolsko;;Asie;mongolsk
+Německá říše;Německo;Evropa;
+Německo;Německo;Evropa;
+Nizozemsko;;Evropa;nizozemsk
+Norsko;;Evropa;norsk
+Nový Zéland;;Austrálie;novozélandsk
+Panama;;Jižní Amerika;panamsk
+Polsko;;Evropa;polsk
+Protektorát Čechy a Morava;ČS;Evropa;
+Rakousko;;Evropa;rakousk
+Rumunsko;;Evropa;rumunsk
+Rusko;SSSR;Evropa;rusk
+Řecko;;Evropa;řeck
+Saúdská Arábie;;Asie;saúdskoarabsk
+Singapur;;Asie;singapursk
+Slovensko;ČS;Evropa;slovensk
+Slovinsko;Jugoslávie;Evropa;slovinsk
+Sovětský svaz;SSSR;Evropa;sovětsk
+Spojené arabské emiráty;;Asie;
+Srbsko;Jugoslávie;Evropa;srbsk
+Španělsko;;Evropa;španělsk
+Švédsko;;Evropa;švédsk
+Švýcarsko;;Evropa;švýcarsk
+Thajsko;;Asie;thajsk
+Tchaj-wan;;Asie;tchajwansk
+Turecko;;Asie;tureck
+Uganda;;Afrika;ugandsk
+Ukrajina;SSSR;Evropa;ukrajinsk
+USA;;Severní Amerika;americk
+Velká Británie;;Evropa;britsk
+Velká Británie;;Evropa;anglick
+Východní Německo;Německo;Evropa;
+Západní Německo;Německo;Evropa;
