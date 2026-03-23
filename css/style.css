@@ -35,6 +35,14 @@ body {
   white-space: pre-wrap;
   text-align: center;
 }
+.rating {
+  font-size: 24px;
+  font-weight: 700;
+  color: #9f9f9f;
+  text-align: center;
+  margin-bottom: 10px;
+
+}
 .form-control:focus {
   background-color: #2a2a2a;
   color: #f1f1f1;
@@ -47,7 +55,7 @@ body {
   border-color: #a5a5a5;
 }
 
-#micBtn {
+#micBtn, #gMailBtn {
   width: 44px;
   height: 44px;
   border: none;

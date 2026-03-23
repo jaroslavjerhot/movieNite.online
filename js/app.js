@@ -26,8 +26,21 @@ if (navigator.userAgent.includes("Windows")) lstDevice.push("Windows");
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  btnSearch.addEventListener('click', () => fSearchMovies());
-  btnRandom.addEventListener('click', () => fRandomMovies());
+  btnSearch.addEventListener('click', () => {
+    document.getElementById("logo").style.display = "none";
+    fSearchMovies();
+  });
+  btnRandom.addEventListener('click', () => {
+    document.getElementById("logo").style.display = "none";
+    fRandomMovies();
+  });
+  const gMailBtn = document.getElementById('gMailBtn');
+  gMailBtn.addEventListener('click', () => {
+    window.open('https://mail.google.com/mail/u/0/#inbox', '_blank'); 
+
+    // Add your Gmail button functionality here
+  });
+
   userInput.textContent = localStorage.getItem('sPrompt') || "";
   
 });
@@ -51,11 +64,19 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   localStorage.setItem('sPrompt', sPrompt);
 
   if (!sPrompt) {
-    alert("Please enter a search query.");
+    // alert("Please enter a search query.");
+    statusBox.textContent = "Nebylo zadáno žádné hledání.";
     return;
   }
   
   let lxdFound = lxdMovies;
+
+  if (iWords > 2) {    
+    let sPromptUnaccent = fNormalize(sPrompt);
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)})
+     fCreateCards(lxdFound)
+     return;}
 
   // series/movies
   if ((' ' + sPrompt.toLowerCase()).includes(" film")) {
@@ -111,7 +132,9 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
       return lstPrompt.every((w => sNorm.includes(w.toLowerCase()))
 
     )})
-    x= 0
+
+    fCreateCards(lxdFound);
+    
   // first try to find movies that include the at least two-word prompt anywhere in the title
   // if (iWords == 1) {
   //   let sPromptUnaccent = fNormalize(sPrompt);
@@ -143,16 +166,33 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   //   return;
   // }
   
-  statusBox.textContent = "Nalezeno " + lxdFound.length + " filmů/seriálů.";
 
+
+}
+
+function fCreateCards(lxdFound, sOrderCol = 'random', bAscending = true ) {
+  
+  if (sOrderCol == 'random') {
+    lxdFound = fShuffle(lxdFound);
+  }
+
+  cardsWrap.innerHTML = "";  
+  const iMaxToShow = 20;
   if (lxdFound.length === 0) {
-    alert("No movies found for: " + sPrompt);
+    // alert("No movies found for: " + sPrompt);
+    statusBox.textContent = "Nebyly nalezeny žádné filmy/seriály. Zkuste se zeptat jinak.";
     return;
-  } else {
-    cardsWrap.innerHTML = "";
+  } else if (lxdFound.length < iMaxToShow) {
+    statusBox.textContent = "Nalezeno " + lxdFound.length + " filmů/seriálů.";
     lxdFound.forEach(dctMovie => {
-      cardsWrap.appendChild(fCreateMovieCard(dctMovie));
-  });}
+      cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
+    } else {
+    statusBox.textContent = `Nalezeno ${lxdFound.length} filmů/seriálů. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
+    cardsWrap.innerHTML = "";
+    lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
+      cardsWrap.appendChild(fCreateMovieCard(dctMovie))
+    });
+  }
 }
 
 function fProcessAIresponse(lxdFound, sPrompt, jsonReturn) {
@@ -331,6 +371,11 @@ function fCreateMovieCard(dctMovie) {
   const iRuntime = dctMovie.iRuntime || 0;
 
   const posterWrap = document.createElement("div");
+  const rating = document.createElement("div");
+  rating.className = "rating";
+  
+  rating.textContent = dctMovie.iRating ? dctMovie.iRating.split(',')[0]/10 + '/10' : "";
+
   posterWrap.className = "poster-wrap";
 
   const img = document.createElement("img");
@@ -343,6 +388,8 @@ function fCreateMovieCard(dctMovie) {
   `);
   img.alt = sTitle;
 
+  posterWrap.appendChild(rating);
+  
   posterWrap.appendChild(img);
 
   const colMeta = document.createElement("div");
@@ -362,10 +409,10 @@ function fCreateMovieCard(dctMovie) {
 
   const colStory = document.createElement("div");
   colStory.className = "col-story";
-  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,1000))}</p>`;
+  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,800))}</p>`;
 
-  const colLinks = document.createElement("div");
-  colLinks.className = "col-links";
+  // const colLinks = document.createElement("div");
+  // colLinks.className = "col-links";
 
   const linksBox = document.createElement("div");
   linksBox.className = "links-box";
@@ -397,12 +444,13 @@ function fCreateMovieCard(dctMovie) {
     linksBox.appendChild(a);
   });
 
-  colLinks.appendChild(linksBox);
+  // colLinks.appendChild(linksBox);
+  colMeta.appendChild(linksBox);
 
   card.appendChild(posterWrap);
   card.appendChild(colMeta);
   card.appendChild(colStory);
-  card.appendChild(colLinks);
+  //card.appendChild(colLinks);
 
   return card;
 }
@@ -456,4 +504,15 @@ function fGetEndTime(iRuntime) {
   const mm = String(now.getMinutes()).padStart(2, "0");
 
   return `${hh}:${mm}`;
+}
+
+function fShuffle(lst) {
+  const arr = [...lst]; // copy (don’t modify original)
+
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return arr;
 }
