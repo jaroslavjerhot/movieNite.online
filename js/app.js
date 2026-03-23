@@ -64,11 +64,36 @@ function fNormalize(s, bRemoveSpaces = true) {
   return result;
 }
 
+function fCutEnding(lstPrompt) {
+  for (const ending in dctEndings) {
+    lstPrompt = lstPrompt.map(s => {
+      if (s.endsWith(ending)) {
+        return s.slice(0, -ending.length) + dctEndings[ending];
+      }
+      return s;
+    });
+  }
+  return lstPrompt;
+}
+
+function fAdjectiveToCountry(lstPrompt) {
+  return lstPrompt.map(s => {
+    if (dctCountryAdjectives[s]) {
+      return dctCountryAdjectives[s];
+    }
+  return s;
+  });
+
+
+
 async function fSearchMovies(sPrompt = userInput.value.trim()) {
   // let sPrompt = userInput.value.trim();
   const iWords = sPrompt.split(" ").length;
   localStorage.setItem('sPrompt', sPrompt);
-
+  let lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 1);
+  lstPrompt = fCutEnding(lstPrompt);
+  lstPrompt = fAdjectiveToCountry(lstPrompt);
+  
   if (!sPrompt) {
     // alert("Please enter a search query.");
     statusBox.textContent = "Nebylo zadáno žádné hledání.";
@@ -113,7 +138,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
       return !dctMovie.sCountry.includes('Česko') 
     })}
     // nahradi zkratky a nazvy zemi
-    let lstPrompt = sPrompt.split(" ")
+    //let lstPrompt = sPrompt.split(" ")
     let bNominationOnly = false;
     lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 1 &&
       !['na', 'pod', 'nad', 'před', 'po', 'od', 've', 'ke', 'se'].includes(s.toLowerCase()));
@@ -420,7 +445,7 @@ function fCreateMovieCard(dctMovie) {
     ${fMetaLine("Země:", sCountry)}
     ${fMetaLine("Žánr:", sGenre)}
     ${fMetaLine("Rok:", iYear)}
-    ${fMetaLine("Konec:", fGetEndTime(iRuntime))}
+    ${fMetaLine("Konec:", `za ${iRuntime} min. ve ${fGetEndTime(iRuntime)}`)}
     ${fMetaLine("Režisér:", sDirector)}
     ${fMetaLine("Autor:", sAuthor)}
     ${fMetaLine("Herec:", sActor)}
