@@ -8,6 +8,8 @@ const awardSelect = document.getElementById('awardSelect');
 const sModel = 'OpenAI|gpt-5.4-nano';
 
 let lxdMovies = [];
+let lxdCountries = [];
+let lxdEndings = [];
   
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
@@ -307,7 +309,10 @@ function fRandomMovies(iCount = 10) {
 
 
 async function main() {
-  lxdMovies = await fLoadMovies();
+  
+  lxdCountries= await fLoadFile('countries.csv');
+  lxdEndings= await fLoadFile('endings.csv');
+  lxdMovies = await fLoadFile('movies_series.json');
   // lxdMovies = lxdMovies.filter(fIsUsableMovie);
 
   if (userInput.value.trim()) {
@@ -318,13 +323,14 @@ async function main() {
 
 }
 
-async function fLoadMovies() {
-  const sMoviesUrl = 'https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/movies_series.json'
-
+async function fLoadFile(sFileName) {
+  const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
+  const sUrl = sBaseUrl + (sFileName || "movies_series.json");
+  
   // sMoviesUrl = "data/movies_series.json"; 
-  const response = await fetch(sMoviesUrl);
+  const response = await fetch(sUrl);
   if (!response.ok) {
-    throw new Error("Cannot load " + sMoviesUrl);
+    throw new Error("Cannot load " + sFileName;
   }
   return await response.json();
   
