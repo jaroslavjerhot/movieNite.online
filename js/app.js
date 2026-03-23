@@ -14,7 +14,7 @@ let lxdCountries = [];
 let lxdEndings = [];
 let dctEndings = {};
 let dctCountryAdjectives = {};
-  
+let dctProverbs = {};  
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
@@ -82,18 +82,27 @@ function fAdjectiveToCountry(lstPrompt) {
       return dctCountryAdjectives[s];
     }
   return s;
+  })};
+
+function fRemoveProverbs(lstPrompt) {
+  return lstPrompt.map(s => {
+    if (dctProverbs[s]) {
+      return '';
+    }
+    return s;
   });
-
-
+} 
 
 async function fSearchMovies(sPrompt = userInput.value.trim()) {
   // let sPrompt = userInput.value.trim();
   const iWords = sPrompt.split(" ").length;
   localStorage.setItem('sPrompt', sPrompt);
   let lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 1);
-  lstPrompt = fCutEnding(lstPrompt);
-  lstPrompt = fAdjectiveToCountry(lstPrompt);
   
+  lstPrompt = fAdjectiveToCountry(lstPrompt);
+  lstPrompt = fCutEnding(lstPrompt);
+  lstPrompt = fRemoveProverbs(lstPrompt);
+
   if (!sPrompt) {
     // alert("Please enter a search query.");
     statusBox.textContent = "Nebylo zadáno žádné hledání.";
@@ -338,20 +347,28 @@ function fRandomMovies(iCount = 10) {
 
 
 async function main() {
-  
+  // countries and continents
   let csvCountries= await fLoadCsv('country-continent.csv');
   lxdCountries = fCsvToLxd(csvCountries);
   dctCountryAdjectives = {};
   lxdCountries.forEach(dct => {
     if (dct.sAdjective) dctCountryAdjectives[dct.sAdjectiv] = dct.sCountry;
   })
-  
+  // endings
   let csvEndings= await fLoadCsv('endings.csv');
   lxdEndings = fCsvToLxd(csvEndings);
   dctEndings = {};
   lxdEndings.forEach(dct => {
     if (dct.sEnding) dctEndings[dct.sEnding] = dct.sReplace;
   })
+// proverbs
+  let csvProverbs= await fLoadCsv('proverbs.csv');
+  let lxdProverbs = fCsvToLxd(csvProverbs);
+  dctProverbs = {};
+  lxdProverbs.forEach(dct => {
+    if (dct.sProverb) dctProverbs[dct.sProverb] = '';
+  });
+  
   lxdMovies = await fLoadJson('movies_series.json');
   // lxdMovies = lxdMovies.filter(fIsUsableMovie);
 
