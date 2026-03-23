@@ -1,4 +1,4 @@
-﻿sCountry;sFormerCountry;sContinent;sAdjectiv
+﻿sCountry;sFormerCountry;sContinent;sAdjective
 Alžírsko;;Afrika;alžírs
 Argentina;;Jižní Amerika;argentinsk
 Austrálie;;Austrálie;australsk
@@ -9,7 +9,7 @@ Brazílie;;Jižní Amerika;brazilsk
 Bulharsko;;Evropa;bulharsk
 Česko;ČS;Evropa;česk
 Československo;ČS;Evropa;československ
-Čína;;Asie;čínsk
+Čína;;Východní Asie;čínsk
 Dánsko;;Evropa;dánsk
 Demokratická republika Kongo;;Afrika;konžsk
 Egypt;;Afrika;egyptsk
@@ -29,9 +29,9 @@ Irsko;;Evropa;irsk
 Island;;Evropa;islandsk
 Itálie;;Evropa;italsk
 Izrael;;Evropa;izraelsk
-Japonsko;;Asie;japonsk
+Japonsko;;Východní Asie;japonsk
 Jihoafrická republika;;Afrika;jihoafrick
-Jižní Korea;;Asie;jihokorejsk
+Jižní Korea;;Východní Asie;jihokorejsk
 Jordánsko;;Asie;jordánsk
 Jugoslávie;Jugoslávie;Evropa;jugoslávsk
 Kambodža;;Asie;kambodžsk
@@ -58,7 +58,7 @@ Rumunsko;;Evropa;rumunsk
 Rusko;SSSR;Evropa;rusk
 Řecko;;Evropa;řeck
 Saúdská Arábie;;Asie;saúdskoarabsk
-Singapur;;Asie;singapursk
+Singapur;;Východní Asie;singapursk
 Slovensko;ČS;Evropa;slovensk
 Slovinsko;Jugoslávie;Evropa;slovinsk
 Sovětský svaz;SSSR;Evropa;sovětsk
@@ -68,7 +68,7 @@ Srbsko;Jugoslávie;Evropa;srbsk
 Švédsko;;Evropa;švédsk
 Švýcarsko;;Evropa;švýcarsk
 Thajsko;;Asie;thajsk
-Tchaj-wan;;Asie;tchajwansk
+Tchaj-wan;;Východní Asie;tchajwansk
 Turecko;;Asie;tureck
 Uganda;;Afrika;ugandsk
 Ukrajina;SSSR;Evropa;ukrajinsk
@@ -77,3 +77,6 @@ Velká Británie;;Evropa;britsk
 Velká Británie;;Evropa;anglick
 Východní Německo;Německo;Evropa;
 Západní Německo;Německo;Evropa;
+Evropa;;;evropský
+Jižní Amerika;;;jihoamerický
+Východní Asie;;;východoasijský

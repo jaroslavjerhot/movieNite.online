@@ -4,9 +4,7 @@ const sOpenAIpricing = 'https://raw.githubusercontent.com/jaroslavjerhot/compAIr
 
 
 async function fLoadCsv(url) {
-    url = url || sButtonsListUrl
-        // const res = await fetch(url)
-        // return await res.text()
+    url = sBaseUrl+url
     const resp = await fetch(url)
     const buffer = await resp.arrayBuffer()
 

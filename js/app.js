@@ -7,9 +7,13 @@ const personSelect = document.getElementById('personSelect');
 const awardSelect = document.getElementById('awardSelect');
 const sModel = 'OpenAI|gpt-5.4-nano';
 
+const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
+  
 let lxdMovies = [];
 let lxdCountries = [];
 let lxdEndings = [];
+let dctEndings = {};
+let dctCountryAdjectives = {};
   
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
@@ -310,9 +314,20 @@ function fRandomMovies(iCount = 10) {
 
 async function main() {
   
-  lxdCountries= await fLoadFile('countries.csv');
-  lxdEndings= await fLoadFile('endings.csv');
-  lxdMovies = await fLoadFile('movies_series.json');
+  let csvCountries= await fLoadCsv('country-continent.csv');
+  lxdCountries = fCsvToLxd(csvCountries);
+  dctCountryAdjectives = {};
+  lxdCountries.forEach(dct => {
+    if (dct.sAdjective) dctCountryAdjectives[dct.sAdjectiv] = dct.sCountry;
+  })
+  
+  let csvEndings= await fLoadCsv('endings.csv');
+  lxdEndings = fCsvToLxd(csvEndings);
+  dctEndings = {};
+  lxdEndings.forEach(dct => {
+    if (dct.sEnding) dctEndings[dct.sEnding] = dct.sReplace;
+  })
+  lxdMovies = await fLoadJson('movies_series.json');
   // lxdMovies = lxdMovies.filter(fIsUsableMovie);
 
   if (userInput.value.trim()) {
@@ -323,14 +338,13 @@ async function main() {
 
 }
 
-async function fLoadFile(sFileName) {
-  const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
+async function fLoadJson(sFileName) {
   const sUrl = sBaseUrl + (sFileName || "movies_series.json");
   
   // sMoviesUrl = "data/movies_series.json"; 
   const response = await fetch(sUrl);
   if (!response.ok) {
-    throw new Error("Cannot load " + sFileName;
+    throw new Error("Cannot load " + sFileName);
   }
   return await response.json();
   
