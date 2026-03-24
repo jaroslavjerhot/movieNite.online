@@ -227,12 +227,22 @@ body {
 } */
 
 /* Mobile landscape */
-@media (max-width: 1100px) and (orientation: landscape) {
+@media (orientation: landscape) {
   .movie-card {
+    display: grid;
     grid-template-columns: 140px 320px 1fr;
-    width: 90%;   /* almost full width */
+    gap: 18px;
+    align-items: start;
+    background: #1b1b1b;
+    border: 1px solid #2b2b2b;
+    border-radius: 18px;
+    padding: 16px;
     padding: 16px;    /* more padding for touch */
     font-size: 16px;  /* slightly bigger text */
+
+  }
+  .poster-wrap {
+    width: 140px;
   }
 }
 

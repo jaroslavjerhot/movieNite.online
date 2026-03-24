@@ -127,7 +127,7 @@ function fCutEnding2(lstPrompt) {
 function fAdjectiveToCountry(lstPrompt) {
   lstPrompt.forEach((s, i) => {
      Object.keys(dctCountryAdjectives).forEach(w => {
-      if (fNormalize(s).includes(fNormalize(w))) {
+      if (s.includes(fNormalize(w)) && !s.includes('_')) {
         lstPrompt[i] = 'country:' + dctCountryAdjectives[w];
       }
     });
@@ -552,7 +552,7 @@ function fCreateMovieCard(dctMovie) {
 
   const dctPlatforms= {
     "netflix.com": "Netflix",
-    "ceskatelevize.cz": "iVysilani",
+    "ceskatelevize.cz/porady": "iVysilani",
     "iprima.cz": "iPrima",
     "voyo.cz": "Voyo",
     "primevideo.com": "Amazon",
