@@ -188,12 +188,12 @@ body {
 /* @media (max-width: 1100px) { */
 @media (orientation: portrait) {
   .movie-card {
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 1fr;
   }
 
   .col-story,
   .col-links {
-    grid-column: 2;
+    grid-column: auto;
   }
 
   .poster-wrap {
@@ -227,7 +227,7 @@ body {
 } */
 
 /* Mobile landscape */
-@media (orientation: landscape) {
+@media (max-width: 1100px) and (orientation: landscape) {
   .movie-card {
     grid-template-columns: 140px 320px 1fr;
     width: 90%;   /* almost full width */
