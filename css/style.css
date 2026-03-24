@@ -105,7 +105,7 @@ body {
 
 .movie-card {
   display: grid;
-  grid-template-columns: 140px 320px 1fr 220px;
+  grid-template-columns: 140px 320px 1fr;
   gap: 18px;
   align-items: start;
   background: #1b1b1b;
@@ -161,6 +161,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 20px;
 }
 
 .link-btn {

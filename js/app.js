@@ -127,7 +127,7 @@ function fCutEnding2(lstPrompt) {
 function fAdjectiveToCountry(lstPrompt) {
   lstPrompt.forEach((s, i) => {
      Object.keys(dctCountryAdjectives).forEach(w => {
-      if (s.includes(w)) {
+      if (fNormalize(s).includes(fNormalize(w))) {
         lstPrompt[i] = 'country:' + dctCountryAdjectives[w];
       }
     });
@@ -166,6 +166,18 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   }
   lxdFound = lxdMovies;
   // jinak se hledá podle jednotlivých slov
+  
+  sPrompt = sPrompt.toLowerCase()
+    .replaceAll('český lev','cesky_lev')
+    .replaceAll('cesky lev','cesky_lev')
+    .replaceAll('zlatá palma','zlata_palma')
+    .replaceAll('zlata palma','zlata_palma')
+    .replaceAll('oskar','oscar')
+    // .replaceAll('oscar','academy_awards')
+    .replaceAll('zlaty globus','golden_globe')
+    
+    
+  
   let lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 0);
   
   lstPrompt = fAdjectiveToCountry(lstPrompt);
@@ -175,15 +187,17 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   lstPrompt = lstPrompt.map(s => ' ' +  fNormalize(s));
 
   sPromptUnaccent =  ' ' +lstPrompt.join('');
-  
+  let sType = null;
   // series/movies
   if ((sPromptUnaccent).includes(" film")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("film", "");
+    sType = 'm';
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 'm' 
     })}
   if ((sPromptUnaccent).includes(" serial")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("serial", "");
+    sType = 's';
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 's' 
     })}
@@ -215,47 +229,60 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     })}
 
     lstPrompt = sPromptUnaccent.split(" ").map(s => s.trim()).filter(s => s.length > 2);
-
+    lstPrompt = [...new Set(lstPrompt.map(s => s.replaceAll('_',' ')))];
 
   
     lxdFound = lxdFound.filter(dctMovie => {
       const sNorm = fNormalize(' country:' + dctMovie.sCountry + ' country:' + dctMovie.sContinent + ' ' + dctMovie.sGenre + ' ' + dctMovie.sNominated + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
-          ' ' + dctMovie.sAuthor, false)
-      return lstPrompt.every((w => sNorm.includes(w.toLowerCase()))
+          ' ' + dctMovie.sAuthor + ' ' + dctMovie.sNominated + ' ' + dctMovie.sAwarded, false)
+      // if (dctMovie.sTitleUnaccent.includes('ostresledovane')) {
+      //   x = 0;
+      // }
+      return lstPrompt.every(w => sNorm.includes(w))})
 
-    )})
-
-    fCreateCards(lxdFound);
+    fCreateCards(lxdFound, 'random', true, sType);
   
 
 
 }
 
-function fCreateCards(lxdFound, sOrderCol = 'random', bAscending = true ) {
+function fCreateCards(lxdFound, sOrderCol = 'random', bAscending = true, sType = null) {
   
   if (sOrderCol == 'random') {
     lxdFound = fShuffle(lxdFound);
   }
 
+  switch (sType) {
+    case 'm':
+      sFS = 'filmy';
+      break;
+    case 's':
+      sFS = 'seriály';
+      break;
+    default:
+      sFS = 'filmy/seriály';
+    }
+  sFS2 = sFS.replaceAll('y','ů');
+
   cardsWrap.innerHTML = "";  
   const iMaxToShow = 20;
   if (lxdFound.length === 0) {
-    statusBox.textContent = "Nebyly nalezeny žádné filmy/seriály. Zkuste se zeptat jinak.";
+    statusBox.textContent = `Nebyly nalezeny žádné ${sFS}. Zkuste se zeptat jinak.`;
     return;
   } else if (lxdFound.length <= iMaxToShow) {
-    statusBox.textContent = "Nalezeno " + lxdFound.length + " filmů/seriálů.";
+    statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}.`;
     lxdFound.forEach(dctMovie => {
       cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
     } else {
-    statusBox.textContent = `Nalezeno ${lxdFound.length} filmů/seriálů. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
+    statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
     lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
       cardsWrap.appendChild(fCreateMovieCard(dctMovie))
     });
   }
 }
 
-function fProcessAIresponse(lxdFound, sPrompt, jsonReturn) {
+function fProcessAIresponse_smaz(lxdFound, sPrompt, jsonReturn) {
   if (!jsonReturn || !jsonReturn.sAnswer) {
     statusBox.textContent = "Odpověď od AI neobsahuje očekávaná data.";
     return false;
@@ -313,7 +340,7 @@ function fProcessAIresponse(lxdFound, sPrompt, jsonReturn) {
   
 
 
-async function fAsk(sPrefix, sPrompt = userInput.value.trim()) {
+async function fAsk_smaz(sPrefix, sPrompt = userInput.value.trim()) {
 
   // const prompt = document.getElementById("q").value;
   //alert(prompt);
@@ -436,7 +463,7 @@ function fCreateMovieCard(dctMovie) {
     sMovieSeries = 'Film';
   } else if (dctMovie.sType ==='s' && dctMovie.sSeries>0) {
     sMovieSeries = `Seriál (${dctMovie.sSeries} série/í, ${dctMovie.sEpisodes} epizod)`;
-  } else if (dctMovie.sType ==='s' && dctMovie.sSeries===0) {
+  } else if (dctMovie.sType ==='s') {
     sMovieSeries = `Seriál (${dctMovie.sEpisodes} epizod)`;  
   };
   sMovieSeries = sMovieSeries.replaceAll('.0','')
@@ -475,7 +502,7 @@ function fCreateMovieCard(dctMovie) {
   
   posterWrap.appendChild(img);
 
-  sOdhadem = iRuntime ? "odhadem " : "";
+  sOdhadem = iRuntime ? "" : "odhadem ";
   iRuntime = iRuntime ? iRuntime : '60';
  
 
@@ -496,7 +523,7 @@ function fCreateMovieCard(dctMovie) {
 
   const colStory = document.createElement("div");
   colStory.className = "col-story";
-  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,800))}</p>`;
+  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,1200))}</p>`;
 
   // const colLinks = document.createElement("div");
   // colLinks.className = "col-links";
@@ -560,7 +587,7 @@ function fCreateMovieCard(dctMovie) {
   });
 
   // colLinks.appendChild(linksBox);
-  colMeta.appendChild(linksBox);
+  colStory.appendChild(linksBox);
 
   card.appendChild(posterWrap);
   card.appendChild(colMeta);
