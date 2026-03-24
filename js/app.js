@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   userInput.textContent = localStorage.getItem('sPrompt') || "";
+
+  const scrollControls = fCreateScrollControls();
+  document.body.appendChild(scrollControls);
   
 });
 
@@ -184,7 +187,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   lstPrompt = fCutEnding2(lstPrompt);
   lstPrompt = fRemoveProverbs(lstPrompt);
   lstPrompt = [...new Set(lstPrompt.filter(Boolean))];
-  lstPrompt = lstPrompt.map(s => ' ' +  fNormalize(s));
+  lstPrompt = lstPrompt.map(s => ' ' +  fNormalize(s, false) + ' ');
 
   sPromptUnaccent =  ' ' +lstPrompt.join('');
   let sType = null;
@@ -233,12 +236,13 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
 
   
     lxdFound = lxdFound.filter(dctMovie => {
-      const sNorm = fNormalize(' country:' + dctMovie.sCountry + ' country:' + dctMovie.sContinent + ' ' + dctMovie.sGenre + ' ' + dctMovie.sNominated + 
+      const sNorm = fNormalize(' country:' + dctMovie.sCountry + ' country:' + dctMovie.sContinent + 
+          ' ' + dctMovie.sTitle + ' ' + dctMovie.sTitle_EN + ' ' + dctMovie.sGenre + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
           ' ' + dctMovie.sAuthor + ' ' + dctMovie.sNominated + ' ' + dctMovie.sAwarded, false)
-      // if (dctMovie.sTitleUnaccent.includes('ostresledovane')) {
-      //   x = 0;
-      // }
+      if (dctMovie.sTitleUnaccent.includes('elitnijednotka')) {
+         x = 0;
+      }
       return lstPrompt.every(w => sNorm.includes(w))})
 
     fCreateCards(lxdFound, 'random', true, sType);
@@ -496,11 +500,38 @@ function fCreateMovieCard(dctMovie) {
     </svg>
   `);
   img.alt = sTitle;
+  // img.onclick = () => fScrollNext(card);
 
+  const scrollBox = document.createElement("div");
+  scrollBox.className = "links-box";
+  const btnPrev = document.createElement("button");
+      btnPrev.className = "scroll-btn";
+      btnPrev.title = "Scroll up";
+      btnPrev.innerHTML = `
+      <svg viewBox="0 0 24 24" class="icon">
+        <path d="M7 14l5-5 5 5" />
+      </svg>`;
+      btnPrev.onclick = () => fScrollToNextCard(card, -1);
+  scrollBox.appendChild(btnPrev);
+
+  
+
+  const btnNext = document.createElement("button");
+    btnNext.className = "scroll-btn";
+    btnNext.title = "Scroll down";
+    btnNext.innerHTML = `
+    <svg viewBox="0 0 24 24" class="icon">
+      <path d="M7 10l5 5 5-5" />
+    </svg>`;
+    btnNext.onclick = () => fScrollToNextCard(card, 1);
+  scrollBox.appendChild(btnNext);
+
+  
 
   posterWrap.appendChild(rating);
-  
   posterWrap.appendChild(img);
+  posterWrap.appendChild(scrollBox);
+  
 
   sOdhadem = iRuntime ? "" : "odhadem ";
   iRuntime = iRuntime ? iRuntime : '60';
@@ -593,7 +624,6 @@ function fCreateMovieCard(dctMovie) {
   card.appendChild(colMeta);
   card.appendChild(colStory);
   //card.appendChild(colLinks);
-
   return card;
 }
 
@@ -659,4 +689,76 @@ function fShuffle(lst) {
   }
 
   return arr;
+}
+
+function fScrollToNextCard(card, multiplier = 1) {
+  const gap = parseInt(getComputedStyle(card.parentElement).gap) || 0;
+  const height = card.offsetHeight + gap;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+  if (height < maxScroll) {
+  
+    window.scrollBy({
+      top: height * multiplier,
+      behavior: "smooth"
+  })};
+}
+
+const cardsWrap = document.getElementById("cardsWrap");
+
+function fScrollNext() {
+  const cards = [...document.querySelectorAll(".movie-card")];
+  const scrollTop = cardsWrap.scrollTop;
+
+  const next = cards.find(c => c.offsetTop > scrollTop + 500);
+  if (next) {
+    next.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function fScrollPrev() {
+  const cards = [...document.querySelectorAll(".movie-card")];
+  const scrollTop = cardsWrap.scrollTop;
+
+  const prev = [...cards].reverse().find(c => c.offsetTop < scrollTop - 500);
+  if (prev) {
+    prev.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function fCreateScrollControls() {
+  const container = document.createElement("div");
+  container.className = "scroll-controls";
+
+  // --- UP BUTTON ---
+  const btnUp = document.createElement("button");
+  btnUp.className = "scroll-btn";
+  btnUp.title = "Scroll up";
+
+  btnUp.innerHTML = `
+    <svg viewBox="0 0 24 24" class="icon">
+      <path d="M7 14l5-5 5 5" />
+    </svg>
+  `;
+
+  // --- DOWN BUTTON ---
+  const btnDown = document.createElement("button");
+  btnDown.className = "scroll-btn";
+  btnDown.title = "Scroll down";
+
+  btnDown.innerHTML = `
+    <svg viewBox="0 0 24 24" class="icon">
+      <path d="M7 10l5 5 5-5" />
+    </svg>
+  `;
+
+  // --- EVENTS ---
+  btnUp.onclick = () => fScrollPrev();
+  btnDown.onclick = () => fScrollNext();
+
+  // --- APPEND ---
+  container.appendChild(btnUp);
+  container.appendChild(btnDown);
+
+  return container;
 }
