@@ -128,7 +128,7 @@ function fAdjectiveToCountry(lstPrompt) {
   lstPrompt.forEach((s, i) => {
      Object.keys(dctCountryAdjectives).forEach(w => {
       if (s.includes(w)) {
-        lstPrompt[i] = 'country: ' + dctCountryAdjectives[w];
+        lstPrompt[i] = 'country:' + dctCountryAdjectives[w];
       }
     });
   });
@@ -198,6 +198,11 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sGenre.toLowerCase().includes('krimi')  
     })}
+  if ((sPromptUnaccent).includes(" scifi")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("scifi", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sGenre.toLowerCase().includes('sci-fi')  
+    })}
   if ((sPromptUnaccent).includes(" kreslen")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("kreslen", "");
     lxdFound = lxdFound.filter(dctMovie => {
@@ -214,7 +219,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
 
   
     lxdFound = lxdFound.filter(dctMovie => {
-      const sNorm = fNormalize('country:' + dctMovie.sCountry + 'continent:' + dctMovie.sContinent + ' ' + dctMovie.sGenre + ' ' + dctMovie.sNominated + 
+      const sNorm = fNormalize(' country:' + dctMovie.sCountry + ' country:' + dctMovie.sContinent + ' ' + dctMovie.sGenre + ' ' + dctMovie.sNominated + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
           ' ' + dctMovie.sAuthor, false)
       return lstPrompt.every((w => sNorm.includes(w.toLowerCase()))
@@ -470,6 +475,7 @@ function fCreateMovieCard(dctMovie) {
   
   posterWrap.appendChild(img);
 
+  sOdhadem = iRuntime ? "odhadem " : "";
   iRuntime = iRuntime ? iRuntime : '60';
  
 
@@ -481,7 +487,7 @@ function fCreateMovieCard(dctMovie) {
     ${fMetaLine("Země:", sCountry)}
     ${fMetaLine("Žánr:", sGenre)}
     ${fMetaLine("Rok:", iYear)}
-    ${fMetaLine("Konec:", `za ${iRuntime} min. ve ${fGetEndTime(iRuntime)}`.replace('.0',''))}
+    ${fMetaLine("Konec:", `${sOdhadem}za ${iRuntime} min. ve ${fGetEndTime(iRuntime)}`.replace('.0',''))}
     ${fMetaLine("Režisér:", sDirector)}
     ${fMetaLine("Autor:", sAuthor)}
     ${fMetaLine("Herec:", sActor)}
