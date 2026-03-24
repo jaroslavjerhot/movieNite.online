@@ -228,6 +228,7 @@ body {
 /* Mobile landscape */
 @media (max-width: 2000px) and (orientation: landscape) {
   .movie-card {
+    grid-template-columns: 120px 280px 1fr;
     width: 90%;   /* almost full width */
     padding: 16px;    /* more padding for touch */
     font-size: 16px;  /* slightly bigger text */
