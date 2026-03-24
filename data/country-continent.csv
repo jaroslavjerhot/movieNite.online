@@ -4,17 +4,17 @@ Argentina;;Jižní_Amerika;argentinsk
 Austrálie;;Austrálie;australsk
 Belgie;;Evropa;belgick
 Bělorusko;SSSR;Evropa;bělorusk
-Bosna a Hercegovina;Jugoslávie;Evropa;
+Bosna_a_Hercegovina;Jugoslávie;Evropa;
 Brazílie;;Jižní_Amerika;brazilsk
 Bulharsko;;Evropa;bulharsk
 Česko;ČS;Evropa;česk
 Československo;ČS;Evropa;československ
 Čína;;Východní_Asie;čínsk
 Dánsko;;Evropa;dánsk
-Demokratická republika Kongo;;Afrika;konžsk
+Demokratická_republika_Kongo;;Afrika;konžsk
 Egypt;;Afrika;egyptsk
 Estonsko;SSSR;Evropa;estonsk
-Fed. rep. Jugoslávie;Jugoslávie;Evropa;
+Fed._rep._Jugoslávie;Jugoslávie;Evropa;
 Filipíny;;Asie;filipín
 Finsko;;Evropa;finsk
 Francie;;Evropa;francouzs
@@ -30,8 +30,8 @@ Island;;Evropa;islandsk
 Itálie;;Evropa;italsk
 Izrael;;Evropa;izraelsk
 Japonsko;;Východní_Asie;japonsk
-Jihoafrická republika;;Afrika;jihoafrick
-Jižní Korea;;Východní_Asie;jihokorejsk
+Jihoafrická_republika;;Afrika;jihoafrick
+Jižní_Korea;;Východní_Asie;jihokorejsk
 Jordánsko;;Asie;jordánsk
 Jugoslávie;Jugoslávie;Evropa;jugoslávsk
 Kambodža;;Afrika;kambodžsk
@@ -45,24 +45,24 @@ Maďarsko;;Evropa;maďarsk
 Malajsie;;Asie;malajsijsky
 Mexiko;;Severní_Amerika;mexick
 Mongolsko;;Východní_Asie;mongolsk
-Německá říše;Německo;Evropa;
+Německá_říše;Německo;Evropa;
 Německo;Německo;Evropa;
 Nizozemsko;;Evropa;nizozemsk
 Norsko;;Evropa;norsk
-Nový Zéland;;Austrálie;novozélandsk
+Nový_Zéland;;Austrálie;novozélandsk
 Panama;;Jižní_Amerika;panamsk
 Polsko;;Evropa;polsk
-Protektorát Čechy a Morava;ČS;Evropa;
+Protektorát_Čechy_a_Morava;ČS;Evropa;
 Rakousko;;Evropa;rakousk
 Rumunsko;;Evropa;rumunsk
 Rusko;SSSR;Evropa;rusk
 Řecko;;Evropa;řeck
-Saúdská Arábie;;Asie;saúdskoarabsk
+Saúdská_Arábie;;Asie;saúdskoarabsk
 Singapur;;Východní_Asie;singapursk
 Slovensko;ČS;Evropa;slovensk
 Slovinsko;Jugoslávie;Evropa;slovinsk
-Sovětský svaz;SSSR;Evropa;sovětsk
-Spojené arabské emiráty;;Asie;
+Sovětský_svaz;SSSR;Evropa;sovětsk
+Spojené_arabské_emiráty;;Asie;
 Srbsko;Jugoslávie;Evropa;srbsk
 Španělsko;;Evropa;španělsk
 Švédsko;;Evropa;švédsk
@@ -73,10 +73,10 @@ Turecko;;Asie;tureck
 Uganda;;Afrika;ugandsk
 Ukrajina;SSSR;Evropa;ukrajinsk
 USA;;Severní_Amerika;americk
-Velká Británie;;Evropa;britsk
-Velká Británie;;Evropa;anglick
-Východní Německo;Německo;Evropa;
-Západní Německo;Německo;Evropa;
+Velká_Británie;;Evropa;britsk
+Velká_Británie;;Evropa;anglick
+Východní_Německo;Německo;Evropa;
+Západní_Německo;Německo;Evropa;
 Evropa;;;evropsk
 Jižní_Amerika;;;jihoamerick
 Východní_Asie;;;východoasijsk

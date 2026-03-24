@@ -2,6 +2,12 @@ body {
       background-color: #121212;
       color: #f1f1f1;
 }
+/* .main-container {
+  max-width: 90vw;
+  margin: 0 auto;
+  padding: 10px;
+} */
+
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
@@ -128,9 +134,9 @@ body {
 }
 
 .col-meta,
-.col-story,
-.col-links {
-  min-width: 0;
+.col-story
+ {
+  min-width: 100px;
 }
 
 .movie-title {
@@ -230,13 +236,12 @@ body {
 @media (orientation: landscape) {
   .movie-card {
     display: grid;
-    grid-template-columns: 140px 320px 1fr;
+    grid-template-columns: 140px 340px 1fr;
     gap: 18px;
     align-items: start;
     background: #1b1b1b;
     border: 1px solid #2b2b2b;
     border-radius: 18px;
-    padding: 16px;
     padding: 16px;    /* more padding for touch */
     font-size: 16px;  /* slightly bigger text */
 

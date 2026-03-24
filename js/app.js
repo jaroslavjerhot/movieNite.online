@@ -15,6 +15,8 @@ let lxdEndings = [];
 let dctEndings = {};
 let dctCountryAdjectives = {};
 let dctProverbs = {};  
+let lxdFound = [];
+
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
@@ -59,7 +61,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   userInput.textContent = localStorage.getItem('sPrompt') || "";
 
   const scrollControls = fCreateScrollControls();
-  document.body.appendChild(scrollControls);
+  // document.body.appendChild(scrollControls);
+  const sortButtons = fCreateSortButtons(); 
+  document.getElementById('searchBtns').after(sortButtons);
   
 });
 
@@ -155,7 +159,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     return;
   }
 
-  let lxdFound = lxdMovies;
+  lxdFound = lxdMovies;
   const iWords = sPrompt.split(" ").length;
   localStorage.setItem('sPrompt', sPrompt);
   // hleda se presny nazev filmu, pokud je prompt dvouslovny
@@ -246,9 +250,6 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
       return lstPrompt.every(w => sNorm.includes(w))})
 
     fCreateCards(lxdFound, 'random', true, sType);
-  
-
-
 }
 
 function fCreateCards(lxdFound, sOrderCol = 'random', bAscending = true, sType = null) {
@@ -761,4 +762,64 @@ function fCreateScrollControls() {
   container.appendChild(btnDown);
 
   return container;
+}
+
+function fCreateSortButtons() {
+  const div = document.createElement("div");
+  div.className = "d-flex align-items-start gap-2 mb-3";
+  
+
+  const fields = [
+    { key: "iRating", label: "Rating" },
+    { key: "iYear", label: "Rok" },
+    { key: "iRuntime", label: "Délka" },
+    { key: "sTitle", label: "Název" }
+  ];
+
+  fields.forEach(f => {
+    const btn = document.createElement("button");
+    btn.className = "link-btn";
+    btn.textContent = f.label;
+
+    btn.onclick = () => fSortBy(f.key);
+
+    div.appendChild(btn);
+  });
+
+  //document.body.prepend(div); // or append where you want
+  return div
+}
+
+let bSortAsc = true; // toggle direction
+let sLastSortKey = "";
+
+function fSortBy(key) {
+  // toggle direction if same column
+  if (sLastSortKey === key) {
+    bSortAsc = !bSortAsc;
+  } else {
+    bSortAsc = true;
+    sLastSortKey = key;
+  }
+
+  lxdFound.sort((a, b) => {
+    let v1 = a[key];
+    let v2 = b[key];
+
+    // handle numbers stored as strings
+    if (key.startsWith("i")) {
+      v1 = parseFloat(v1) || 0;
+      v2 = parseFloat(v2) || 0;
+    } else {
+      v1 = (v1 || "").toString().toLowerCase();
+      v2 = (v2 || "").toString().toLowerCase();
+    }
+
+    if (v1 < v2) return bSortAsc ? -1 : 1;
+    if (v1 > v2) return bSortAsc ? 1 : -1;
+    return 0;
+  });
+
+  // return(lxdFound); // your existing render function
+  fCreateCards(lxdFound, '', bSortAsc);
 }
