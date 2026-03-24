@@ -40,6 +40,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById("logo").style.display = "none";
     fRandomMovies();
   });
+  userInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      document.getElementById("logo").style.display = "none";
+      
+      fSearchMovies();
+    }
+  });
+
   const gMailBtn = document.getElementById('gMailBtn');
   gMailBtn.addEventListener('click', () => {
     window.open('https://mail.google.com/mail/u/0/#inbox', '_blank'); 
@@ -56,7 +65,7 @@ function fNormalize(s, bRemoveSpaces = true) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replaceAll('y','i')
+    // .replaceAll('y','i')
     .replaceAll('  ',' ');
   if (bRemoveSpaces) {
     result = result.replaceAll(' ','');
@@ -67,8 +76,47 @@ function fNormalize(s, bRemoveSpaces = true) {
 function fCutEnding(lstPrompt) {
   for (const ending in dctEndings) {
     lstPrompt = lstPrompt.map(s => {
-      if (s.endsWith(ending)) {
-        return s.slice(0, -ending.length) + dctEndings[ending];
+      let bCut = false;
+      if (s.endsWith(ending) && !bCut && ending=='y') {
+        s = s.slice(0, -ending.length) + dctEndings[ending];
+        // if (!['a', 'e', 'i', 'o', 'u', 'y', 'á', 'é', 'í', 'ó', 'ů', 'ý'].includes(s.slice(-2,-1))
+        //     && !['a', 'e', 'i', 'o', 'u', 'y', 'á', 'é', 'í', 'ó', 'ů', 'ý'].includes(s.slice(-1))) {
+        //   s = s.slice(0, -2) + 'e' + s.slice(-1);
+        // }
+        bCut = true;
+        return s;
+      }
+      return s;
+    });
+  }
+  return lstPrompt;
+}
+
+function fCutEnding2(lstPrompt) {
+  lstToCut = ['y', 'ý', 'í', 'á', 'é'];
+  lstToCut.forEach(ending => {
+    lstPrompt = lstPrompt.map(s => {
+      let bCut = false; 
+      if (s.endsWith(ending) && !bCut) {
+        s = s.slice(0, -1);
+        bCut = true;
+        return s;
+      }
+      return s;
+    });
+  });
+
+  for (const ending in dctEndings) {
+    lstPrompt = lstPrompt.map(s => {
+      let bCut = false;
+      if (s.endsWith(ending) && !bCut && ending=='y') {
+        s = s.slice(0, -ending.length) + dctEndings[ending];
+        // if (!['a', 'e', 'i', 'o', 'u', 'y', 'á', 'é', 'í', 'ó', 'ů', 'ý'].includes(s.slice(-2,-1))
+        //     && !['a', 'e', 'i', 'o', 'u', 'y', 'á', 'é', 'í', 'ó', 'ů', 'ý'].includes(s.slice(-1))) {
+        //   s = s.slice(0, -2) + 'e' + s.slice(-1);
+        // }
+        bCut = true;
+        return s;
       }
       return s;
     });
@@ -77,96 +125,96 @@ function fCutEnding(lstPrompt) {
 }
 
 function fAdjectiveToCountry(lstPrompt) {
-  return lstPrompt.map(s => {
-    if (dctCountryAdjectives[s]) {
-      return dctCountryAdjectives[s];
-    }
-  return s;
-  })};
-
-function fRemoveProverbs(lstPrompt) {
-  return lstPrompt.map(s => {
-    if (dctProverbs[s]) {
-      return '';
-    }
-    return s;
+  lstPrompt.forEach((s, i) => {
+     Object.keys(dctCountryAdjectives).forEach(w => {
+      if (s.includes(w)) {
+        lstPrompt[i] = 'country: ' + dctCountryAdjectives[w];
+      }
+    });
   });
+  return lstPrompt;
+}
+function fRemoveProverbs(lstPrompt) {
+  lstPrompt.forEach((s, i) => {
+    if (Object.keys(dctProverbs).includes(s)) {
+        lstPrompt[i] = '';
+      }
+    });
+  return lstPrompt;
+
 } 
 
 async function fSearchMovies(sPrompt = userInput.value.trim()) {
   // let sPrompt = userInput.value.trim();
-  const iWords = sPrompt.split(" ").length;
-  localStorage.setItem('sPrompt', sPrompt);
-  let lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 1);
   
-  lstPrompt = fAdjectiveToCountry(lstPrompt);
-  lstPrompt = fCutEnding(lstPrompt);
-  lstPrompt = fRemoveProverbs(lstPrompt);
-
   if (!sPrompt) {
-    // alert("Please enter a search query.");
     statusBox.textContent = "Nebylo zadáno žádné hledání.";
     return;
   }
-  
-  let lxdFound = lxdMovies;
 
+  let lxdFound = lxdMovies;
+  const iWords = sPrompt.split(" ").length;
+  localStorage.setItem('sPrompt', sPrompt);
+  // hleda se presny nazev filmu, pokud je prompt dvouslovny
   if (iWords > 2) {    
     let sPromptUnaccent = fNormalize(sPrompt);
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)})
-     fCreateCards(lxdFound)
-     return;}
+    if (lxdFound.length > 0) { 
+      fCreateCards(lxdFound)
+      return;}
+  }
+  lxdFound = lxdMovies;
+  // jinak se hledá podle jednotlivých slov
+  let lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 0);
+  
+  lstPrompt = fAdjectiveToCountry(lstPrompt);
+  lstPrompt = fCutEnding2(lstPrompt);
+  lstPrompt = fRemoveProverbs(lstPrompt);
+  lstPrompt = [...new Set(lstPrompt.filter(Boolean))];
+  lstPrompt = lstPrompt.map(s => ' ' +  fNormalize(s));
 
+  sPromptUnaccent =  ' ' +lstPrompt.join('');
+  
   // series/movies
-  if ((' ' + sPrompt.toLowerCase()).includes(" film")) {
-    sPrompt = sPrompt.toLowerCase().replace("film", "");
+  if ((sPromptUnaccent).includes(" film")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("film", "");
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 'm' 
     })}
-  if ((' ' + sPrompt.toLowerCase()).includes(" seriál")) {
-    sPrompt = sPrompt.toLowerCase().replace("seriál", "");
+  if ((sPromptUnaccent).includes(" serial")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("serial", "");
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 's' 
     })}
   // hraný, animovaný, černobílý
-  if ((' ' + sPrompt.toLowerCase()).includes(" barevný")) {
-    sPrompt = sPrompt.toLowerCase().replace("barevný", "");
+  if ((sPromptUnaccent).includes(" barevn")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("barevn", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      return !dctMovie.sTags.includes('černobílý') 
+      return !dctMovie.sTags.includes('černobílý')  
     })}
-  if ((' ' + sPrompt.toLowerCase()).includes(" hraný")) {
-    sPrompt = sPrompt.toLowerCase().replace("hraný", "");
+  if ((sPromptUnaccent).includes(" detektivka")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("detektivka", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      return !dctMovie.sGenres.includes('animovaný') && !dctMovie.sGenres.includes('loutkový') 
+      return dctMovie.sGenre.toLowerCase().includes('krimi')  
     })}
-  // Slovensko - ne Československo
-  if ((' ' + sPrompt).toLowerCase().includes(" slovensk")) {
-    sPrompt = sPrompt.toLowerCase().replace("slovensko", "").replace("slovenský", "");
+  if ((sPromptUnaccent).includes(" kreslen")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("kreslen", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      return !dctMovie.sCountry.includes('Česko') 
+      return dctMovie.sGenre.toLowerCase().includes('animovaný')  
     })}
-    // nahradi zkratky a nazvy zemi
-    //let lstPrompt = sPrompt.split(" ")
-    let bNominationOnly = false;
-    lstPrompt = sPrompt.split(" ").map(s => s.trim()).filter(s => s.length > 1 &&
-      !['na', 'pod', 'nad', 'před', 'po', 'od', 've', 'ke', 'se'].includes(s.toLowerCase()));
-    lstPrompt.forEach((w, i) =>   {
-      if (w.includes('americk')) lstPrompt[i] = 'USA';
-      if (w.includes('britsk')) lstPrompt[i] = 'Velká Británie';
-      if (w.includes('anglick')) lstPrompt[i] = 'Velká Británie';
-      if (w.includes('francouz')) lstPrompt[i] = 'Francie';
-      if (w.slice(-3) === 'ící') lstPrompt[i] = '';
-      if (lstPrompt[i].length>4){
-        lstPrompt[i] = ' ' + fNormalize(lstPrompt[i].slice(0, -1));
-      } else {
-        lstPrompt[i] = ' ' + fNormalize(lstPrompt[i]);
-      }
-      if (w.includes('nomino')) bNominationOnly = true;
-      
-    })
+  if ((sPromptUnaccent).includes(" hran")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("hran", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      const sNorm = fNormalize(' ' + dctMovie.sCountry + ' ' + dctMovie.sGenre + ' ' + dctMovie.sContinent + ' ' + dctMovie.sNominated + 
+      return !dctMovie.sGenres.toLowerCase().includes('animovan') && !dctMovie.sGenres.toLowerCase().includes('loutkov') 
+    })}
+
+    lstPrompt = sPromptUnaccent.split(" ").map(s => s.trim()).filter(s => s.length > 2);
+
+
+  
+    lxdFound = lxdFound.filter(dctMovie => {
+      const sNorm = fNormalize('country:' + dctMovie.sCountry + 'continent:' + dctMovie.sContinent + ' ' + dctMovie.sGenre + ' ' + dctMovie.sNominated + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
           ' ' + dctMovie.sAuthor, false)
       return lstPrompt.every((w => sNorm.includes(w.toLowerCase()))
@@ -174,37 +222,6 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     )})
 
     fCreateCards(lxdFound);
-    
-  // first try to find movies that include the at least two-word prompt anywhere in the title
-  // if (iWords == 1) {
-  //   let sPromptUnaccent = fNormalize(sPrompt);
-  //   lxdFound = lxdFound.filter(dctMovie => {
-  //     return dctMovie.sTitleUnaccent.includes(sPromptUnaccent) ||
-  //       fNormalize(
-  //         dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + dctMovie.sActor + 
-  //         dctMovie.sAuthor, false).includes(sPromptUnaccent)
-  //   })}
-  // else if (iWords == 2) {
-  //   const sWord1 = fNormalize(sPrompt.split(" ")[0]);
-  //   const sWord2 = fNormalize(sPrompt.split(" ")[1]);
-  //   lxdFound = lxdFound.filter(dctMovie => {
-  //       const sNorm = fNormalize(
-  //         dctMovie.sTitle + dctMovie.sStory + dctMovie.sTags  + dctMovie.sDirector + 
-  //         dctMovie.sActor + dctMovie.sAuthor, false);
-  //       return (sNorm.includes(sWord1 + ' ' + sWord2) || sNorm.includes(sWord2 + ' ' + sWord1))
-  //   })}  
-  // else{
-  //   let sPromptUnaccent = fNormalize(sPrompt);
-  //   lxdFound = lxdFound.filter(dctMovie => {
-  //     return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)
-  //   })}
-  
-    // if nothing found or too many results, 
-  // if (lxdFound.length === 0 || lxdFound.length > 1) {
-  //   const jsonReturn = await fAsk(sMoviePrefix);
-  //   dctAnswer = JSON.parse(jsonReturn.sAnswer)[0];
-  //   return;
-  // }
   
 
 
@@ -219,16 +236,14 @@ function fCreateCards(lxdFound, sOrderCol = 'random', bAscending = true ) {
   cardsWrap.innerHTML = "";  
   const iMaxToShow = 20;
   if (lxdFound.length === 0) {
-    // alert("No movies found for: " + sPrompt);
     statusBox.textContent = "Nebyly nalezeny žádné filmy/seriály. Zkuste se zeptat jinak.";
     return;
-  } else if (lxdFound.length < iMaxToShow) {
+  } else if (lxdFound.length <= iMaxToShow) {
     statusBox.textContent = "Nalezeno " + lxdFound.length + " filmů/seriálů.";
     lxdFound.forEach(dctMovie => {
       cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
     } else {
     statusBox.textContent = `Nalezeno ${lxdFound.length} filmů/seriálů. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
-    cardsWrap.innerHTML = "";
     lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
       cardsWrap.appendChild(fCreateMovieCard(dctMovie))
     });
@@ -352,7 +367,7 @@ async function main() {
   lxdCountries = fCsvToLxd(csvCountries);
   dctCountryAdjectives = {};
   lxdCountries.forEach(dct => {
-    if (dct.sAdjective) dctCountryAdjectives[dct.sAdjectiv] = dct.sCountry;
+    if (dct.sAdjective) dctCountryAdjectives[dct.sAdjective] = dct.sCountry;
   })
   // endings
   let csvEndings= await fLoadCsv('endings.csv');
@@ -430,7 +445,7 @@ function fCreateMovieCard(dctMovie) {
   const sActor = dctMovie.sActor || "";
   const sAwarded = dctMovie.sAwarded.replaceAll('<br>', '\n') || "";
   const sStory = dctMovie.sStory || "";
-  const iRuntime = dctMovie.iRuntime || 0;
+  let iRuntime = dctMovie.iRuntime || 0;
 
   const posterWrap = document.createElement("div");
   const rating = document.createElement("div");
@@ -450,9 +465,13 @@ function fCreateMovieCard(dctMovie) {
   `);
   img.alt = sTitle;
 
+
   posterWrap.appendChild(rating);
   
   posterWrap.appendChild(img);
+
+  iRuntime = iRuntime ? iRuntime : '60';
+ 
 
   const colMeta = document.createElement("div");
   colMeta.className = "col-meta";
@@ -462,7 +481,7 @@ function fCreateMovieCard(dctMovie) {
     ${fMetaLine("Země:", sCountry)}
     ${fMetaLine("Žánr:", sGenre)}
     ${fMetaLine("Rok:", iYear)}
-    ${fMetaLine("Konec:", `za ${iRuntime} min. ve ${fGetEndTime(iRuntime)}`)}
+    ${fMetaLine("Konec:", `za ${iRuntime} min. ve ${fGetEndTime(iRuntime)}`.replace('.0',''))}
     ${fMetaLine("Režisér:", sDirector)}
     ${fMetaLine("Autor:", sAuthor)}
     ${fMetaLine("Herec:", sActor)}
@@ -499,10 +518,10 @@ function fCreateMovieCard(dctMovie) {
   ];
 
   const dctPlatforms= {
+    "netflix.com": "Netflix",
     "ceskatelevize.cz": "iVysilani",
     "iprima.cz": "iPrima",
     "voyo.cz": "Voyo",
-    "netflix.com": "Netflix",
     "primevideo.com": "Amazon",
     "hbomax.com": "HBO",
     "tv.apple.com": "Apple",
@@ -561,6 +580,8 @@ function fMetaLine(sLabel, sValue) {
 function fEsc(sValue) {
   return String(sValue)
     .replaceAll("&", "&amp;")
+    .replaceAll("#", "&#35;")
+    .replaceAll(":", "&#58;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")

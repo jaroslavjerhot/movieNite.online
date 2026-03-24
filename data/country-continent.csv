@@ -20,7 +20,7 @@ Finsko;;Evropa;finsk
 Francie;;Evropa;francouzs
 Ghana;;Afrika;ghansk
 Gruzie;SSSR;Asie;gruzínsk
-Hongkong;;Asie;hongkon
+Hongkong;;Východní Asie;hongkon
 Chile;;Jižní Amerika;chilsk
 Indie;;Asie;indick
 Indonésie;;Asie;indonésk
@@ -34,7 +34,7 @@ Jihoafrická republika;;Afrika;jihoafrick
 Jižní Korea;;Východní Asie;jihokorejsk
 Jordánsko;;Asie;jordánsk
 Jugoslávie;Jugoslávie;Evropa;jugoslávsk
-Kambodža;;Asie;kambodžsk
+Kambodža;;Afrika;kambodžsk
 Kanada;;Severní Amerika;kanadsk
 Kolumbie;;Jižní Amerika;kolumbijsk
 Libanon;;Asie;libanonsk
@@ -44,7 +44,7 @@ Lucembursko;;Evropa;lucembursk
 Maďarsko;;Evropa;maďarsk
 Malajsie;;Asie;malajsijsky
 Mexiko;;Severní Amerika;mexick
-Mongolsko;;Asie;mongolsk
+Mongolsko;;Východní Asie;mongolsk
 Německá říše;Německo;Evropa;
 Německo;Německo;Evropa;
 Nizozemsko;;Evropa;nizozemsk
@@ -77,6 +77,7 @@ Velká Británie;;Evropa;britsk
 Velká Británie;;Evropa;anglick
 Východní Německo;Německo;Evropa;
 Západní Německo;Německo;Evropa;
-Evropa;;;evropský
-Jižní Amerika;;;jihoamerický
-Východní Asie;;;východoasijský
+Evropa;;;evropsk
+Jižní Amerika;;;jihoamerick
+Východní Asie;;;východoasijsk
+Afrika;;;africk
