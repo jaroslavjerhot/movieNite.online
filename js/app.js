@@ -239,8 +239,8 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sGenre.toLowerCase().includes('krimi')  
     })}
-  if ((sPromptUnaccent).includes(" kriminalka")) {
-    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("kriminalka", "");
+  if ((sPromptUnaccent).includes(" kriminalk")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("kriminalk", "");
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sGenre.toLowerCase().includes('krimi')  
     })}
