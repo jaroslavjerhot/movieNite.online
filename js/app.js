@@ -133,7 +133,7 @@ function fCutEnding2(lstPrompt) {
 function fAdjectiveToCountry(lstPrompt) {
   lstPrompt.forEach((s, i) => {
      Object.keys(dctCountryAdjectives).forEach(w => {
-      if (s.startsWith(fNormalize(w)) && !s.includes('_')) {
+      if (fNormalize(s).startsWith(fNormalize(w)) && !s.includes('_')) {
         lstPrompt[i] = 'country:' + dctCountryAdjectives[w];
       }
     });
@@ -149,6 +149,11 @@ function fRemoveProverbs(lstPrompt) {
   return lstPrompt;
 
 } 
+
+function fGetYear(text) {
+  const match = text.match(/\b(19|20)\d{2}\b/);
+  return match ? parseInt(match[0], 10) : null;
+}
 
 async function fSearchMovies(sPrompt = userInput.value.trim()) {
   // let sPrompt = userInput.value.trim();
@@ -209,6 +214,15 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 's' 
     })}
+// rok
+  iYear = fGetYear(sPrompt);
+  iSpan=5
+  sPromptUnaccent = sPromptUnaccent.replace(iYear, "");
+  if (iYear) {
+    lxdFound = lxdFound.filter(dctMovie => {
+      return parseFloat(dctMovie.iYear) >= iYear - iSpan && parseFloat(dctMovie.iYear) <= iYear + iSpan;
+    })}
+
   // hraný, animovaný, černobílý
   if ((sPromptUnaccent).includes(" barevn")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("barevn", "");
@@ -504,7 +518,7 @@ function fCreateMovieCard(dctMovie) {
   const sAuthor = dctMovie.sAuthor || "";
   const sActor = dctMovie.sActor || "";
   const sAwarded = dctMovie.sAwarded.replaceAll('<br>', '\n') || "";
-  const sStory = dctMovie.sStory || "";
+  const sStory = '\n\n\n' + dctMovie.sStory || "";
   let iRuntime = dctMovie.iRuntime || 0;
 
   const posterWrap = document.createElement("div");
