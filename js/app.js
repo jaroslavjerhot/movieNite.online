@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('searchBtns').appendChild(scrollControls);
   linksBox = fCreateEmptyLinksBox();
   document.getElementById('searchBtns').appendChild(linksBox);
-  const sortButtons = fCreateSortButtons(); 
-  document.getElementById('searchBtns').appendChild(sortButtons);
+  // const sortButtons = fCreateSortButtons(); 
+  // document.getElementById('searchBtns').appendChild(sortButtons);
   
 
   
@@ -589,7 +589,7 @@ function fCreateMovieCard(dctMovie) {
 }
 
 function fCreateServiceLinkButtons(linksBox, dctMovie) {
-  linksBox.innerHTML = "";
+  linksBox.innerHTML = " | ";
   // placeholder links; later you can generate your own
   let sMovieQuery = 
     dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
