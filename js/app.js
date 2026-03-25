@@ -133,7 +133,7 @@ function fCutEnding2(lstPrompt) {
 function fAdjectiveToCountry(lstPrompt) {
   lstPrompt.forEach((s, i) => {
      Object.keys(dctCountryAdjectives).forEach(w => {
-      if (s.includes(fNormalize(w)) && !s.includes('_')) {
+      if (s.startsWith(fNormalize(w)) && !s.includes('_')) {
         lstPrompt[i] = 'country:' + dctCountryAdjectives[w];
       }
     });
@@ -215,8 +215,18 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return !dctMovie.sTags.includes('černobílý')  
     })}
+  if ((sPromptUnaccent).includes(" zahranicn")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("zahranicn", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return !dctMovie.sCountry.toLowerCase().includes('česko')  
+    })}
   if ((sPromptUnaccent).includes(" detektivka")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("detektivka", "");
+    lxdFound = lxdFound.filter(dctMovie => {
+      return dctMovie.sGenre.toLowerCase().includes('krimi')  
+    })}
+  if ((sPromptUnaccent).includes(" kriminalka")) {
+    sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("kriminalka", "");
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sGenre.toLowerCase().includes('krimi')  
     })}
@@ -264,8 +274,6 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   //   lxdFound = fShuf fle(lxdFound);
   // }
 
-  fCreateServiceLinkButtons(linksBox, lxdFound[iShowId])
-
   switch (sMStype) {
     case 'm':
       sFS = 'film';
@@ -274,7 +282,7 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
       sFS = 'seriál';
       break;
     default:
-      sFS = 'film/seriál';
+      sFS = 'film / seriál';
     }
   sFS2 = sFS.replaceAll('y','ů');
 
@@ -282,19 +290,22 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   const iMaxToShow = 1
   if (lxdFound.length === 0) {
     statusBox.textContent = `Nebyl nalezen žádný ${sFS}. Zkuste se zeptat jinak.`;
-    return;
-  } else if (lxdFound.length <= iMaxToShow) {
-    // statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}.`;
-    statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
-    lxdFound.forEach(dctMovie => {
-      cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
+    // return;
+  // } else if (lxdFound.length <= iMaxToShow) {
+  //   // statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}.`;
+  //   statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
+  //   lxdFound.forEach(dctMovie => {
+  //     cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
     } else {
     //statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
     statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
     // lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
     //   cardsWrap.appendChild(fCreateMovieCard(dctMovie))
     cardsWrap.appendChild(fCreateMovieCard(lxdFound[iShowId]));
+    fCreateServiceLinkButtons(linksBox, lxdFound[iShowId])
+
     // }
+  
  
   }
 }
