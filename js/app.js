@@ -589,7 +589,7 @@ function fCreateMovieCard(dctMovie) {
 }
 
 function fCreateServiceLinkButtons(linksBox, dctMovie) {
-  linksBox.innerHTML = " | ";
+  linksBox.innerHTML = "&nbsp;&nbsp;";
   // placeholder links; later you can generate your own
   let sMovieQuery = 
     dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
