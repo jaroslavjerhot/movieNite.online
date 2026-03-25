@@ -604,6 +604,9 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
   
   const lstLinks = [
     { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
+    { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
+    { sName: "WebShare", sUrl: "https://webshare.cz/#/search?what=" + sMovieQuery },
+    { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sMovieQuery + "/s" },
     { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery },
     { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
     { sName: "Film. místa", sUrl: ulrFilmLocations },
