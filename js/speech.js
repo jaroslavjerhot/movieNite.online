@@ -21,7 +21,7 @@ if (SpeechRecognition) {
       if (bListening) {
         recognition.stop();
       }
-    }, 5000);
+    }, 3000);
   }
 
   function fStartListening() {
