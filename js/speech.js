@@ -96,6 +96,7 @@ if (SpeechRecognition) {
     // micBtn.textContent = "🎤 Speak";
     textarea.classList.remove("listening");
     micBtn.classList.remove("listening");
+        fSearchMovies();
   };
 
   recognition.onerror = (event) => {
