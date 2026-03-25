@@ -16,7 +16,9 @@ let dctEndings = {};
 let dctCountryAdjectives = {};
 let dctProverbs = {};  
 let lxdFound = [];
-
+let iShowId = 0;
+let sMStype = null;
+let linksBox = null;
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
@@ -34,14 +36,6 @@ if (navigator.userAgent.includes("Windows")) lstDevice.push("Windows");
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  btnSearch.addEventListener('click', () => {
-    document.getElementById("logo").style.display = "none";
-    fSearchMovies();
-  });
-  btnRandom.addEventListener('click', () => {
-    document.getElementById("logo").style.display = "none";
-    fRandomMovies();
-  });
   userInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -61,9 +55,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   userInput.textContent = localStorage.getItem('sPrompt') || "";
 
   const scrollControls = fCreateScrollControls();
-  // document.body.appendChild(scrollControls);
+  document.getElementById('searchBtns').appendChild(scrollControls);
+  linksBox = fCreateEmptyLinksBox();
+  document.getElementById('searchBtns').appendChild(linksBox);
   const sortButtons = fCreateSortButtons(); 
-  document.getElementById('searchBtns').after(sortButtons);
+  document.getElementById('searchBtns').appendChild(sortButtons);
+  
+
   
 });
 
@@ -71,6 +69,7 @@ function fNormalize(s, bRemoveSpaces = true) {
   let result = s
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replaceAll('ø', 'o')
     .toLowerCase()
     // .replaceAll('y','i')
     .replaceAll('  ',' ');
@@ -167,8 +166,10 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     let sPromptUnaccent = fNormalize(sPrompt);
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sTitleUnaccent.includes(sPromptUnaccent)})
-    if (lxdFound.length > 0) { 
-      fCreateCards(lxdFound)
+    if (lxdFound.length > 0) {
+      sLastSortKey = ''
+      fSortBy('iRating'); 
+      fCreateCards(lxdFound, 0)
       return;}
   }
   lxdFound = lxdMovies;
@@ -194,17 +195,17 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   lstPrompt = lstPrompt.map(s => ' ' +  fNormalize(s, false) + ' ');
 
   sPromptUnaccent =  ' ' +lstPrompt.join('');
-  let sType = null;
+  
   // series/movies
   if ((sPromptUnaccent).includes(" film")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("film", "");
-    sType = 'm';
+    sMStype = 'm';
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 'm' 
     })}
   if ((sPromptUnaccent).includes(" serial")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("serial", "");
-    sType = 's';
+    sMStype = 's';
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sType === 's' 
     })}
@@ -232,7 +233,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   if ((sPromptUnaccent).includes(" hran")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("hran", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      return !dctMovie.sGenres.toLowerCase().includes('animovan') && !dctMovie.sGenres.toLowerCase().includes('loutkov') 
+      return (!dctMovie.sGenre.toLowerCase().includes('animovan') && !dctMovie.sGenre.toLowerCase().includes('loutkov')) 
     })}
 
     lstPrompt = sPromptUnaccent.split(" ").map(s => s.trim()).filter(s => s.length > 2);
@@ -244,46 +245,57 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
           ' ' + dctMovie.sTitle + ' ' + dctMovie.sTitle_EN + ' ' + dctMovie.sGenre + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
           ' ' + dctMovie.sAuthor + ' ' + dctMovie.sNominated + ' ' + dctMovie.sAwarded, false)
-      if (dctMovie.sTitleUnaccent.includes('elitnijednotka')) {
+      if (dctMovie.sTitleUnaccent.includes('lovcihlav')) {
          x = 0;
       }
       return lstPrompt.every(w => sNorm.includes(w))})
-
-    fCreateCards(lxdFound, 'random', true, sType);
+    
+    sLastSortKey = '';
+    fSortBy('iRating');
+    fCreateCards(lxdFound, 0, sMStype);
 }
 
-function fCreateCards(lxdFound, sOrderCol = 'random', bAscending = true, sType = null) {
+function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   
-  if (sOrderCol == 'random') {
-    lxdFound = fShuffle(lxdFound);
-  }
+  iShowId = iId ;
+  if (iShowId < 0) iShowId = lxdFound.length - 1;
+  if (iShowId >= lxdFound.length) iShowId = 0;
+  // if (sOrderCol == 'random') {
+  //   lxdFound = fShuf fle(lxdFound);
+  // }
 
-  switch (sType) {
+  fCreateServiceLinkButtons(linksBox, lxdFound[iShowId])
+
+  switch (sMStype) {
     case 'm':
-      sFS = 'filmy';
+      sFS = 'film';
       break;
     case 's':
-      sFS = 'seriály';
+      sFS = 'seriál';
       break;
     default:
-      sFS = 'filmy/seriály';
+      sFS = 'film/seriál';
     }
   sFS2 = sFS.replaceAll('y','ů');
 
   cardsWrap.innerHTML = "";  
-  const iMaxToShow = 20;
+  const iMaxToShow = 1
   if (lxdFound.length === 0) {
-    statusBox.textContent = `Nebyly nalezeny žádné ${sFS}. Zkuste se zeptat jinak.`;
+    statusBox.textContent = `Nebyl nalezen žádný ${sFS}. Zkuste se zeptat jinak.`;
     return;
   } else if (lxdFound.length <= iMaxToShow) {
-    statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}.`;
+    // statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}.`;
+    statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
     lxdFound.forEach(dctMovie => {
       cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
     } else {
-    statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
-    lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
-      cardsWrap.appendChild(fCreateMovieCard(dctMovie))
-    });
+    //statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
+    statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
+    // lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
+    //   cardsWrap.appendChild(fCreateMovieCard(dctMovie))
+    cardsWrap.appendChild(fCreateMovieCard(lxdFound[iShowId]));
+    // }
+ 
   }
 }
 
@@ -512,8 +524,10 @@ function fCreateMovieCard(dctMovie) {
       <svg viewBox="0 0 24 24" class="icon">
         <path d="M7 14l5-5 5 5" />
       </svg>`;
-      btnPrev.onclick = () => fScrollToNextCard(card, -1);
-  scrollBox.appendChild(btnPrev);
+      // btnPrev.onclick = () => fScrollToNextCard(card, -1);
+    btnPrev.onclick = () => fCreateCards(lxdFound, iShowId - 1);
+  
+      // scrollBox.appendChild(btnPrev);
 
   
 
@@ -524,8 +538,9 @@ function fCreateMovieCard(dctMovie) {
     <svg viewBox="0 0 24 24" class="icon">
       <path d="M7 10l5 5 5-5" />
     </svg>`;
-    btnNext.onclick = () => fScrollToNextCard(card, 1);
-  scrollBox.appendChild(btnNext);
+    // btnNext.onclick = () => fScrollToNextCard(card, 1);
+    btnNext.onclick = () => fCreateCards(lxdFound, iShowId + 1);
+  // scrollBox.appendChild(btnNext);
 
   
 
@@ -560,14 +575,26 @@ function fCreateMovieCard(dctMovie) {
   // const colLinks = document.createElement("div");
   // colLinks.className = "col-links";
 
-  const linksBox = document.createElement("div");
-  linksBox.className = "links-box";
+  // const linksBox = document.createElement("div");
+  // linksBox.className = "links-box";
 
+  // // colLinks.appendChild(linksBox);
+  // colStory.appendChild(linksBox);
+
+  card.appendChild(posterWrap);
+  card.appendChild(colMeta);
+  card.appendChild(colStory);
+  //card.appendChild(colLinks);
+  return card;
+}
+
+function fCreateServiceLinkButtons(linksBox, dctMovie) {
+  linksBox.innerHTML = "";
   // placeholder links; later you can generate your own
   let sMovieQuery = 
     dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
-        encodeURIComponent(dctMovie.sTitle + " " + iYear) :
-        encodeURIComponent(dctMovie.sTitle + " dabing " + iYear);
+        encodeURIComponent(dctMovie.sTitle + " " + dctMovie.iYear) :
+        encodeURIComponent(dctMovie.sTitle + " dabing " + dctMovie.iYear);
   const sTitleEnc = encodeURIComponent(dctMovie.sTitle);
   const sTitleEnEnc = encodeURIComponent(dctMovie.sTitle_EN);
   let ulrFilmLocations = 
@@ -617,16 +644,8 @@ function fCreateMovieCard(dctMovie) {
     a.rel = "noopener noreferrer";
     linksBox.appendChild(a);
   });
-
-  // colLinks.appendChild(linksBox);
-  colStory.appendChild(linksBox);
-
-  card.appendChild(posterWrap);
-  card.appendChild(colMeta);
-  card.appendChild(colStory);
-  //card.appendChild(colLinks);
-  return card;
 }
+
 
 function fMetaLine(sLabel, sValue) {
   if (!String(sValue || "").trim()) {
@@ -727,9 +746,19 @@ function fScrollPrev() {
   }
 }
 
+function fCreateEmptyLinksBox () {
+  const div = document.createElement("div");
+  // div.className = "links-box";
+  div.className = "d-flex align-items-start gap-2 mb-3";
+  
+  return div;
+}
+
 function fCreateScrollControls() {
   const container = document.createElement("div");
-  container.className = "scroll-controls";
+  // container.className = "scroll-controls";
+  container.className = "d-flex align-items-start gap-2 mb-3";
+  
 
   // --- UP BUTTON ---
   const btnUp = document.createElement("button");
@@ -754,13 +783,15 @@ function fCreateScrollControls() {
   `;
 
   // --- EVENTS ---
-  btnUp.onclick = () => fScrollPrev();
-  btnDown.onclick = () => fScrollNext();
+  btnDown.onclick = () => fCreateCards(lxdFound, iShowId + 1);
+  btnUp.onclick = () => fCreateCards(lxdFound, iShowId - 1);
+  // btnUp.onclick = () => fScrollPrev();
+  // btnDown.onclick = () => fScrollNext();
 
   // --- APPEND ---
-  container.appendChild(btnUp);
   container.appendChild(btnDown);
-
+  container.appendChild(btnUp);
+  
   return container;
 }
 
@@ -797,10 +828,14 @@ function fSortBy(key) {
   // toggle direction if same column
   if (sLastSortKey === key) {
     bSortAsc = !bSortAsc;
-  } else {
+  } else if (['iRating', 'iYear'].includes(key)) {
+    bSortAsc = false;
+    sLastSortKey = key;
+  } else if (['sTitle', 'iRuntime'].includes(key)) {
     bSortAsc = true;
     sLastSortKey = key;
   }
+
 
   lxdFound.sort((a, b) => {
     let v1 = a[key];
@@ -808,8 +843,8 @@ function fSortBy(key) {
 
     // handle numbers stored as strings
     if (key.startsWith("i")) {
-      v1 = parseFloat(v1) || 0;
-      v2 = parseFloat(v2) || 0;
+      v1 = parseFloat(v1.replace(',','.')) || 0;
+      v2 = parseFloat(v2.replace(',','.')) || 0;
     } else {
       v1 = (v1 || "").toString().toLowerCase();
       v2 = (v2 || "").toString().toLowerCase();
@@ -818,8 +853,9 @@ function fSortBy(key) {
     if (v1 < v2) return bSortAsc ? -1 : 1;
     if (v1 > v2) return bSortAsc ? 1 : -1;
     return 0;
-  });
-
+  })
+  
   // return(lxdFound); // your existing render function
-  fCreateCards(lxdFound, '', bSortAsc);
+  x=0
+  // fCreateCards(lxdFound, '', bSortAsc);
 }

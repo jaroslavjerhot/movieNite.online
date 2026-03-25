@@ -1,3 +1,5 @@
+# from ssl import Options
+
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -5,6 +7,8 @@ import time
 import pandas as pd
 import re
 from urllib.parse import unquote
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 BASE = "https://www.csfd.cz"
 RANK_URL = "https://www.csfd.cz/zebricky/filmy/nejlepsi/"
@@ -27,19 +31,18 @@ headers = {
 sNow = time.strftime("%Y-%m-%d-%H-%M-%S")
 sFileName = f"data/csfd_muzikaly_{sNow}.csv"
 
-#def get_top_film_links(iFrom):
+#def fGetTopFilmLinks(iFrom):
     # if (iFrom):
     #     sUrl = RANK_URL + "?from=" + str(iFrom)
     # else:
     #     sUrl = RANK_URL
     
-def get_top_film_links(sUrl):
-        
+def fGetTopFilmLinks(sUrl):
     
+    # r = requests.get(sUrl, headers=headers)
+    # soup = BeautifulSoup(r.text, "html.parser")
+    soup = fGetSoup(sUrl)
     
-    r = requests.get(sUrl, headers=headers)
-    soup = BeautifulSoup(r.text, "html.parser")
-
     links = []
 
     for a in soup.select('a[href^="/film/"][href$="/prehled/"]'):
@@ -50,7 +53,7 @@ def get_top_film_links(sUrl):
     return links
 
 
-def extract_people(data):
+def fExtractPeople(data):
 
     people = {}
 
@@ -101,19 +104,68 @@ def extract_stream_links(soup):
             sPlatforms += unquote(href) + "<br>"
     return {'sPlatforms': sPlatforms}
 
+def fGetSoup(sUrl):
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+    "Accept-Language": "cs-CZ,cs;q=0.9,en;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Referer": "https://www.google.com/",
+    "Connection": "keep-alive"
+    }
+    options = Options()
+    options.add_argument("--headless=new")  # 👈 modern headless mode
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
+    
+    sUrl = sUrl + 'prehled/'
+    # sUrl = 'https://www.csfd.cz/film/1248-terminator-2-den-zuctovani/prehled/'
+    
+    # driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()
+    driver.get(sUrl)
 
-def scrape_film(url):
+    time.sleep(3)
 
-    try:
-        r = requests.get(url, headers=headers)
-    except Exception as e:
-        time.sleep(60)
-        r = requests.get(url, headers=headers)
+    html = driver.page_source
+    soup = BeautifulSoup(html, "html.parser")
+    driver.quit()
+    return soup
+
+def fScrapeFilm(sUrl):
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+    "Accept-Language": "cs-CZ,cs;q=0.9,en;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Referer": "https://www.google.com/",
+    "Connection": "keep-alive"
+    }
+    options = Options()
+    options.add_argument("--headless=new")  # 👈 modern headless mode
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
+    
+    sUrl = sUrl + 'prehled/'
+    # sUrl = 'https://www.csfd.cz/film/1248-terminator-2-den-zuctovani/prehled/'
+    
+    driver = webdriver.Chrome(options=options)
+    driver.get(sUrl)
+
+    time.sleep(3)
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, "html.parser")
+    
+    # try:
+    #     r = requests.get(sUrl, headers=headers)
+    # except Exception as e:
+    #     time.sleep(60)
+    #     r = requests.get(sUrl, headers=headers)
     
     
-    soup = BeautifulSoup(r.text, "html.parser")
+    # soup = BeautifulSoup(r.text, "html.parser")
 
     script = soup.find("script", {"type": "application/ld+json"})
+    driver.quit()
     
     if not script:
         return None
@@ -121,19 +173,18 @@ def scrape_film(url):
     data = json.loads(script.string)
 
     film = {
-        "idCsfd": int(re.search(r"/film/(\d+)-", url).group(1)),
+        "idCsfd": int(re.search(r"/film/(\d+)-", sUrl).group(1)),
         "sTitle": data.get("name"),
         "iYear": int(data.get("dateCreated")) if data.get("dateCreated") else None,
         "iRating": data.get("aggregateRating", {}).get("ratingValue"),
         "iRuntime": int(re.search(r"PT(\d+)M", data.get("duration")).group(1)) if data.get("duration") else None,
         "urlPoster": data.get("image"),
-        "urlCsfd": url.replace("/prehled/", "/").replace("/oceneni/", "/")
+        "urlCsfd": sUrl.replace("/prehled/", "/").replace("/oceneni/", "/")
     }
     m = re.match(r"^(.*)\s\((\d{4})\)$", film["sTitle"])
     if m:
         film["sTitle"] = m.group(1)
 
-    film['urlCsfd']
     film['sCountry'] = soup.find('div', class_="origin").text.split(',')[0].strip() if soup.find(class_="origin") else ""
     film["sGenre"] = soup.find('div', class_="genres").text.strip() if soup.find(class_="genres") else ""
     film['sTitle_EN'] = soup.find('ul', class_='film-names').find('li').text.replace('\t','').replace('\n','').replace('(více)','').strip() if soup.find('ul', class_='film-names') else ""
@@ -164,7 +215,7 @@ def scrape_film(url):
             film['sEpisodes'] = int(re.search(r"\((\d+)\)", lst[1]).group(1))
         
     
-    film.update(extract_people(data))
+    film.update(fExtractPeople(data))
 
     film.update(extract_stream_links(soup))
 
@@ -184,15 +235,36 @@ def scrape_film(url):
             
     return film
 
+def fReadCsv(sFileName):
+    try:
+        df = pd.read_csv(sFileName, sep=';', encoding='utf-8-sig')
+        return df.to_dict(orient='records')
+    except Exception as e:
+        print("Error reading CSV:", e)
+        return []
+    
+def fGetNewMovies(lxd):
+    for d in lxd:
+        sUrl = d['urlCsfd']
+        dct = fScrapeFilm(sUrl)
+        
+
+    return lxd
+    
+get_top_film_links = fGetTopFilmLinks('https://www.csfd.cz/film/1248-terminator-2-den-zuctovani/prehled/')
+
+sFilmMoviesCsv = './data/movies_series.csv' 
+lxdMovies = fReadCsv(sFilmMoviesCsv)
+fGetNewMovies(lxdMovies)
 
 print("Loading ranking page...")
 lstAllFilmLinks = []
 # for i in range(800, 1000, 100):
 #     print("Loading ranking page from", i, "...")
-#     lstAllFilmLinks.extend(get_top_film_links(i))
+#     lstAllFilmLinks.extend(fGetTopFilmLinks(i))
 
-lstAllFilmLinks.extend(get_top_film_links(RANK_URL))
-lstAllFilmLinks.extend(get_top_film_links(RANK_URL + "?page=2"))
+lstAllFilmLinks.extend(fGetTopFilmLinks(RANK_URL))
+lstAllFilmLinks.extend(fGetTopFilmLinks(RANK_URL + "?page=2"))
 
 print("Films found:", len(lstAllFilmLinks))
 
@@ -202,7 +274,7 @@ for i, url in enumerate(lstAllFilmLinks):
 
     print(i+1, "/", len(lstAllFilmLinks), url)
 
-    film = scrape_film(url.replace("/prehled/", "/oceneni/"))
+    film = fScrapeFilm(url.replace("/prehled/", "/oceneni/"))
 
     if film:
         lxd.append(film)
