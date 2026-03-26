@@ -1,10 +1,10 @@
-const btnSearch = document.getElementById('btnSearch');
+// const btnSearch = document.getElementById('btnSearch');
 const userInput = document.getElementById('userInput');
 const statusBox = document.getElementById('statusBox');
-const countrySelect = document.getElementById('countrySelect');
-const genreSelect = document.getElementById('genreSelect');
-const personSelect = document.getElementById('personSelect');
-const awardSelect = document.getElementById('awardSelect');
+// const countrySelect = document.getElementById('countrySelect');
+// const genreSelect = document.getElementById('genreSelect');
+// const personSelect = document.getElementById('personSelect');
+// const awardSelect = document.getElementById('awardSelect');
 const sModel = 'OpenAI|gpt-5.4-nano';
 
 const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
@@ -19,6 +19,7 @@ let lxdFound = [];
 let iShowId = 0;
 let sMStype = null;
 let linksBox = null;
+let lxdLinks = [];
 
 const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
@@ -40,7 +41,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (event.key === 'Enter') {
       event.preventDefault();
       document.getElementById("logo").style.display = "none";
-      
       fSearchMovies();
     }
   });
@@ -273,10 +273,35 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
          x = 0;
       }
       return lstPrompt.every(w => sNorm.includes(w))})
-    
-    sLastSortKey = '';
-    fSortBy('iRating');
+  
+  sLastSortKey = '';
+  fSortBy('iRating');
+  sEncodedPrompt = encodeURIComponent(userInput.value.trim());
+  lstPlatforms = [
+    `https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=${sEncodedPrompt}`,
+    `https://www.netflix.com/search?q=${sEncodedPrompt}`,
+    `https://www.disneyplus.com/cs-cz/search?q=${sEncodedPrompt}`,
+    `https://www.hbo.com/search?q=${sEncodedPrompt}`,
+    `https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&field-keywords=${sEncodedPrompt}`,
+    `https://www.apple.com/cz/apple-tv-plus/${sEncodedPrompt}`,
+  ]
+  lxdFound.push({
+    sTitle: fCapitalizeFirst(userInput.value.trim()),
+    sCountry: "",
+    iYear: "",
+    sPlatforms: lstPlatforms.join('<br>'),
+    iRating: 0,
+    sStory : "",
+    urlCsfd: `https://www.csfd.cz/hledat/?q=${sEncodedPrompt}`,
+    urlPoster: "https://static.pmgstatic.com/assets/images/050b5bad23b8eb0b4f88f971b8f6a168/empty-image.svg",
+    sSearchStatus: "Doplněno pro úplnost. V této databázi nebyl nalezen žádný film nebo seriál, který by odpovídal tomuto hledání. Můžete ho zkusit najít na filmových serverech.",
+    sAwarded: ""});
     fCreateCards(lxdFound, 0, sMStype);
+}
+
+function fCapitalizeFirst(str) {
+    if (!str) return str;
+    return str[0].toUpperCase() + str.slice(1);
 }
 
 function fCreateCards(lxdFound, iId = 0, sMStype = null) {
@@ -322,6 +347,68 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   
  
   }
+}
+
+function fSafeClick(url) {  
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.click();
+  a.remove();
+}
+
+async function fSearchOnVideoServers(iShowId){
+  let dct = lxdFound[iShowId];
+  const lstServersOrder = [
+    "Přehraj.to",
+    "Netflix",
+    "iVysilani",
+    // "Voyo",
+    // "Amazon",
+    // "HBO",
+    // "Apple",
+    // "Disney+",
+    // "SkyShowtime",
+    // "Canal+",
+    // "lepší.tv",
+    "SledujteTo.cz",
+    "iPrima",
+    "WebShare",
+    "FastShare",
+    "YouTube",
+  ]
+
+  async function fSearchServers() {
+    for (const server of lstServersOrder) {
+      lstUrl = lxdLinks.filter (dctLink => dctLink.sName === server);  
+      if (lstUrl.length > 0) {
+        sUrl = lstUrl[0].sUrl;
+        if (sUrl.includes('sledujteto.cz') || sUrl.includes('prehraj.to') || 
+        sUrl.includes('webshare') || sUrl.includes('fastshare') || 
+        sUrl.includes('youtube')) {
+        dctBody = {prompt: sUrl, service: 'ParseUrl|' + fNormalize(lstUrl[0].sName)}  
+        jsonBody = JSON.stringify(dctBody);
+        x=0
+        const r = await fetch(
+          "https://openonce.pythonanywhere.com/ask",
+          { method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: jsonBody,
+
+          }
+        );
+        const data = await r.json();
+        //alert('after fetch');
+        return
+      } else {
+      fSafeClick(sUrl);
+      return;}
+}}}
+
+await fSearchServers();
+
+  
 }
 
 function fProcessAIresponse_smaz(lxdFound, sPrompt, jsonReturn) {
@@ -517,8 +604,9 @@ function fCreateMovieCard(dctMovie) {
   const sDirector = dctMovie.sDirector || "";
   const sAuthor = dctMovie.sAuthor || "";
   const sActor = dctMovie.sActor || "";
+  const sSearchStatus = dctMovie.sSearchStatus || "";
   const sAwarded = dctMovie.sAwarded.replaceAll('<br>', '\n') || "";
-  const sStory = '\n\n\n' + dctMovie.sStory || "";
+  const sStory = '\n' + dctMovie.sStory || "";
   let iRuntime = dctMovie.iRuntime || 0;
 
   const posterWrap = document.createElement("div");
@@ -591,6 +679,7 @@ function fCreateMovieCard(dctMovie) {
     ${fMetaLine("Autor:", sAuthor)}
     ${fMetaLine("Herec:", sActor)}
     ${fMetaLine("Ocenění:", sAwarded)}
+    ${fMetaLine("", sSearchStatus)}
   `;
 
   const colStory = document.createElement("div");
@@ -616,6 +705,11 @@ function fCreateMovieCard(dctMovie) {
 function fCreateServiceLinkButtons(linksBox, dctMovie) {
   linksBox.innerHTML = "&nbsp;&nbsp;";
   // placeholder links; later you can generate your own
+  let sFastShareQuery = 
+    dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
+        fNormalize(dctMovie.sTitle + " " + dctMovie.iYear, false).replaceAll(' ', '-') :
+        fNormalize(dctMovie.sTitle + " dabing " + dctMovie.iYear, false).replaceAll(' ', '-');
+  
   let sMovieQuery = 
     dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
         encodeURIComponent(dctMovie.sTitle + " " + dctMovie.iYear) :
@@ -623,15 +717,17 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
   const sTitleEnc = encodeURIComponent(dctMovie.sTitle);
   const sTitleEnEnc = encodeURIComponent(dctMovie.sTitle_EN);
   let ulrFilmLocations = 
-    dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
+    dctMovie.sCountry === "" || 
+    dctMovie.sCountry.includes("Česko") || 
+    dctMovie.sCountry.includes("Slovensko") ? 
       `https://www.filmovamista.cz/vyhledavani?q=${sTitleEnc}&submint=Hledat` : 
       `https://www.reelstreets.com/?s=${sTitleEnEnc}`;
   
-  const lstLinks = [
+  lxdLinks = [
     { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
     { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
     { sName: "WebShare", sUrl: "https://webshare.cz/#/search?what=" + sMovieQuery },
-    { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sMovieQuery + "/s" },
+    { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sFastShareQuery + "/s" },
     { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery },
     { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
     { sName: "Film. místa", sUrl: ulrFilmLocations },
@@ -640,6 +736,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
   const dctPlatforms= {
     "netflix.com": "Netflix",
     "ceskatelevize.cz/porady": "iVysilani",
+    "ceskatelevize.cz/ivysilani": "iVysilani",
     "iprima.cz": "iPrima",
     "voyo.cz": "Voyo",
     "primevideo.com": "Amazon",
@@ -656,14 +753,14 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     bFound = false
     lstMoviePlatforms.forEach(p => { 
       if (p.toLowerCase().includes(domain) && !bFound) {
-        lstLinks.push({ sName: dctPlatforms[domain], sUrl: p.trim() });
+        lxdLinks.push({ sName: dctPlatforms[domain], sUrl: p.trim() });
         bFound = true;
       }
     });
   });
 
 
-  lstLinks.forEach(dctLink => {
+  lxdLinks.forEach(dctLink => {
     const a = document.createElement("a");
     a.className = "link-btn";
     a.href = dctLink.sUrl;
@@ -672,6 +769,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     a.rel = "noopener noreferrer";
     linksBox.appendChild(a);
   });
+  
 }
 
 
@@ -810,15 +908,28 @@ function fCreateScrollControls() {
     </svg>
   `;
 
+  // --- RIGHT BUTTON ---
+  const btnRight = document.createElement("button");
+  btnRight.className = "scroll-btn";
+  btnRight.title = "Search in video servers";
+  
+  btnRight.innerHTML = `
+    <svg viewBox="0 0 24 24" class="icon">
+      <path d="M10 7l5 5-5 5" />
+    </svg>
+  `;
+
   // --- EVENTS ---
   btnDown.onclick = () => fCreateCards(lxdFound, iShowId + 1);
   btnUp.onclick = () => fCreateCards(lxdFound, iShowId - 1);
+  btnRight.onclick = () => fSearchOnVideoServers(iShowId);
   // btnUp.onclick = () => fScrollPrev();
   // btnDown.onclick = () => fScrollNext();
 
   // --- APPEND ---
   container.appendChild(btnDown);
   container.appendChild(btnUp);
+  container.appendChild(btnRight);
   
   return container;
 }

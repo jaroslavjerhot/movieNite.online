@@ -10,6 +10,7 @@ from urllib.parse import unquote
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+
 BASE = "https://www.csfd.cz"
 RANK_URL = "https://www.csfd.cz/zebricky/filmy/nejlepsi/"
 RANK_URL = "https://www.csfd.cz/zebricky/serialy/nejlepsi/"
@@ -104,7 +105,9 @@ def extract_stream_links(soup):
             sPlatforms += unquote(href) + "<br>"
     return {'sPlatforms': sPlatforms}
 
-def fGetSoup(sUrl):
+
+
+def fGetSoup(sUrl, sMethod="requests"):
     headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
     "Accept-Language": "cs-CZ,cs;q=0.9,en;q=0.8",
@@ -112,24 +115,98 @@ def fGetSoup(sUrl):
     "Referer": "https://www.google.com/",
     "Connection": "keep-alive"
     }
-    options = Options()
-    options.add_argument("--headless=new")  # 👈 modern headless mode
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
     
-    sUrl = sUrl + 'prehled/'
-    # sUrl = 'https://www.csfd.cz/film/1248-terminator-2-den-zuctovani/prehled/'
+    if sMethod=="requests":
+        try:
+            r = requests.get(sUrl, headers=headers)
+        except Exception as e:
+            time.sleep(60)
+            r = requests.get(sUrl, headers=headers)
+        
+        soup = BeautifulSoup(r.text, "html.parser")
+        return soup
     
-    # driver = webdriver.Chrome(options=options)
-    driver = webdriver.Chrome()
-    driver.get(sUrl)
+    if sMethod=="selenium":
+        try:
+            options = Options()
+            options.add_argument("--headless=new")  # 👈 modern headless mode
+            options.add_argument("--disable-gpu")
+            options.add_argument("--window-size=1920,1080")
+            driver = webdriver.Chrome(options=options)
+            driver.get(sUrl)
 
-    time.sleep(3)
+            time.sleep(3)
 
-    html = driver.page_source
-    soup = BeautifulSoup(html, "html.parser")
-    driver.quit()
-    return soup
+            html = driver.page_source
+            soup = BeautifulSoup(html, "html.parser")
+            driver.quit()
+            return soup
+        except Exception as e:
+             print("Error with Selenium:", e)
+             return None
+
+data = {'model': 'prehraj.to', 
+    'prompt': 'https://prehraj.to/hledej/Termin%C3%A1tor%202%3A%20Den%20z%C3%BA%C4%8Dtov%C3%A1n%C3%AD%20dabing%201991', 
+}
+         
+def fExtractFromYouTube(sUrl, iCount=3):
+    # sUrl = "https://www.youtube.com/results?search_query=%C5%BDena+je+%C5%BEena+dabing+1961"
+    sDomain = 'https://' + sUrl.split("/")[2]
+    soup = fGetSoup(sUrl, sMethod="selenium")
+    lstLinks = soup.find_all(
+        "a", href=lambda h: h and h.startswith("/watch"),
+        attrs={ "aria-label": lambda x: x and "trailer" not in x.lower()})
+    lxd = [
+        {"sLabel": a.get("aria-label"), "sUrl": sDomain + a.get("href") if a.get("href").startswith("/") else a.get("href")}
+        for a in lstLinks ]
+    return lxd[:iCount]
+
+def fExtractFromPrehrajto(sUrl, iCount=3):
+    # sUrl = "https://prehraj.to/hledej/%C5%BDena%20je%20%C5%BEena%20dabing%201961"
+    sDomain = 'https://' + sUrl.split("/")[2]
+    soup = fGetSoup(sUrl, sMethod="requests")
+    lstLinks = soup.find_all("a", class_=lambda c: c and c.startswith("video"))
+    lxd = [
+        {"sLabel": a.attrs['title'], "sUrl": sDomain + a.get("href") if a.get("href").startswith("/") else a.get("href")}
+        for a in lstLinks ]
+    return lxd[:iCount]
+
+def fExtractFromSledujteto(sUrl, iCount=3):
+    # sUrl = "https://www.sledujteto.cz/vyhledat/?search=zena+je+zena+1961&page=1"
+    sDomain = 'https://' + sUrl.split("/")[2]
+    soup = fGetSoup(sUrl, sMethod="selenium")
+    lstLinks = soup.find_all("a", href=lambda h: h and h.startswith("/file/"))
+    lxd = [
+        {"sLabel": a.attrs['title'], "sUrl": sDomain + a.get("href") if a.get("href").startswith("/") else a.get("href")}
+        for a in lstLinks ]
+    return lxd[:iCount]
+
+
+match data['model']:
+    case 'youtube':
+        lxdLinks = fExtractFromYouTube(data['prompt'])
+    case 'prehraj.to':
+        lxdLinks = fExtractFromPrehrajto(data['prompt'])
+    case 'sledujteto.cz':
+        lxdLinks = fExtractFromSledujteto(data['prompt'])
+    case _:
+        lxdLinks = []
+        
+x = lxdLinks   
+
+
+
+links = fExtractFromSledujteto('', iCount=3)
+
+
+if lstHrefs:
+    
+    print("Stream links found:")
+    for href in lstHrefs:
+        print(unquote(href))
+data = json.loads(soup.find("script", {"type": "application/ld+json"}).string)
+print(fExtractPeople(data))
+
 
 def fScrapeFilm(sUrl):
     headers = {

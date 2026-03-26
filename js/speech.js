@@ -21,7 +21,7 @@ if (SpeechRecognition) {
       if (bListening) {
         recognition.stop();
       }
-    }, 3000);
+    }, 5000);
   }
 
   function fStartListening() {
@@ -96,7 +96,8 @@ if (SpeechRecognition) {
     // micBtn.textContent = "🎤 Speak";
     textarea.classList.remove("listening");
     micBtn.classList.remove("listening");
-        fSearchMovies();
+    document.getElementById("logo").style.display = "none";
+    fSearchMovies();
   };
 
   recognition.onerror = (event) => {
