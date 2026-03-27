@@ -6,6 +6,7 @@ const statusBox = document.getElementById('statusBox');
 // const personSelect = document.getElementById('personSelect');
 // const awardSelect = document.getElementById('awardSelect');
 const sModel = 'OpenAI|gpt-5.4-nano';
+let btnStatus = null;
 
 const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
   
@@ -21,11 +22,15 @@ let sMStype = null;
 let linksBox = null;
 let lxdLinks = [];
 
-const sMoviePrefix = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
+const sMoviePrefix0 = `Zpracuj následující dotaz jako filmový expert. Zjisti, zda se dotaz týká osoby známé ve filmu.
   Nebo zda se jedná o téma filmu, zemi původu, žánr, charakteristika (černobílý, animovaný..) nebo období vydání filmu. 
   Země původu může být uvedena přídavným jménem. V tom případě odpověz názvem země.
   Odpověz pouze ve formě JSON pole, kde jednotlivé klíče budou: 
   herec, režisér, hudebník, žánr, země_původu, kontinent, charakteristika, téma, rok_od, rok_do, ocenění. 
+  Dotaz je: `
+const sMoviePrefix = `Pracuj jako filmový expert. Na základě následujícícho dotazu seatav seznam 5 fimů.
+  U každého stačí název a děj.
+  Odpověz pouze ve formě JSON seznamu, kde jednotlivé klíče budou: title a story 
   Dotaz je: `
 let lxdOpenAI = []
 
@@ -40,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   userInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      document.getElementById("logo").style.display = "none";
+      // document.getElementById("logo").style.display = "none";
       fSearchMovies();
     }
   });
@@ -162,7 +167,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     statusBox.textContent = "Nebylo zadáno žádné hledání.";
     return;
   }
-
+  bFoundExact = false;
   lxdFound = lxdMovies;
   const iWords = sPrompt.split(" ").length;
   localStorage.setItem('sPrompt', sPrompt);
@@ -175,6 +180,8 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
       sLastSortKey = ''
       fSortBy('iRating'); 
       fCreateCards(lxdFound, 0)
+      localStorage.setItem("lxdFound", JSON.stringify(lxdFound));
+      if (lxdFound.length === 1) {bFoundExact = true}
       return;}
   }
   lxdFound = lxdMovies;
@@ -274,29 +281,34 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
       }
       return lstPrompt.every(w => sNorm.includes(w))})
   
+
   sLastSortKey = '';
   fSortBy('iRating');
-  sEncodedPrompt = encodeURIComponent(userInput.value.trim());
-  lstPlatforms = [
-    `https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=${sEncodedPrompt}`,
-    `https://www.netflix.com/search?q=${sEncodedPrompt}`,
-    `https://www.disneyplus.com/cs-cz/search?q=${sEncodedPrompt}`,
-    `https://www.hbo.com/search?q=${sEncodedPrompt}`,
-    `https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&field-keywords=${sEncodedPrompt}`,
-    `https://www.apple.com/cz/apple-tv-plus/${sEncodedPrompt}`,
-  ]
-  lxdFound.push({
-    sTitle: fCapitalizeFirst(userInput.value.trim()),
-    sCountry: "",
-    iYear: "",
-    sPlatforms: lstPlatforms.join('<br>'),
-    iRating: 0,
-    sStory : "",
-    urlCsfd: `https://www.csfd.cz/hledat/?q=${sEncodedPrompt}`,
-    urlPoster: "https://static.pmgstatic.com/assets/images/050b5bad23b8eb0b4f88f971b8f6a168/empty-image.svg",
-    sSearchStatus: "Doplněno pro úplnost. V této databázi nebyl nalezen žádný film nebo seriál, který by odpovídal tomuto hledání. Můžete ho zkusit najít na filmových serverech.",
-    sAwarded: ""});
-    fCreateCards(lxdFound, 0, sMStype);
+  
+  if (!bFoundExact) {
+    sEncodedPrompt = encodeURIComponent(userInput.value.trim());
+    lstPlatforms = [
+      `https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=${sEncodedPrompt}`,
+      `https://www.netflix.com/search?q=${sEncodedPrompt}`,
+      `https://www.disneyplus.com/cs-cz/search?q=${sEncodedPrompt}`,
+      `https://www.hbo.com/search?q=${sEncodedPrompt}`,
+      `https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&field-keywords=${sEncodedPrompt}`,
+      `https://www.apple.com/cz/apple-tv-plus/${sEncodedPrompt}`,
+    ]
+    lxdFound.push({
+      sTitle: fCapitalizeFirst(userInput.value.trim()),
+      sCountry: "",
+      iYear: "",
+      sPlatforms: lstPlatforms.join('<br>'),
+      iRating: 0,
+      sStory : "",
+      urlCsfd: `https://www.csfd.cz/hledat/?q=${sEncodedPrompt}`,
+      urlPoster: "https://static.pmgstatic.com/assets/images/050b5bad23b8eb0b4f88f971b8f6a168/empty-image.svg",
+      sSearchStatus: "Doplněno pro úplnost. V této databázi nebyl nalezen žádný film nebo seriál, který by odpovídal tomuto hledání. Můžete ho zkusit najít na filmových serverech.",
+      sAwarded: ""});
+  }
+  localStorage.setItem("lxdFound", JSON.stringify(lxdFound));
+  fCreateCards(lxdFound, 0, sMStype);
 }
 
 function fCapitalizeFirst(str) {
@@ -307,6 +319,7 @@ function fCapitalizeFirst(str) {
 function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   
   iShowId = iId ;
+  localStorage.setItem('iShowId', iShowId);
   if (iShowId < 0) iShowId = lxdFound.length - 1;
   if (iShowId >= lxdFound.length) iShowId = 0;
   // if (sOrderCol == 'random') {
@@ -337,7 +350,9 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   //     cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
     } else {
     //statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
-    statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
+    // statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
+    // statusSpan.textContent = `${iShowId+1} / ${lxdFound.length}`;
+    if (btnStatus) btnStatus.textContent = `${iShowId+1}/${lxdFound.length}`;
     // lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
     //   cardsWrap.appendChild(fCreateMovieCard(dctMovie))
     cardsWrap.appendChild(fCreateMovieCard(lxdFound[iShowId]));
@@ -361,9 +376,12 @@ function fSafeClick(url) {
 async function fSearchOnVideoServers(iShowId){
   let dct = lxdFound[iShowId];
   const lstServersOrder = [
+    "YouTube",
+    "SledujteTo.cz",
+    "iVysilani",
     "Přehraj.to",
     "Netflix",
-    "iVysilani",
+
     // "Voyo",
     // "Amazon",
     // "HBO",
@@ -372,11 +390,11 @@ async function fSearchOnVideoServers(iShowId){
     // "SkyShowtime",
     // "Canal+",
     // "lepší.tv",
-    "SledujteTo.cz",
+
     "iPrima",
     "WebShare",
     "FastShare",
-    "YouTube",
+
   ]
 
   async function fSearchServers() {
@@ -399,7 +417,7 @@ async function fSearchOnVideoServers(iShowId){
           }
         );
         const data = await r.json();
-        //alert('after fetch');
+        alert(JSON.stringify(data));
         return
       } else {
       fSafeClick(sUrl);
@@ -469,15 +487,16 @@ function fProcessAIresponse_smaz(lxdFound, sPrompt, jsonReturn) {
   
 
 
-async function fAsk_smaz(sPrefix, sPrompt = userInput.value.trim()) {
-
+async function fAskAI() {
+  sPrompt = userInput.value.trim()
+  sPrefix = sMoviePrefix
   // const prompt = document.getElementById("q").value;
   //alert(prompt);
   // localStorage.setItem('sPrompt', userInput.value.trim());
 
   
-  statusBox.textContent = "Čekám na odpověď od " + sModel.split('|')[0] + " ...";
-
+  //statusBox.textContent = "Čekám na odpověď od " + sModel.split('|')[0] + " ...";
+  userInput.value = "Čekám na odpověď ..." 
   sPrefix = sPrefix.replaceAll(/[\u0000-\u001F]/g, "");
   sPrefix = sPrefix.replaceAll('   ',' ').replaceAll('  ',' ');
   
@@ -499,11 +518,51 @@ async function fAsk_smaz(sPrefix, sPrompt = userInput.value.trim()) {
   if (!r.ok) {
     // answerBox.textContent = 'Error: ' + r.status + ' ' + r.statusText;
     // priceEl.textContent = '-- hal';
-    return '[{"Error": "' + r.status + ' ' + r.statusText + '"}]';
+    userInput.value = "Chyba: " + r.status + " " + r.statusText;
+    //return '[{"Error": "' + r.status + ' ' + r.statusText + '"}]';
   }
-  const data = await r.json();
+
+  userInput.value = sPrompt
+  const dct = await r.json();
+  dctModel = {iInput: 0.2, iOutput: 1.25};
+  iPriceUSD = (dct.iPromptTokens * dctModel.iInput + dct.iCompletionTokens * dctModel.iOutput)/1000000;
+  dct.iPriceHalsDPH = (iPriceUSD * 100 * 21 * 1.21).toFixed(3);
+  lxdFound = JSON.parse(dct.sAnswer);
+  userInput.value = sPrompt + " (cena odpovědi cca " + dct.iPriceHalsDPH + " hal)";
+  
+  
+
+
+  lxdFound.forEach(o => {
+    sEncodedTitle = encodeURIComponent(o.title);
+    lstPlatforms = [
+      `https://www.ceskatelevize.cz/ivysilani/hledani/?keyword=${sEncodedTitle}`,
+      `https://www.netflix.com/search?q=${sEncodedTitle}`,
+      `https://www.disneyplus.com/cs-cz/search?q=${sEncodedTitle}`,
+      `https://www.hbo.com/search?q=${sEncodedTitle}`,
+      `https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&field-keywords=${sEncodedTitle}`,
+      `https://www.apple.com/cz/apple-tv-plus/${sEncodedTitle}`,
+    ]
+
+    o.sTitle = o.title; 
+    o.sCountry = "";
+    o.iYear = "";
+    o.sPlatforms = lstPlatforms.join('<br>');
+    o.iRuntime = "90";
+    o.iRating = 0;
+    o.sStory = o.story;
+    o.urlCsfd = `https://www.csfd.cz/hledat/?q=${sEncodedTitle}`;
+    o.urlPoster = "https://static.pmgstatic.com/assets/images/050b5bad23b8eb0b4f88f971b8f6a168/empty-image.svg";
+    o.sSearchStatus = "Doplněno AI.";
+    o.sAwarded = "";
+    delete o.story;
+    delete o.title;
+  });
+
   //alert('after json');
-  return data;
+  localStorage.setItem("lxdFound", JSON.stringify(lxdFound));
+  fCreateCards(lxdFound, 0);
+  // return lxdFound;
 
 x=0
   
@@ -548,12 +607,17 @@ async function main() {
   lxdMovies = await fLoadJson('movies_series.json');
   // lxdMovies = lxdMovies.filter(fIsUsableMovie);
 
-  if (userInput.value.trim()) {
-    fSearchMovies();
-  } else {
-    fRandomMovies();
-  }
+  lxdFound = JSON.parse(localStorage.getItem("lxdFound")) || [];
+  iShowId = Math.max(parseInt(localStorage.getItem("iShowId")) || 0, 0) ;
+  if (lxdFound.length > 0) fCreateCards(lxdFound, iShowId);
 
+  // if (lxdFound.length === 0) {
+  //  if (userInput.value.trim()) {
+  //    fSearchMovies();
+  //  } else {
+  //    fRandomMovies();
+  //  }
+  // }
 }
 
 async function fLoadJson(sFileName) {
@@ -684,7 +748,7 @@ function fCreateMovieCard(dctMovie) {
 
   const colStory = document.createElement("div");
   colStory.className = "col-story";
-  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,1200))}</p>`;
+  colStory.innerHTML = `<p class="story-text">${fEsc(sStory.slice(0,1500))}</p>`;
 
   // const colLinks = document.createElement("div");
   // colLinks.className = "col-links";
@@ -723,14 +787,15 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
       `https://www.filmovamista.cz/vyhledavani?q=${sTitleEnc}&submint=Hledat` : 
       `https://www.reelstreets.com/?s=${sTitleEnEnc}`;
   
-  lxdLinks = [
+  lxdLinks = [];
+  let lxdLinksBase = [
     { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
-    { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
-    { sName: "WebShare", sUrl: "https://webshare.cz/#/search?what=" + sMovieQuery },
-    { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sFastShareQuery + "/s" },
-    { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=" + sMovieQuery },
+    // { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
+    // { sName: "WebShare", sUrl: "https://webshare.cz/#/search?what=" + sMovieQuery },
+    // { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sFastShareQuery + "/s" },
+    { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=-trailer " + sMovieQuery + "&sp=EgIYAg%253D%253D"},
     { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
-    { sName: "Film. místa", sUrl: ulrFilmLocations },
+    { sName: "Film.místa", sUrl: ulrFilmLocations },
   ];
 
   const dctPlatforms= {
@@ -738,14 +803,15 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     "ceskatelevize.cz/porady": "iVysilani",
     "ceskatelevize.cz/ivysilani": "iVysilani",
     "iprima.cz": "iPrima",
-    "voyo.cz": "Voyo",
-    "primevideo.com": "Amazon",
-    "hbomax.com": "HBO",
-    "tv.apple.com": "Apple",
-    "disneyplus.com": "Disney+",
-    "skyshowtime.com": "SkyShowtime",
-    "canalplus.com": "Canal+",
-    "lepší.tv": "lepší.tv",}
+    // "voyo.cz": "Voyo",
+    // "primevideo.com": "Amazon",
+    // "hbomax.com": "HBO",
+    // "tv.apple.com": "Apple",
+    // "disneyplus.com": "Disney+",
+    // "skyshowtime.com": "SkyShowtime",
+    // "canalplus.com": "Canal+",
+    // "lepší.tv": "lepší.tv",
+    }
 
   lstMoviePlatforms = dctMovie.sPlatforms.split("<br>")
 
@@ -759,6 +825,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     });
   });
 
+  lxdLinks.push(...lxdLinksBase);
 
   lxdLinks.forEach(dctLink => {
     const a = document.createElement("a");
@@ -769,6 +836,8 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     a.rel = "noopener noreferrer";
     linksBox.appendChild(a);
   });
+
+  
   
 }
 
@@ -919,6 +988,13 @@ function fCreateScrollControls() {
     </svg>
   `;
 
+  // --- STATUS BUTTON ---
+  btnStatus = document.createElement("button");
+  btnStatus.className = "scroll-btn";
+  btnStatus.title = "Show status";
+  
+  btnStatus.textContent = `${iShowId+1} / ${lxdFound.length}`;
+
   // --- EVENTS ---
   btnDown.onclick = () => fCreateCards(lxdFound, iShowId + 1);
   btnUp.onclick = () => fCreateCards(lxdFound, iShowId - 1);
@@ -928,8 +1004,9 @@ function fCreateScrollControls() {
 
   // --- APPEND ---
   container.appendChild(btnDown);
+  container.appendChild(btnStatus);
   container.appendChild(btnUp);
-  container.appendChild(btnRight);
+  // container.appendChild(btnRight);
   
   return container;
 }

@@ -61,7 +61,7 @@ body {
   border-color: #a5a5a5;
 }
 
-#micBtn, #gMailBtn {
+#micBtn, #gMailBtn, #aiBtn {
   width: 44px;
   height: 44px;
   border: none;

@@ -96,7 +96,7 @@ if (SpeechRecognition) {
     // micBtn.textContent = "🎤 Speak";
     textarea.classList.remove("listening");
     micBtn.classList.remove("listening");
-    document.getElementById("logo").style.display = "none";
+    // document.getElementById("logo").style.display = "none";
     fSearchMovies();
   };
 
