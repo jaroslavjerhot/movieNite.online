@@ -809,7 +809,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
   ];
 
   const dctPlatforms= {
-    "netflix.com": "Netflix",
+    //"netflix.com": "Netflix",
     // "ceskatelevize.cz/porady": "iVysilani",
     // "ceskatelevize.cz/ivysilani": "iVysilani",
     // "iprima.cz": "iPrima",
