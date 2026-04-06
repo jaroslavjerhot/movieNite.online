@@ -172,6 +172,7 @@ body {
 
 .link-btn {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   min-width: 88px;
@@ -270,7 +271,6 @@ body {
   background: #1f1f1f;
   color: white;
   cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
 }
