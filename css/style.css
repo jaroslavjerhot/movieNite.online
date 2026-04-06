@@ -165,14 +165,15 @@ body {
 }
 
 .links-box {
-  display: flex;
-  flex-wrap: wrap;
+  /* display: flex;
+  flex-wrap: wrap; */
   gap: 10px;
   margin-top: 20px;
 }
 
 .link-btn {
-  display: inline-flex;
+  /* display: inline-flex; */
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;

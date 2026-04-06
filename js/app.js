@@ -773,6 +773,7 @@ function fCreateMovieCard(dctMovie) {
 
 function fCreateServiceLinkButtons(linksBox, dctMovie) {
   linksBox.innerHTML = "&nbsp;&nbsp;";
+  linksBox.innerHTML = "";
   // placeholder links; later you can generate your own
   let sFastShareQuery = 
     dctMovie.sCountry.includes("Česko") || dctMovie.sCountry.includes("Slovensko") ? 
@@ -954,7 +955,7 @@ function fScrollPrev() {
 function fCreateEmptyLinksBox () {
   const div = document.createElement("div");
   // div.className = "links-box";
-  div.className = "d-flex align-items-start gap-2 mb-3";
+  div.className = "d-flex flex-wrap align-items-start gap-2 mb-3";
   
   return div;
 }
