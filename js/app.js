@@ -209,7 +209,8 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
   sPromptUnaccent =  ' ' +lstPrompt.join('');
   
   // series/movies
-  if ((sPromptUnaccent).includes(" film")) {
+  // if ((sPromptUnaccent).includes(" film")) {
+  if (true) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("film", "");
     sMStype = 'm';
     lxdFound = lxdFound.filter(dctMovie => {
@@ -261,7 +262,8 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sGenre.toLowerCase().includes('animovaný')  
     })}
-  if ((sPromptUnaccent).includes(" hran")) {
+  // if ((sPromptUnaccent).includes(" hran")) {
+  if (!(sPromptUnaccent.includes(" kreslen")) && !(sPromptUnaccent.includes(" loutkov")) && !(sPromptUnaccent.includes(" anim"))) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("hran", "");
     lxdFound = lxdFound.filter(dctMovie => {
       return (!dctMovie.sGenre.toLowerCase().includes('animovan') && !dctMovie.sGenre.toLowerCase().includes('loutkov')) 
@@ -527,6 +529,8 @@ async function fAskAI() {
   dctModel = {iInput: 0.2, iOutput: 1.25};
   iPriceUSD = (dct.iPromptTokens * dctModel.iInput + dct.iCompletionTokens * dctModel.iOutput)/1000000;
   dct.iPriceHalsDPH = (iPriceUSD * 100 * 21 * 1.21).toFixed(3);
+  
+  
   lxdFound = JSON.parse(dct.sAnswer);
   userInput.value = sPrompt + " (cena odpovědi cca " + dct.iPriceHalsDPH + " hal)";
   
@@ -543,6 +547,7 @@ async function fAskAI() {
       `https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&field-keywords=${sEncodedTitle}`,
       `https://www.apple.com/cz/apple-tv-plus/${sEncodedTitle}`,
     ]
+    lstPlatforms = []
 
     o.sTitle = o.title; 
     o.sCountry = "";
@@ -787,22 +792,27 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
       `https://www.filmovamista.cz/vyhledavani?q=${sTitleEnc}&submint=Hledat` : 
       `https://www.reelstreets.com/?s=${sTitleEnEnc}`;
   
+  let urlYT = `https://www.youtube.com/results?search_query=-trailer ${sMovieQuery}`;
+  if (dctMovie.iRuntime > 60) {
+    urlYT = urlYT + '&sp=EgIYAg%253D%253D';
+  }
   lxdLinks = [];
   let lxdLinksBase = [
     { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
     // { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
     // { sName: "WebShare", sUrl: "https://webshare.cz/#/search?what=" + sMovieQuery },
     // { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sFastShareQuery + "/s" },
-    { sName: "YouTube", sUrl: "https://www.youtube.com/results?search_query=-trailer " + sMovieQuery + "&sp=EgIYAg%253D%253D"},
+    { sName: "YouTube", sUrl: urlYT },
+    { sName: "JustWatch", sUrl: `https://www.justwatch.com/cz/vyhled%C3%A1n%C3%AD?q=${sMovieQuery}` },
     { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
     { sName: "Film.místa", sUrl: ulrFilmLocations },
   ];
 
   const dctPlatforms= {
     "netflix.com": "Netflix",
-    "ceskatelevize.cz/porady": "iVysilani",
-    "ceskatelevize.cz/ivysilani": "iVysilani",
-    "iprima.cz": "iPrima",
+    // "ceskatelevize.cz/porady": "iVysilani",
+    // "ceskatelevize.cz/ivysilani": "iVysilani",
+    // "iprima.cz": "iPrima",
     // "voyo.cz": "Voyo",
     // "primevideo.com": "Amazon",
     // "hbomax.com": "HBO",
