@@ -62,7 +62,7 @@ body {
   border-color: #a5a5a5;
 }
 
-#micBtn, #gMailBtn, #aiBtn {
+#micBtn, #gMailBtn, #aiBtn, #favBtn {
   width: 44px;
   height: 44px;
   border: none;
@@ -80,6 +80,10 @@ body {
   box-shadow: 0 0 0 6px rgba(255, 59, 48, 0.18);
 }
 
+#favBtn.active {
+  background: darkred;
+  box-shadow: 0 0 0 6px rgba(139, 0, 0, 0.18);
+}
 * {
   box-sizing: border-box;
 }
@@ -275,6 +279,11 @@ body {
   cursor: pointer;
   align-items: center;
   justify-content: center;
+}
+
+.scroll-btn.active {
+  background: darkred;
+  border-color: darkred;
 }
 
 .scroll-btn:hover {

@@ -7,6 +7,8 @@ const statusBox = document.getElementById('statusBox');
 // const awardSelect = document.getElementById('awardSelect');
 const sModel = 'OpenAI|gpt-5.4-nano';
 let btnStatus = null;
+let btnSaveToFav = null;
+const favBtn = document.getElementById('favBtn');
 
 const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
   
@@ -359,6 +361,11 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
     //   cardsWrap.appendChild(fCreateMovieCard(dctMovie))
     cardsWrap.appendChild(fCreateMovieCard(lxdFound[iShowId]));
     fCreateServiceLinkButtons(linksBox, lxdFound[iShowId])
+    
+    const sMovieId = lxdFound[iShowId] ? lxdFound[iShowId].idCsfd : null;
+    lstIds = JSON.parse(localStorage.getItem("lstFavoriteIds")) || [];
+    const index = lstIds.indexOf(sMovieId);
+    btnSaveToFav.classList.toggle("active", index !== -1);
 
     // }
   
@@ -1003,21 +1010,36 @@ function fCreateScrollControls() {
   btnStatus = document.createElement("button");
   btnStatus.className = "scroll-btn";
   btnStatus.title = "Show status";
-  
   btnStatus.textContent = `${iShowId+1} / ${lxdFound.length}`;
+
+  // ---- Save to Favorites Button ---
+  btnSaveToFav = document.createElement("button");
+  btnSaveToFav.className = "scroll-btn";
+  btnSaveToFav.title = "Toggle favorite";
+  const svgStar = "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
+  const svgHeart = "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+  btnSaveToFav.innerHTML = `  <svg viewBox="0 0 24 24" class="icon">
+    <path d="${svgStar}" />
+    </svg>`;
+  
 
   // --- EVENTS ---
   btnDown.onclick = () => fCreateCards(lxdFound, iShowId + 1);
   btnUp.onclick = () => fCreateCards(lxdFound, iShowId - 1);
   btnRight.onclick = () => fSearchOnVideoServers(iShowId);
+  
+  
+  btnSaveToFav.onclick = () => fToggleIdInLocalStorage(iShowId);
   // btnUp.onclick = () => fScrollPrev();
   // btnDown.onclick = () => fScrollNext();
 
+  
   // --- APPEND ---
   container.appendChild(btnDown);
   container.appendChild(btnStatus);
   container.appendChild(btnUp);
   // container.appendChild(btnRight);
+  container.appendChild(btnSaveToFav);
   
   return container;
 }
@@ -1085,4 +1107,33 @@ function fSortBy(key) {
   // return(lxdFound); // your existing render function
   x=0
   // fCreateCards(lxdFound, '', bSortAsc);
+}
+
+function fToggleIdInLocalStorage(iShowId, sStorageKey = "lstFavoriteIds") {
+  const sMovieId = lxdFound[iShowId] ? lxdFound[iShowId].idCsfd : null;
+  if (!sMovieId) return;
+  btnSaveToFav.classList.toggle("active");
+  const lstIds = JSON.parse(localStorage.getItem(sStorageKey)) || [];
+  const index = lstIds.indexOf(sMovieId);
+  if (index === -1) {
+    lstIds.push(sMovieId);
+  } else {
+    lstIds.splice(index, 1);
+  }
+  localStorage.setItem(sStorageKey, JSON.stringify(lstIds));
+}
+
+function fFilterFavorites() {
+  const bWasActive = favBtn.classList.toggle("active");
+  // favBtn.classList.toggle("active");
+  const lstFavIds = JSON.parse(localStorage.getItem("lstFavoriteIds")) || [];
+  if (bWasActive) {
+    lxdFound = lxdMovies.filter(movie => lstFavIds.includes(movie.idCsfd));
+    localStorage.setItem("lxdFound", JSON.stringify(lxdFound));
+    bFoundExact = true;
+    fCreateCards(lxdFound, 0);}
+  else {
+      fSearchMovies();
+  }
+
 }
