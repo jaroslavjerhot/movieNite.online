@@ -31,7 +31,7 @@ sSep = ', '
 for i, dctMovie in enumerate(lxdMovies):
     # remap country to group
     dctMovie["sCountry"] = dctMovie["sCountry"].replace(' / ', sSep)
-    if 'Německ' in dctMovie["sCountry"] and 'Německo' not in dctMovie["sCountry"]:
+    if ('NSR' in dctMovie["sCountry"] or 'Německ' in dctMovie["sCountry"]) and 'Německo' not in dctMovie["sCountry"]:
         dctMovie["sCountry"] = dctMovie["sCountry"] + sSep + "Německo"
     if 'Sovětsk' in dctMovie["sCountry"] and 'Rusko' not in dctMovie["sCountry"]:
         dctMovie["sCountry"] = dctMovie["sCountry"] + sSep + "Rusko"

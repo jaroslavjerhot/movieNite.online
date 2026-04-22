@@ -574,6 +574,11 @@ async function fAskAI() {
     delete o.story;
     delete o.title;
   });
+  // identifies by name if any of lxdFound is in lxdMovies
+  lxdFound = lxdFound.map(o => {
+    const match = lxdMovies.find(m => m.sTitle === o.sTitle);
+    return match ? { ...o, ...match } : o;
+  });
 
   //alert('after json');
   localStorage.setItem("lxdFound", JSON.stringify(lxdFound));
