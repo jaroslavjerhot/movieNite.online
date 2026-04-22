@@ -12,6 +12,20 @@ const favBtn = document.getElementById('favBtn');
 
 const sBaseUrl = "https://raw.githubusercontent.com/jaroslavjerhot/movieNite.online/main/data/";
   
+const urlFdbBase = "https://www.fdb.cz/film/"
+const urlOceanBase = 'https://prod-fdb-storage.fra1.cdn.digitaloceanspaces.com/galleries/'
+const urlImdbBase = "https://www.imdb.com/title/"
+const urlJustWatchBase = "https://www.justwatch.com/cz/film/"
+const urlFilmMistaBase = "https://www.filmovamista.cz"
+const urlSledujtetoBase = "https://www.sledujteto.cz"
+const urlPrehrajtoBase = "https://prehraj.to"
+const urlCsfdBase = "https://www.csfd.cz/film/"
+const urlCsfdEmptyImage = "https://static.pmgstatic.com/assets/images/050b5bad23b8eb0b4f88f971b8f6a168/empty-image.svg"
+const urlPmgStaticBase = "https://image.pmgstatic.com/cache/resized/w420/files/images/film/posters/"    
+const urlFdbEmptyImage = "https://prod-fdb-storage.fra1.cdn.digitaloceanspaces.com/placeholders/General.png"
+
+
+
 let lxdMovies = [];
 let lxdCountries = [];
 let lxdEndings = [];
@@ -346,19 +360,9 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
   const iMaxToShow = 1
   if (lxdFound.length === 0) {
     statusBox.textContent = `Nebyl nalezen žádný ${sFS}. Zkuste se zeptat jinak.`;
-    // return;
-  // } else if (lxdFound.length <= iMaxToShow) {
-  //   // statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}.`;
-  //   statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
-  //   lxdFound.forEach(dctMovie => {
-  //     cardsWrap.appendChild(fCreateMovieCard(dctMovie))})
+    
     } else {
-    //statusBox.textContent = `Nalezeno ${lxdFound.length} ${sFS2}. Zobrazuje se prvních ${iMaxToShow} výsledků.`;
-    // statusBox.textContent = `Zobrazuji ${sFS} ${iShowId+1} z ${lxdFound.length} nalezených.`;
-    // statusSpan.textContent = `${iShowId+1} / ${lxdFound.length}`;
     if (btnStatus) btnStatus.textContent = `${iShowId+1}/${lxdFound.length}`;
-    // lxdFound.slice(0, iMaxToShow).forEach(dctMovie => {
-    //   cardsWrap.appendChild(fCreateMovieCard(dctMovie))
     cardsWrap.appendChild(fCreateMovieCard(lxdFound[iShowId]));
     fCreateServiceLinkButtons(linksBox, lxdFound[iShowId])
     
@@ -672,7 +676,10 @@ function fCreateMovieCard(dctMovie) {
     sMovieSeries = `Seriál (${dctMovie.sEpisodes} epizod)`;  
   };
   sMovieSeries = sMovieSeries.replaceAll('.0','')
-  const sPoster = dctMovie.urlPoster || "";
+  const sPoster = dctMovie.urlCsfdPoster ? 
+    urlPmgStaticBase + dctMovie.urlCsfdPoster : 
+    dctMovie.urlFdbPoster ? 
+    urlOceanBase + dctMovie.urlFdbPoster :     urlCsfdEmptyImage;
   const sTitle = dctMovie.sTitle || "";
   const sCountry = dctMovie.sCountry || "";
   const sGenre = dctMovie.sGenre || "";
