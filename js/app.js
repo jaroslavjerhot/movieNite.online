@@ -66,6 +66,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  const searchBtn = document.getElementById('searchBtn');
+  searchBtn.addEventListener('click', () => {
+    // document.getElementById("logo").style.display = "none";
+    fSearchMovies();
+  });
+
   const gMailBtn = document.getElementById('gMailBtn');
   gMailBtn.addEventListener('click', () => {
     window.open('https://mail.google.com/mail/u/0/#inbox', '_blank'); 

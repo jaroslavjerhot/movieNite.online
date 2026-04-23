@@ -1,12 +1,8 @@
 body {
   background-color: #121212;
+  
   color: #f1f1f1;
-  background-image: url("../img/coffee-bg.jpg");
-  background-size: cover;        /* fills screen */
-  background-repeat: no-repeat;  /* no tiling */
-  background-position: center;   /* center image */
-  height: 100vh;
-  margin: 0;
+ 
     
 }
 /* .main-container {
@@ -69,7 +65,7 @@ body {
   border-color: #a5a5a5;
 }
 
-#micBtn, #gMailBtn, #aiBtn, #favBtn {
+#micBtn, #gMailBtn, #aiBtn, #favBtn, #searchBtn {
   width: 44px;
   height: 44px;
   border: none;
@@ -250,7 +246,8 @@ body {
 @media (orientation: landscape) {
   .movie-card {
     display: grid;
-    grid-template-columns: 140px 340px 1fr;
+    /* grid-template-columns: 140px 340px minmax(200px, 1fr); */
+    grid-template-columns: 1fr 2fr 2fr;
     gap: 18px;
     align-items: start;
     background: #1b1b1b;
