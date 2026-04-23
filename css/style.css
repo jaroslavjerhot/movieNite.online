@@ -1,15 +1,9 @@
-body {
-  background-color: #121212;
-  
-  color: #f1f1f1;
- 
-    
-}
-/* .main-container {
-  max-width: 90vw;
+
+.main-container {
+  max-width: 95vw;
   margin: 0 auto;
   padding: 10px;
-} */
+}
 
 .logo {
   font-size: 1.5rem;
@@ -19,6 +13,7 @@ body {
   background-color: #1e1e1e;
   color: #f1f1f1;
   border: none;
+
 }
 .form-select, .form-control {
   background-color: #2a2a2a;

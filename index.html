@@ -21,7 +21,8 @@
     <div class="card p-3 mb-3">
       <div class="mb-3">
         <!-- <label for="userInput" class="form-label">Otázka:</label> -->
-      <div class="d-flex  flex-wrap align-items-start gap-2 mb-3">
+      <div class="d-flex flex-wrap align-items-start gap-2">
+
         <div class="d-flex align-items-start gap-2">  
           <button id="micBtn" type="button" class="btn btn-outline-light">
                 <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
@@ -37,13 +38,15 @@
               </svg>
           </button>
         </div>
-        &nbsp;
-        <textarea id="userInput" class="form-control"  
-        style="min-width: 50%"  
-        rows="1"
-        >
-
+        <div class="flex-grow-1">
+          <textarea id="userInput" class="form-control"  
+           
+          rows="1"
+          >
         </textarea>
+        
+        </div>
+
         <div class="d-flex align-items-start gap-2">  
         
           <button id="searchBtn" type="button" class="btn btn-outline-light">

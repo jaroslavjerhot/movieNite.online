@@ -45,7 +45,7 @@ const sMoviePrefix0 = `Zpracuj následující dotaz jako filmový expert. Zjisti
   herec, režisér, hudebník, žánr, země_původu, kontinent, charakteristika, téma, rok_od, rok_do, ocenění. 
   Dotaz je: `
 const sMoviePrefix = `Pracuj jako filmový expert. Na základě následujícícho dotazu seatav seznam 5 fimů.
-  U každého stačí název a děj.
+  U každého stačí český název a děj.
   Odpověz pouze ve formě JSON seznamu, kde jednotlivé klíče budou: title a story 
   Dotaz je: `
 let lxdOpenAI = []
