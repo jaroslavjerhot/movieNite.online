@@ -300,9 +300,9 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
           ' ' + dctMovie.sTitle + ' ' + dctMovie.sTitle_EN + ' ' + dctMovie.sGenre + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
           ' ' + dctMovie.sAuthor + ' ' + dctMovie.sNominated + ' ' + dctMovie.sAwarded + ' ' + dctMovie.bNobel, false)
-      if (dctMovie.sTitleUnaccent.includes('lovcihlav')) {
-         x = 0;
-      }
+      // if (dctMovie.sTitleUnaccent.includes('lovcihlav')) {
+      //    x = 0;
+      // }
       return lstPrompt.every(w => sNorm.includes(w))})
   
 
