@@ -299,7 +299,7 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
       const sNorm = fNormalize(' country:' + dctMovie.sCountry + ' country:' + dctMovie.sContinent + 
           ' ' + dctMovie.sTitle + ' ' + dctMovie.sTitle_EN + ' ' + dctMovie.sGenre + 
           ' ' + dctMovie.sStory + ' ' + dctMovie.sTags  + ' ' + dctMovie.sDirector + ' ' + dctMovie.sActor + 
-          ' ' + dctMovie.sAuthor + ' ' + dctMovie.sNominated + ' ' + dctMovie.sAwarded, false)
+          ' ' + dctMovie.sAuthor + ' ' + dctMovie.sNominated + ' ' + dctMovie.sAwarded + ' ' + dctMovie.bNobel, false)
       if (dctMovie.sTitleUnaccent.includes('lovcihlav')) {
          x = 0;
       }

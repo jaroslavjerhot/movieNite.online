@@ -26,6 +26,15 @@ with open("./data/country-continent.csv", "r", encoding="utf-8-sig", newline="")
 with open("./data/movies_series.csv", "r", encoding="utf-8-sig", newline="") as f:
     reader = csv.DictReader(f, delimiter=";")
     lxdMovies = list(reader)
+    # sort by iRating and iYear desc, firstly convert decimal comma to dot and then to float, if iRating is empty, use 0
+    
+    lxdMovies.sort(key=lambda x: (float(x["iRating"].replace(",", ".")) if x["iRating"] else 0, int(x["iYear"]) if x["iYear"] else 0), reverse=True)
+    # convert idCsfd to format c00xyz
+    for dctMovie in lxdMovies:
+        dctMovie["idCsfd"] = "c" + dctMovie["idCsfd"].zfill(7)\
+            if dctMovie["idCsfd"] else "f" + dctMovie["idFdb"].zfill(7)
+        
+
 
 sSep = ', '    
 for i, dctMovie in enumerate(lxdMovies):
