@@ -376,7 +376,7 @@ function fCreateCards(lxdFound, iId = 0, sMStype = null) {
     lstIds = JSON.parse(localStorage.getItem("lstFavoriteIds")) || [];
     const index = lstIds.indexOf(sMovieId);
     btnSaveToFav.classList.toggle("active", index !== -1);
-
+    
     // }
   
  
@@ -830,7 +830,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     // { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sFastShareQuery + "/s" },
     { sName: "YouTube", sUrl: urlYT },
     { sName: "JustWatch", sUrl: `https://www.justwatch.com/cz/vyhled%C3%A1n%C3%AD?q=${sMovieQuery}` },
-    { sName: "ČSFD", sUrl: dctMovie.urlCsfd },
+    { sName: "ČSFD", sUrl: `https://www.csfd.cz/film/${dctMovie.urlCsfd}` },
     { sName: "Film.místa", sUrl: ulrFilmLocations },
   ];
 

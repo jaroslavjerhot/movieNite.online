@@ -230,13 +230,13 @@ def fGetMovieChart():
 
 def fGetMoviesDetails():
     
-    lstChartUrls = [m.get('urlFdb') for m in lxdChart if m.get('urlFdb')]
+    lstChartUrls = [m.get('urlFdb') if 'Česko' in str(m.get('sCountry','')) else None for m in lxdChart if m.get('urlFdb') ]
     lstDetailsUrls = [m.get('urlFdb') for m in lxdDetails if m.get('urlFdb')]
     lstNormCsfdTitles = [fNormalize(m.get('sTitle', ''), True) for m in lxdCsfd]
     lstNormNobelNames = [fNormalize(m.get('sName', ''), True) for m in lxdNobels]
     
     for i, sUrl in enumerate(lstChartUrls):   
-        if i<7797 or sUrl in lstDetailsUrls:
+        if i<7797 or sUrl in lstDetailsUrls or sUrl is None:
             continue
         print(i+1, "/", len(lstChartUrls), sUrl)
         dctMovie = {}
