@@ -99,7 +99,10 @@ function fNormalize(s, bRemoveSpaces = true) {
     .replaceAll('ø', 'o')
     .toLowerCase()
     // .replaceAll('y','i')
-    .replaceAll('  ',' ');
+    .replaceAll('  ',' ')
+    .replace('ceska', 'cesko')
+    .replace('cesky', 'cesko')
+    
   if (bRemoveSpaces) {
     result = result.replaceAll(' ','');
   }
@@ -279,16 +282,16 @@ async function fSearchMovies(sPrompt = userInput.value.trim()) {
     lxdFound = lxdFound.filter(dctMovie => {
       return dctMovie.sGenre.toLowerCase().includes('sci-fi')  
     })}
-  if ((sPromptUnaccent).includes(" kreslen")) {
+  if ((sPromptUnaccent).includes(" kreslen") || (sPromptUnaccent).includes(" animovan")) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("kreslen", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      return dctMovie.sGenre.toLowerCase().includes('animovaný')  
+      return (dctMovie.sGenre.toLowerCase().includes('animovaný') || dctMovie.sGenre.toLowerCase().includes('kreslen') || dctMovie.sGenre.toLowerCase().includes('loutkov'))  
     })}
   // if ((sPromptUnaccent).includes(" hran")) {
   if (!(sPromptUnaccent.includes(" kreslen")) && !(sPromptUnaccent.includes(" loutkov")) && !(sPromptUnaccent.includes(" anim"))) {
     sPromptUnaccent = sPromptUnaccent.toLowerCase().replace("hran", "");
     lxdFound = lxdFound.filter(dctMovie => {
-      return (!dctMovie.sGenre.toLowerCase().includes('animovan') && !dctMovie.sGenre.toLowerCase().includes('loutkov')) 
+      return (!dctMovie.sGenre.toLowerCase().includes('animovan') && !dctMovie.sGenre.toLowerCase().includes('kreslen') && !dctMovie.sGenre.toLowerCase().includes('loutkov')) 
     })}
 
     lstPrompt = sPromptUnaccent.split(" ").map(s => s.trim()).filter(s => s.length > 2);
@@ -690,7 +693,7 @@ function fCreateMovieCard(dctMovie) {
   const sPoster = dctMovie.urlCsfdPoster ? 
     urlPmgStaticBase + dctMovie.urlCsfdPoster : 
     dctMovie.urlFdbPoster ? 
-    urlOceanBase + dctMovie.urlFdbPoster :     urlCsfdEmptyImage;
+    urlOceanBase + dctMovie.urlFdbPoster : urlCsfdEmptyImage;
   const sTitle = dctMovie.sTitle || "";
   const sCountry = dctMovie.sCountry || "";
   const sGenre = dctMovie.sGenre || "";
