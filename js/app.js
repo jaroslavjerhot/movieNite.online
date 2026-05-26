@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add your Gmail button functionality here
   });
 
-  userInput.textContent = localStorage.getItem('sPrompt') || "";
+  userInput.textContent = localStorage.getItem('sPrompt') || "Claudia Cardinale";
 
   const scrollControls = fCreateScrollControls();
   document.getElementById('searchBtns').appendChild(scrollControls);
