@@ -823,7 +823,14 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     urlYT = urlYT + '&sp=EgIYAg%253D%253D';
   }
   lxdLinks = [];
-  let urlCsfdFdb = dctMovie.urlCsfd? `https://www.csfd.cz/film/${dctMovie.urlCsfd}`: `https://www.fdb.cz/film/${dctMovie.urlFdb}`;
+
+  let urlCsfdFdb = ''
+  if (dctMovie.urlCsfd.includes("csfd.cz")) {
+    urlCsfdFdb = dctMovie.urlCsfd
+  } else {
+    urlCsfdFdb = dctMovie.urlCsfd? `https://www.csfd.cz/film/${dctMovie.urlCsfd}`: `https://www.fdb.cz/film/${dctMovie.urlFdb}`;
+  }
+  
   let lxdLinksBase = [
     { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
     // { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
