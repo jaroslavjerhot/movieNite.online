@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // document.getElementById("logo").style.display = "none";
       fSearchMovies();
     }
+    
   });
 
   const searchBtn = document.getElementById('searchBtn');
@@ -78,12 +79,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Add your Gmail button functionality here
   });
-  const params =
-  new URLSearchParams(
-    window.location.search
-  );
-  const qSearch = params.get("s");
-  userInput.textContent = qSearch || localStorage.getItem('sPrompt') || "Cimrman";
+  // const params =
+  // new URLSearchParams(
+  //   window.location.search
+  // );
+  // const qParamSearch = params.get("s");
+  userInput.textContent = localStorage.getItem('sPrompt') || "Zde zadej název filmu, žánr, téma, režiséra, herce atd...";
+
+  
 
   const scrollControls = fCreateScrollControls();
   document.getElementById('searchBtns').appendChild(scrollControls);
