@@ -819,7 +819,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
       `https://www.reelstreets.com/?s=${sTitleEnEnc}`;
   
   let urlYT = `https://www.youtube.com/results?search_query=-trailer ${sMovieQuery}`;
-  if (dctMovie.iRuntime > 60) {
+  if (dctMovie.iRuntime >= 60) {
     urlYT = urlYT + '&sp=EgIYAg%253D%253D';
   }
   lxdLinks = [];
