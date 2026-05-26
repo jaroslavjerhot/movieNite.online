@@ -823,6 +823,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     urlYT = urlYT + '&sp=EgIYAg%253D%253D';
   }
   lxdLinks = [];
+  let urlCsfdFdb = dctMovie.urlCsfd? `https://www.csfd.cz/film/${dctMovie.urlCsfd}`: `https://www.fdb.cz/film/${dctMovie.urlFdb}`;
   let lxdLinksBase = [
     { sName: "SledujteTo.cz", sUrl: `https://www.sledujteto.cz/vyhledat/?search=${sMovieQuery}&page=1` },
     // { sName: "Přehraj.to", sUrl: "https://prehraj.to/hledej/" + sMovieQuery },
@@ -830,7 +831,7 @@ function fCreateServiceLinkButtons(linksBox, dctMovie) {
     // { sName: "FastShare", sUrl: "https://fastshare.cloud/" + sFastShareQuery + "/s" },
     { sName: "YouTube", sUrl: urlYT },
     { sName: "JustWatch", sUrl: `https://www.justwatch.com/cz/vyhled%C3%A1n%C3%AD?q=${sMovieQuery}` },
-    { sName: "ČSFD", sUrl: `https://www.csfd.cz/film/${dctMovie.urlCsfd}` },
+    { sName: "ČSFD/FDB", sUrl: urlCsfdFdb },
     { sName: "Film.místa", sUrl: ulrFilmLocations },
   ];
 
